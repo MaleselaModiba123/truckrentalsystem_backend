@@ -18,12 +18,12 @@ public class ServiceRecord {
     private double cost;
 
     private LocalDate nextServiceDate;
-    private String vin;
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Truck_Vin")
+    private List<Truck> trucks;
     private String mechanicEmpNo;
 
-    @OneToMany(mappedBy = "Service Record")
-    private List<Truck> trucks;
+
 
 
     protected ServiceRecord(){
@@ -35,7 +35,6 @@ public class ServiceRecord {
         this.cost = builder.cost;
         this.nextServiceDate = builder.nextServiceDate;
         this.serviceType = builder.serviceType;
-        this.vin = builder.vin;
         this.mechanicEmpNo = builder.mechanicEmpNo;
         this.trucks = builder.trucks;
 
@@ -61,9 +60,6 @@ public class ServiceRecord {
         return nextServiceDate;
     }
 
-    public String getVin() {
-        return vin;
-    }
 
     public String getMechanicEmpNo() {
         return mechanicEmpNo;
@@ -78,12 +74,12 @@ public class ServiceRecord {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ServiceRecord that = (ServiceRecord) o;
-        return serviceID == that.serviceID && Double.compare(cost, that.cost) == 0 && Objects.equals(serviceDate, that.serviceDate) && Objects.equals(serviceType, that.serviceType) && Objects.equals(nextServiceDate, that.nextServiceDate) && Objects.equals(vin, that.vin) && Objects.equals(mechanicEmpNo, that.mechanicEmpNo) && Objects.equals(trucks, that.trucks);
+        return serviceID == that.serviceID && Double.compare(cost, that.cost) == 0 && Objects.equals(serviceDate, that.serviceDate) && Objects.equals(serviceType, that.serviceType) && Objects.equals(nextServiceDate, that.nextServiceDate)  && Objects.equals(mechanicEmpNo, that.mechanicEmpNo) && Objects.equals(trucks, that.trucks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(serviceID, serviceDate, serviceType, cost, nextServiceDate, vin, mechanicEmpNo, trucks);
+        return Objects.hash(serviceID, serviceDate, serviceType, cost, nextServiceDate, mechanicEmpNo, trucks);
     }
 
     @Override
@@ -94,7 +90,6 @@ public class ServiceRecord {
                 ", serviceType='" + serviceType + '\'' +
                 ", cost=" + cost +
                 ", nextServiceDate=" + nextServiceDate +
-                ", vin='" + vin + '\'' +
                 ", mechanicEmpNo='" + mechanicEmpNo + '\'' +
                 ", trucks=" + trucks +
                 '}';
@@ -106,7 +101,6 @@ public class ServiceRecord {
         private String serviceType;
         private double cost;
         private LocalDate nextServiceDate;
-        private String vin;
         private String mechanicEmpNo;
         private List<Truck> trucks;
 
@@ -136,11 +130,6 @@ public class ServiceRecord {
         return this;
     }
 
-    public Builder setVin(String vin) {
-        this.vin = vin;
-        return this;
-    }
-
     public  Builder setMechanicEmpNo(String mechanicEmpNo) {
         this.mechanicEmpNo = mechanicEmpNo;
         return this;
@@ -158,7 +147,7 @@ public class ServiceRecord {
         this.serviceType = serviceRecord.serviceType;
         this.cost = serviceRecord.cost;
         this.mechanicEmpNo = serviceRecord.mechanicEmpNo;
-        this.vin = serviceRecord.vin;
+
         this.nextServiceDate = serviceRecord.nextServiceDate;
         this.trucks = serviceRecord.trucks;
         return this;
