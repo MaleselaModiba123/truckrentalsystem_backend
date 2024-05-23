@@ -16,14 +16,15 @@ import java.util.Objects;
 @Entity
 public class Mechanic extends Employee {
 
+
     private String specialization;
 
     private boolean availability;
 
-    @OneToOne(mappedBy = "mechanic")
+    @OneToOne(mappedBy = "employeeNumber")
     private List<ServiceRecord> serviceRecords;
 
-    public Mechanic() {
+    protected Mechanic() {
     }
 
     private Mechanic(Builder builder) {

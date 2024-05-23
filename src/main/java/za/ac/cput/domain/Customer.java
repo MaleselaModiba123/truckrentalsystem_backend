@@ -1,10 +1,7 @@
 package za.ac.cput.domain;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,15 +23,13 @@ public class Customer {
 
     private String cellNo;
 
-    private int rentalID;
-
-    private String rentalAgentEmpNo;
-
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customerID")
     private List<RentTruck> rentedTruck;
 
-    @OneToOne (mappedBy = "customer")
-    private List <Login> logins;
+    @ManyToOne
+    @JoinColumn(name = "rentalAgentEmpNo", insertable = false, updatable = false)
+    private RentalAgent rentalAgents;
+
     protected Customer() {
     }
 
@@ -45,10 +40,8 @@ public class Customer {
         this.email = builder.email;
         this.license = builder.license;
         this.cellNo = builder.cellNo;
-        this.rentalID = builder.rentalID;
-        this.rentalAgentEmpNo = builder.rentalAgentEmpNo;
         this.rentedTruck=builder.rentedTruck;
-        this.logins=builder.logins;
+        this.rentalAgents=builder.rentalAgents;
     }
 
     public int getCustomerID() {
@@ -80,22 +73,12 @@ public class Customer {
         return cellNo;
     }
 
-    public int getRentalID() {
-
-        return rentalID;
-    }
-
-    public String getRentalAgentEmpNo() {
-
-        return rentalAgentEmpNo;
-    }
-
     public List<RentTruck> getRentedTruck() {
         return rentedTruck;
     }
 
-    public List<Login> getLogins() {
-        return logins;
+    public RentalAgent getRentalAgent() {
+        return rentalAgents;
     }
 
     @Override
@@ -103,12 +86,12 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(customerID, customer.customerID) && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(license, customer.license) && Objects.equals(cellNo, customer.cellNo) && Objects.equals(rentalID,customer.rentalID) && Objects.equals(rentalAgentEmpNo, customer.rentalAgentEmpNo) && Objects.equals(rentedTruck, customer.rentedTruck)  && Objects.equals(logins, customer.logins);
+        return Objects.equals(customerID, customer.customerID) && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(license, customer.license) && Objects.equals(cellNo, customer.cellNo)  && Objects.equals(rentedTruck, customer.rentedTruck)  && Objects.equals(rentalAgents, customer.rentalAgents);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerID, firstName, lastName, email, license, cellNo, rentalID, rentalAgentEmpNo, rentedTruck, logins);
+        return Objects.hash(customerID, firstName, lastName, email, license, cellNo, rentedTruck, rentalAgents);
     }
 
     @Override
@@ -120,10 +103,8 @@ public class Customer {
                 ", email='" + email + '\'' +
                 ", license='" + license + '\'' +
                 ", cellNo='" + cellNo + '\'' +
-                ", rentalID='" + rentalID + '\'' +
-                ", rentalAgentEmpNo='" + rentalAgentEmpNo + '\'' +
                 ", rentedTruck='" + rentedTruck + '\'' +
-                ", login='" + logins + '\'' +
+                ", rentalAgents='" + rentalAgents + '\'' +
                 '}';
     }
 
@@ -136,13 +117,9 @@ public class Customer {
 
         private String cellNo;
 
-        private int rentalID;
-
-        private String rentalAgentEmpNo;
-
         private List<RentTruck> rentedTruck;
 
-        private List<Login> logins;
+        private RentalAgent rentalAgents;
 
         public Builder setCustomerID(int customerID) {
             this.customerID = customerID;
@@ -174,23 +151,13 @@ public class Customer {
             return this;
         }
 
-        public Builder setRentalID(int rentalID) {
-            this.rentalID = rentalID;
-            return this;
-        }
-
-        public Builder setRentalAgentEmpNo(String rentalAgentEmpNo) {
-            this.rentalAgentEmpNo = rentalAgentEmpNo;
-            return this;
-        }
-
         public Builder setRentedTruck(List<RentTruck> rentedTruck ) {
             this.rentedTruck = rentedTruck;
             return this;
         }
 
-        public Builder setLogin(List<Login> logins ) {
-            this.logins = logins;
+        public Builder setRentalAgent(RentalAgent rentalAgents ) {
+            this.rentalAgents = rentalAgents;
             return this;
         }
 
@@ -201,10 +168,8 @@ public class Customer {
             this.email = customer.email;
             this.license = customer.license;
             this.cellNo = customer.cellNo;
-            this.rentalID = customer.rentalID;
-            this.rentalAgentEmpNo = customer.rentalAgentEmpNo;
             this.rentedTruck = customer.rentedTruck;
-            this.logins = customer.logins;
+            this.rentalAgents = customer.rentalAgents;
             return this;
         }
 
