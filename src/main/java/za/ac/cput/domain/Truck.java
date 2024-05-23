@@ -1,4 +1,6 @@
 package za.ac.cput.domain;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import java.util.Objects;
@@ -12,13 +14,16 @@ import java.util.Objects;
 @MappedSuperclass
 public class Truck {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String vin;
     private String model;
     private boolean availability;
     private String licensePate;
     private double currentMileage;
     private int branchId;
+    private int insuranceId;
     private int truckTypeId;
+
 
 
     protected Truck(Truck truck) {
@@ -32,6 +37,7 @@ public class Truck {
         this.licensePate = String.valueOf(builder.licensePate);
         this.currentMileage = builder.currentMileage;
         this.branchId = builder.branchId;
+        this.insuranceId = builder.insuranceId;
         this.truckTypeId = builder.truckTypeId;
 
 
@@ -61,6 +67,10 @@ public class Truck {
         return branchId;
     }
 
+    public int getInsuranceId(){
+        return insuranceId;
+    }
+
     public int getTruckTypeId() {
         return truckTypeId;
     }
@@ -70,12 +80,26 @@ public class Truck {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Truck truck = (Truck) o;
-        return availability == truck.availability && Double.compare(currentMileage, truck.currentMileage) == 0 && branchId == truck.branchId && truckTypeId == truck.truckTypeId && Objects.equals(vin, truck.vin) && Objects.equals(model, truck.model) && Objects.equals(licensePate, truck.licensePate);
+        return availability == truck.availability && Double.compare(currentMileage, truck.currentMileage) == 0 && branchId == truck.branchId && insuranceId == truck.insuranceId && truckTypeId == truck.truckTypeId && Objects.equals(vin, truck.vin) && Objects.equals(model, truck.model) && Objects.equals(licensePate, truck.licensePate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(vin, model, availability, licensePate, currentMileage, branchId, truckTypeId);
+        return Objects.hash(vin, model, availability, licensePate, currentMileage, branchId, insuranceId, truckTypeId);
+    }
+
+    @Override
+    public String toString() {
+        return "Truck{" +
+                "vin='" + vin + '\'' +
+                ", model='" + model + '\'' +
+                ", availability=" + availability +
+                ", licensePate='" + licensePate + '\'' +
+                ", currentMileage=" + currentMileage +
+                ", branchId=" + branchId +
+                ", insuranceId=" + insuranceId +
+                ", truckTypeId=" + truckTypeId +
+                '}';
     }
 
     public static class Builder {
@@ -85,6 +109,7 @@ public class Truck {
         private double licensePate;
         private double currentMileage;
         private int branchId;
+        private int insuranceId;
         private int truckTypeId;
 
         public Builder setVin(String vin) {
@@ -117,6 +142,11 @@ public class Truck {
             return this;
         }
 
+        public Builder setInsuranceId(int insuranceId) {
+            this.insuranceId = insuranceId;
+            return this;
+        }
+
         public Builder setTruckTypeId(int truckTypeId) {
             this.truckTypeId = truckTypeId;
             return this;
@@ -129,6 +159,7 @@ public class Truck {
             this.licensePate = Double.parseDouble(truck.licensePate);
             this.branchId = truck.branchId;
             this.currentMileage = truck.currentMileage;
+            this.insuranceId = truck.insuranceId;
             this.truckTypeId = truck.truckTypeId;
             return this;
         }
