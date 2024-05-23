@@ -25,7 +25,7 @@ public class Helper {
         return false;
     }
 
-    public static boolean isDoubleNotNull(double d) {    //checks double
+    public static boolean isDoubleNotValid(double d) {    //checks double
         if (d < 0)
             return true;
         return false;

@@ -13,9 +13,14 @@ import za.ac.cput.util.Helper;
 public class TruckTypeFactory {
     public static TruckType buildTruckType(int truckTypeId, String typeName, String description, String dimensions,
                                            double capacity, String transmission, double fuelConsumption, String fuelType) {
-        if (Helper.isIntNotValid(truckTypeId) || Helper.isNullOrEmpty(typeName) || Helper.isNullOrEmpty(description)
-                || Helper.isNullOrEmpty(dimensions) || Helper.isDoubleNotNull(capacity) || Helper.isNullOrEmpty(transmission) ||
-                Helper.isDoubleNotNull(fuelConsumption) || Helper.isNullOrEmpty(fuelType)) {
+        if (Helper.isIntNotValid(truckTypeId)
+                || Helper.isNullOrEmpty(typeName)
+                || Helper.isNullOrEmpty(description)
+                || Helper.isNullOrEmpty(dimensions)
+                || Helper.isDoubleNotValid(capacity)
+                || Helper.isNullOrEmpty(transmission)
+                || Helper.isDoubleNotValid(fuelConsumption)
+                || Helper.isNullOrEmpty(fuelType)) {
             return null;
         }
         return new TruckType.Builder().setTruckTypeId(truckTypeId)

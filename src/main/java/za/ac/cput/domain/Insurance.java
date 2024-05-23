@@ -97,7 +97,7 @@ public class Insurance {
                         "Effective Date: %s\n" +
                         "Coverage: %s\n" +
                         "Premium: %s\n"+
-                         "Truck: %s\n",
+                        "Truck: %s\n",
                 insuranceID, insuranceType, provider, policyNumber, effectiveDate, coverage, premium,trucks
         );
     }

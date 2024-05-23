@@ -94,17 +94,18 @@ public class TruckType {
 
     @Override
     public String toString() {
-        return "TruckTypeService{" +
-                "truckTypeId=" + truckTypeId +
-                ", typeName='" + typeName + '\'' +
-                ", description='" + description + '\'' +
-                ", dimensions='" + dimensions + '\'' +
-                ", capacity=" + capacity +
-                ", transmission='" + transmission + '\'' +
-                ", fuelConsumption=" + fuelConsumption +
-                ", fuelType='" + fuelType + '\'' +
-                ", trucks=" + trucks +
-                '}';
+        return String.format("Truck Type:\n" +
+                        "Truck Type ID: %s\n" +
+                        "Type Name: %s\n" +
+                        "Description: %s\n" +
+                        "Dimensions: %s\n" +
+                        "Capacity: %s\n" +
+                        "Transmission: %s\n" +
+                        "Fuel Consumption: %s\n" +
+                        "Fuel Type: %s\n" +
+                        "Trucks: %s\n",
+                truckTypeId, typeName, description, dimensions, capacity, transmission, fuelConsumption, fuelType, trucks
+        );
     }
 
     public static class Builder{
@@ -176,6 +177,6 @@ public class TruckType {
             return this;
 
         }
-        public TruckType build(){return new TruckType(null);}
+        public TruckType build(){return new TruckType(this);}
     }
 }

@@ -23,7 +23,7 @@ public class InsuranceFactory {
                 Helper.isNullOrEmpty(policyNumber) ||
                 effectiveDate == null || !dateValidator.isValid(effectiveDate.toString()) ||
                 Helper.isNullOrEmpty(coverage) ||
-                Helper.isDoubleNotNull(premium)) {
+                Helper.isDoubleNotValid(premium)) {
             return null;
         }
         return new Insurance.Builder().setInsuranceID(insuranceID)
