@@ -15,16 +15,14 @@ import java.time.format.DateTimeFormatter;
 
 public class RentTruckFactory {
     public static RentTruck buildRentTruck(int rentId, LocalDate rentDate, LocalDate returnDate,
-                                           double totalCost, String pickUpLocation,
-                                           String dropOffLocation, boolean isPaymentMade,
+                                           double totalCost, boolean isPaymentMade,
                                            Customer customer,
                                            Truck truck,
-                                           SalesPerson salesPerson,
-                                           Branch branch) {
+                                           RentalAgent salesPerson,
+                                           Branch pickUp, Branch dropOff) {
         if (Helper.isIntNotValid(rentId) ||
-                rentDate == null || returnDate == null || Helper.isDoubleNotNull(totalCost) ||
-                Helper.isNullOrEmpty(pickUpLocation) || Helper.isNullOrEmpty(dropOffLocation) ||
-                customer == null || truck == null || salesPerson == null || branch == null) {
+                rentDate == null || returnDate == null || Helper.isDoubleNotValid(totalCost)||
+                customer == null || truck == null || salesPerson == null || pickUp == null || dropOff == null) {
             return null;
         }
 
@@ -33,13 +31,12 @@ public class RentTruckFactory {
                 .setRentDate(rentDate)
                 .setReturnDate(returnDate)
                 .setTotalCost(totalCost)
-                .setPickUpLocation(pickUpLocation)
-                .setDropOffLocation(dropOffLocation)
                 .setPaymentMade(isPaymentMade)
                 .setCustomerID(customer)
                 .setVin(truck)
                 .setSalesAgent(salesPerson)
-                .setBranch(branch)
+                .setPickUp(pickUp)
+                .setDropOff(dropOff)
                 .build();
     }
 }
