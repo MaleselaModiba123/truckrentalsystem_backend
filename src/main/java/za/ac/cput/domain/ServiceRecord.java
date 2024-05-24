@@ -21,6 +21,10 @@ public class ServiceRecord {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Truck_Vin")
     private List<Truck> trucks;
+
+    @OneToOne
+    @JoinColumn(name = "Mechanic_Employee_Num")
+    private Machanic machanic;
     private String mechanicEmpNo;
 
 
