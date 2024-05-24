@@ -1,13 +1,13 @@
 package za.ac.cput.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
-
+/*  Completed By Malesela Modiba
+    23 May 2024
+ */
 @Entity
 public class ServiceRecord {
     @Id
@@ -16,23 +16,32 @@ public class ServiceRecord {
     private LocalDate serviceDate;
     private String serviceType;
     private double cost;
-    private String mechinceName;
+
     private LocalDate nextServiceDate;
-    private String vin;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Truck_Vin")
+    private List<Truck> trucks;
+
+    @OneToOne
+    @JoinColumn(name = "Mechanic_Employee_Num")
+    private Machanic machanic;
     private String mechanicEmpNo;
+
+
+
 
     protected ServiceRecord(){
 
     }
-    public ServiceRecord (Builder builder){
+    public ServiceRecord (Builder builder) {
         this.serviceID = builder.serviceID;
         this.serviceDate = builder.serviceDate;
         this.cost = builder.cost;
-        this.mechinceName = builder.mechinceName;
         this.nextServiceDate = builder.nextServiceDate;
         this.serviceType = builder.serviceType;
-        this.vin = builder.vin;
         this.mechanicEmpNo = builder.mechanicEmpNo;
+        this.trucks = builder.trucks;
+
     }
 
     public int getServiceID() {
@@ -51,20 +60,17 @@ public class ServiceRecord {
         return cost;
     }
 
-    public String getMechinceName() {
-        return mechinceName;
-    }
-
     public LocalDate getNextServiceDate() {
         return nextServiceDate;
     }
 
-    public String getVin() {
-        return vin;
-    }
 
     public String getMechanicEmpNo() {
         return mechanicEmpNo;
+    }
+
+    public List<Truck> getTrucks() {
+        return trucks;
     }
 
     @Override
@@ -72,12 +78,12 @@ public class ServiceRecord {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ServiceRecord that = (ServiceRecord) o;
-        return serviceID == that.serviceID && Double.compare(cost, that.cost) == 0 && Objects.equals(serviceDate, that.serviceDate) && Objects.equals(serviceType, that.serviceType) && Objects.equals(mechinceName, that.mechinceName) && Objects.equals(nextServiceDate, that.nextServiceDate) && Objects.equals(vin, that.vin) && Objects.equals(mechanicEmpNo, that.mechanicEmpNo);
+        return serviceID == that.serviceID && Double.compare(cost, that.cost) == 0 && Objects.equals(serviceDate, that.serviceDate) && Objects.equals(serviceType, that.serviceType) && Objects.equals(nextServiceDate, that.nextServiceDate)  && Objects.equals(mechanicEmpNo, that.mechanicEmpNo) && Objects.equals(trucks, that.trucks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(serviceID, serviceDate, serviceType, cost, mechinceName, nextServiceDate, vin, mechanicEmpNo);
+        return Objects.hash(serviceID, serviceDate, serviceType, cost, nextServiceDate, mechanicEmpNo, trucks);
     }
 
     @Override
@@ -87,21 +93,20 @@ public class ServiceRecord {
                 ", serviceDate=" + serviceDate +
                 ", serviceType='" + serviceType + '\'' +
                 ", cost=" + cost +
-                ", mechinceName='" + mechinceName + '\'' +
                 ", nextServiceDate=" + nextServiceDate +
-                ", vin='" + vin + '\'' +
                 ", mechanicEmpNo='" + mechanicEmpNo + '\'' +
+                ", trucks=" + trucks +
                 '}';
     }
+
     public static class Builder{
         private int serviceID;
         private LocalDate serviceDate;
         private String serviceType;
         private double cost;
-        private String mechinceName;
         private LocalDate nextServiceDate;
-        private String vin;
         private String mechanicEmpNo;
+        private List<Truck> trucks;
 
 
     public Builder setServiceID(int serviceID) {
@@ -124,18 +129,8 @@ public class ServiceRecord {
         return this;
     }
 
-    public Builder setMechinceName(String mechinceName) {
-        this.mechinceName = mechinceName;
-        return this;
-    }
-
     public Builder setNextServiceDate(LocalDate nextServiceDate) {
         this.nextServiceDate = nextServiceDate;
-        return this;
-    }
-
-    public Builder setVin(String vin) {
-        this.vin = vin;
         return this;
     }
 
@@ -143,19 +138,26 @@ public class ServiceRecord {
         this.mechanicEmpNo = mechanicEmpNo;
         return this;
     }
-    public Builder copy(ServiceRecord serviceRecord) {
+        public TruckType.Builder setTrucks(List<Truck> trucks) {
+            this.trucks = trucks;
+            return this;
+        }
+
+
+
+        public Builder copy(ServiceRecord serviceRecord) {
         this.serviceID = serviceRecord.serviceID;
         this.serviceDate = serviceRecord.serviceDate;
         this.serviceType = serviceRecord.serviceType;
         this.cost = serviceRecord.cost;
-        this.mechinceName = serviceRecord.mechinceName;
         this.mechanicEmpNo = serviceRecord.mechanicEmpNo;
-        this.vin = serviceRecord.vin;
+
         this.nextServiceDate = serviceRecord.nextServiceDate;
+        this.trucks = serviceRecord.trucks;
         return this;
     }
     public ServiceRecord build() {
-        return new ServiceRecord(null);
+        return new ServiceRecord(this);
     }
     }
 }

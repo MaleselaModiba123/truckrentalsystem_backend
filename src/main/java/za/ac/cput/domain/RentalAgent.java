@@ -1,14 +1,22 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
+import java.util.List;
 import java.util.Objects;
-
+/*  Completed By Malesela Modiba
+    23 May 2024
+ */
 @Entity
 public class RentalAgent extends Employee{
     private double wages;
     private int hours;
+    @Id
     private int customerID;
+
+
 
     protected RentalAgent(){
 
