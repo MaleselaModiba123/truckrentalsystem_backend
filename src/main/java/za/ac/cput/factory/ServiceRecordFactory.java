@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 public class ServiceRecordFactory {
     public static ServiceRecord buildServiceRecord (int serviceID, LocalDate serviceDate, String serviceType
                                                     , double cost,
-                                                    String mechanicEmpNo, LocalDate nextServiceDate, String vin) {
+                                                    String mechanicEmpNo, LocalDate nextServiceDate) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Helper.DateValidatorUsingLocalDate dateValidator = new Helper.DateValidatorUsingLocalDate(dateFormatter);
 
@@ -21,8 +21,7 @@ public class ServiceRecordFactory {
                 || Helper.isNullOrEmpty((mechanicEmpNo))
                 || nextServiceDate == null
                 || !dateValidator.isValid(nextServiceDate.toString())
-                || Helper.isDoubleNotNull(cost )
-                || Helper.isNullOrEmpty(vin))
+                || Helper.isDoubleNotNull(cost ))
         {
 
             return null;
@@ -34,7 +33,6 @@ public class ServiceRecordFactory {
                 .setCost(cost)
                 .setMechanicEmpNo(mechanicEmpNo)
                 .setNextServiceDate(nextServiceDate)
-                .setVin(vin)
                 .build();
     }
 }

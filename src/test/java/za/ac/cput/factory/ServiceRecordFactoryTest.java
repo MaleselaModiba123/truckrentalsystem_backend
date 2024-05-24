@@ -17,8 +17,7 @@ class ServiceRecordFactoryTest {
                 "Normal Service",
                 3500.99,
                 "03",
-                LocalDate.of(2024,6,25),
-                "123FG73287TY2");
+                LocalDate.of(2024,6,25));
         assertNotNull(serviceRecord);
         System.out.println(serviceRecord);
     }
@@ -29,8 +28,7 @@ class ServiceRecordFactoryTest {
                 "Normal Service",
                 3500.99,
                 "",
-                LocalDate.of(2024,6,25),
-                "123FG73287TY2");
+                LocalDate.of(2024,6,25));
         assertNotNull(serviceRecord);
         System.out.println(serviceRecord);
     }
