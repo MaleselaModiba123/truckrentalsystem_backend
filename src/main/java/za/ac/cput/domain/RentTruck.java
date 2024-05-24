@@ -21,8 +21,6 @@ public class RentTruck {
     private int rentId;
     private LocalDate rentDate;
     private LocalDate returnDate;
-    private String pickUpLocation;
-    private String dropOffLocation;
     private double totalCost;
     private boolean isPaymentMade;
 
@@ -36,11 +34,15 @@ public class RentTruck {
 
     @ManyToOne
     @JoinColumn(name ="customer_Id", nullable = false)
-    private SalesPerson salesAgent;
+    private RentalAgent salesAgent;
 
     @ManyToOne
-    @JoinColumn(name = "branch_Id")
-    private Branch branchId;
+    @JoinColumn(name = "branch_IdP")
+    private Branch pickUp;
+
+    @ManyToOne
+    @JoinColumn(name = "branch_IdD")
+    private Branch dropOff;
 
     protected RentTruck() {
     }
@@ -48,14 +50,13 @@ public class RentTruck {
         this.rentId = builder.rentId;
         this.rentDate = builder.rentDate;
         this.returnDate = builder.returnDate;
-        this.pickUpLocation = builder.pickUpLocation;
-        this.dropOffLocation = builder.dropOffLocation;
         this.totalCost = builder.totalCost;
         this.isPaymentMade = builder.isPaymentMade;
         this.customerID = builder.customerID;
         this.vin = builder.vin;
         this.salesAgent = builder.salesAgent;
-        this.branchId = builder.branchId;
+        this.pickUp = builder.pickUp;
+        this.dropOff = builder.dropOff;
     }
 
     public int getRentId() {
@@ -68,14 +69,6 @@ public class RentTruck {
 
     public LocalDate getReturnDate() {
         return returnDate;
-    }
-
-    public String getPickUpLocation() {
-        return pickUpLocation;
-    }
-
-    public String getDropOffLocation() {
-        return dropOffLocation;
     }
 
     public double getTotalCost() {
@@ -94,12 +87,16 @@ public class RentTruck {
         return vin;
     }
 
-    public SalesPerson getSalesAgent() {
+    public RentalAgent getSalesAgent() {
         return salesAgent;
     }
 
-    public Branch getBranchId() {
-        return branchId;
+    public Branch getPickUp() {
+        return pickUp;
+    }
+
+    public Branch getDropOff() {
+        return dropOff;
     }
 
     @Override
@@ -107,18 +104,12 @@ public class RentTruck {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RentTruck rentTruck = (RentTruck) o;
-        return rentId == rentTruck.rentId && Double.compare(totalCost, rentTruck.totalCost)
-                == 0 && isPaymentMade == rentTruck.isPaymentMade && Objects.equals(rentDate,
-                rentTruck.rentDate) && Objects.equals(returnDate, rentTruck.returnDate) &&
-                Objects.equals(pickUpLocation, rentTruck.pickUpLocation) &&
-                Objects.equals(dropOffLocation, rentTruck.dropOffLocation) &&
-                Objects.equals(customerID, rentTruck.customerID) && Objects.equals(vin, rentTruck.vin) &&
-                Objects.equals(salesAgent, rentTruck.salesAgent) && Objects.equals(branchId, rentTruck.branchId);
+        return rentId == rentTruck.rentId && Double.compare(totalCost, rentTruck.totalCost) == 0 && isPaymentMade == rentTruck.isPaymentMade && Objects.equals(rentDate, rentTruck.rentDate) && Objects.equals(returnDate, rentTruck.returnDate) && Objects.equals(customerID, rentTruck.customerID) && Objects.equals(vin, rentTruck.vin) && Objects.equals(salesAgent, rentTruck.salesAgent) && Objects.equals(pickUp, rentTruck.pickUp) && Objects.equals(dropOff, rentTruck.dropOff);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rentId, rentDate, returnDate, pickUpLocation, dropOffLocation, totalCost, isPaymentMade, customerID, vin, salesAgent, branchId);
+        return Objects.hash(rentId, rentDate, returnDate, totalCost, isPaymentMade, customerID, vin, salesAgent, pickUp, dropOff);
     }
 
     @Override
@@ -127,14 +118,13 @@ public class RentTruck {
                 "rentId=" + rentId +
                 ", rentDate=" + rentDate +
                 ", returnDate=" + returnDate +
-                ", pickUpLocation='" + pickUpLocation + '\'' +
-                ", dropOffLocation='" + dropOffLocation + '\'' +
                 ", totalCost=" + totalCost +
                 ", isPaymentMade=" + isPaymentMade +
                 ", customerID=" + customerID +
                 ", vin=" + vin +
                 ", salesAgent=" + salesAgent +
-                ", branchId=" + branchId +
+                ", pickUp=" + pickUp +
+                ", dropOff=" + dropOff +
                 '}';
     }
 
@@ -142,14 +132,13 @@ public class RentTruck {
         private int rentId;
         private LocalDate rentDate;
         private LocalDate returnDate;
-        private String pickUpLocation;
-        private String dropOffLocation;
         private double totalCost;
         private boolean isPaymentMade;
         private Customer customerID;
         private Truck vin;
-        private SalesPerson salesAgent;
-        private Branch branchId;
+        private RentalAgent salesAgent;
+        private Branch pickUp;
+        private Branch dropOff;
 
         public Builder() {
         }
@@ -169,15 +158,6 @@ public class RentTruck {
             return this;
         }
 
-        public Builder setPickUpLocation(String pickUpLocation) {
-            this.pickUpLocation = pickUpLocation;
-            return this;
-        }
-
-        public Builder setDropOffLocation(String dropOffLocation) {
-            this.dropOffLocation = dropOffLocation;
-            return this;
-        }
 
         public Builder setTotalCost(double totalCost) {
             this.totalCost = totalCost;
@@ -199,28 +179,32 @@ public class RentTruck {
             return this;
         }
 
-        public Builder setSalesAgent(SalesPerson salesAgent) {
+        public Builder setSalesAgent(RentalAgent salesAgent) {
             this.salesAgent = salesAgent;
             return this;
         }
 
-        public Builder setBranch(Branch branchId){
-            this.branchId = branchId;
+        public Builder setPickUp(Branch pickUp) {
+            this.pickUp = pickUp;
             return this;
         }
 
-        public Builder copy(Builder builder) {
+        public Builder setDropOff(Branch dropOff) {
+            this.dropOff = dropOff;
+            return this;
+        }
+
+        public Builder copy(RentTruck builder) {
             this.rentId = builder.rentId;
             this.rentDate = builder.rentDate;
             this.returnDate = builder.returnDate;
-            this.pickUpLocation = builder.pickUpLocation;
-            this.dropOffLocation = builder.dropOffLocation;
             this.totalCost = builder.totalCost;
             this.isPaymentMade = builder.isPaymentMade;
             this.customerID = builder.customerID;
             this.vin = builder.vin;
             this.salesAgent = builder.salesAgent;
-            this.branchId = builder.branchId;
+            this.pickUp = builder.pickUp;
+            this.dropOff = builder.dropOff;
             return this;
         }
 
