@@ -9,10 +9,9 @@ import java.util.Objects;
  * */
 
 
-@MappedSuperclass
+@Entity
 public class Truck {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String vin;
     private String model;
     private boolean availability;
@@ -25,7 +24,7 @@ public class Truck {
     @JoinColumn(name = "insuranceID")
     private Insurance insurance;
 
-    protected Truck(Truck truck) {
+    protected Truck() {
 
     }
 
