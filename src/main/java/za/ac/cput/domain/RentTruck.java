@@ -1,9 +1,6 @@
 package za.ac.cput.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -32,7 +29,7 @@ public class RentTruck {
     @JoinColumn(name = "Vin")
     private Truck vin;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name ="customer_Id", nullable = false)
     private RentalAgent salesAgent;
 

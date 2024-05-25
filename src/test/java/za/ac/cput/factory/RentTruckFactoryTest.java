@@ -24,7 +24,7 @@ class RentTruckFactoryTest {
         boolean isPaymentMade = true;
 
         Customer customer = CustomerFactory.buildCustomer(1, "John", "Doe", "john.doe@example.com", "Code10", "123456789", 1);
-        Truck truck = TruckFactory.buildTruck("VIN123", "Model X", "2022", "Pickup", "Available", 5.0, 2000.0, 2.5, 10000.0);
+        Truck truck = TruckFactory.buildTruck("VIN123", "Model X", true, "Pickup", 70.50);
         RentalAgent salesPerson = RentalAgentFactory.buildRentalAgent("EMP001", "Jane", "Doe", "jane.doe@example.com", 50.0, 40, 1);
         Branch pickUp = BranchFactory.buildBranch(1, "WiggleCPT", "123 Main Street, Woodstock, South Africa, 7980");
         Branch dropOff = BranchFactory.buildBranch(3, "WiggleKZN", "10 Main Street, Durban, South Africa, 7000");

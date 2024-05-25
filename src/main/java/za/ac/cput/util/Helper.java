@@ -62,7 +62,7 @@ public class Helper {
         }
 
         // Additional method for validating date with custom format
-        public boolean isValidWithFormat(String dateStr, String format) {
+        public static boolean isValidWithFormat(String dateStr, String format) {
             try {
                 DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern(format);
                 LocalDate.parse(dateStr, customFormatter);

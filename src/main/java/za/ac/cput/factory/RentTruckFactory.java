@@ -20,8 +20,12 @@ public class RentTruckFactory {
                                            Truck truck,
                                            RentalAgent salesPerson,
                                            Branch pickUp, Branch dropOff) {
-        if (Helper.isIntNotValid(rentId) ||
-                rentDate == null || returnDate == null || Helper.isDoubleNotValid(totalCost)||
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Helper.DateValidatorUsingLocalDate dateValidator = new Helper.DateValidatorUsingLocalDate(dateFormatter);
+
+        if (Helper.isIntNotValid(rentId) || !dateValidator.isValid(rentDate.toString()) ||
+                returnDate == null || !dateValidator.isValid(returnDate.toString()) || Helper.isDoubleNotValid(totalCost)||
                 customer == null || truck == null || salesPerson == null || pickUp == null || dropOff == null) {
             return null;
         }
