@@ -8,10 +8,10 @@ import za.ac.cput.util.Helper;
  * Date: 07 May 2024
  * */
 public class TruckFactory {
-    public static Truck buildTruck(String vin, String model, String availability, String licensePate,
+    public static Truck buildTruck(String vin, String model, boolean availability, String licensePate,
                                    double currentMileage) {
         if (Helper.isNullOrEmpty(vin) ||
-                Helper.isNullOrEmpty(model) || !Helper.isValidEmail(String.valueOf(availability)) ||
+                Helper.isNullOrEmpty(model) ||
                 Helper.isNullOrEmpty(licensePate) || Helper.isNullOrEmpty(String.valueOf(currentMileage))){
             return null;
 
@@ -19,7 +19,7 @@ public class TruckFactory {
         return new Truck.Builder()
                 .setVin(vin)
                 .setModel(model)
-                .setAvailability(Boolean.parseBoolean(availability))
+                .setAvailability(availability)
                 .setLicensePate(Double.parseDouble(licensePate))
                 .setCurrentMileage(currentMileage)
                 .build();

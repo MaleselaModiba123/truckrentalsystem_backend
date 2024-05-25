@@ -1,16 +1,13 @@
 package za.ac.cput.service;
 
-import org.junit.gen5.api.extension.ExtendWith;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import za.ac.cput.domain.*;
 import za.ac.cput.factory.RentTruckFactory;
 import za.ac.cput.repository.BranchRepository;
 import za.ac.cput.repository.CustomerRepository;
 import za.ac.cput.repository.RentalAgentRepository;
-import za.ac.cput.repository.SalesPersonRepository;
 import za.ac.cput.repository.TruckRepository;
 
 import java.time.LocalDate;

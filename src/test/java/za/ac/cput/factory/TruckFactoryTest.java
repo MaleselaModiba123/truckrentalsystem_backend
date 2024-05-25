@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TruckFactoryTest {
     @Test
     void createTruck() {
-        Truck createTruck = TruckFactory.buildTruck("7774444", "Scania", "4", "Diecast", 44);
+        Truck createTruck = TruckFactory.buildTruck("7774444", "Scania", true, "Diecast", 44);
         assertNull(createTruck);
         System.out.println("Created: " + createTruck);
     }

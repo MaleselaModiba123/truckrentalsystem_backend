@@ -12,6 +12,7 @@ import java.util.Objects;
 @Entity
 public class Truck {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String vin;
     private String model;
     private boolean availability;
@@ -24,7 +25,7 @@ public class Truck {
     @JoinColumn(name = "insuranceID")
     private Insurance insurance;
 
-    protected Truck() {
+    protected Truck(Truck truck) {
 
     }
 
@@ -34,6 +35,10 @@ public class Truck {
         this.availability = builder.availability;
         this.licensePate = String.valueOf(builder.licensePate);
         this.currentMileage = builder.currentMileage;
+
+    }
+
+    protected Truck() {
 
     }
 
