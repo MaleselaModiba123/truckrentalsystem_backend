@@ -9,7 +9,7 @@ import za.ac.cput.util.Helper;
 public class ManagerFactory {
     public static Manager buildManager(String employeeNumber, double wages, int hours){
         if (Helper.isNullOrEmpty(employeeNumber)
-                || Helper.isIntNotValid(wages)
+                || Helper.isDoubleNotValid(wages)
                 || Helper.isIntNotValid(hours)){
             return null;}
         return new Manager.Builder().setEmployeeNumber(employeeNumber)

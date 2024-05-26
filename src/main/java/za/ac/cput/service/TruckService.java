@@ -3,6 +3,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Truck;
 import za.ac.cput.repository.TruckRepository;
+
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 /**
@@ -41,7 +43,7 @@ public class TruckService implements ITruckService {
     }
 
     @Override
-    public Set<Truck> getAll() {
-        return truckRepository.findAll().stream().collect(Collectors.toSet());
+    public List<Truck> getAll() {
+        return truckRepository.findAll();
     }
 }

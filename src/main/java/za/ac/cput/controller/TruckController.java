@@ -17,22 +17,22 @@ public class TruckController {
 
     @PostMapping("/create")
     public Truck create(@RequestBody Truck Truck){
-        return TruckService.create(Truck);
+        return truckService.create(Truck);
     }
     @GetMapping("/read/{TruckID}")
     public Truck read(@PathVariable int TruckID){
-        return TruckService.read(TruckID);
+        return truckService.read(TruckID);
     }
     @DeleteMapping("/delete/{TruckID}")
     public void delete(@PathVariable int TruckID){
-        TruckService.delete(TruckID);
+        truckService.delete(TruckID);
     }
     @PostMapping("/update")
     public Truck update(@RequestBody Truck Truck){
-        return TruckService.update(Truck);
+        return truckService.update(Truck);
     }
     @GetMapping("/getAll")
     public List<Truck> getAll(){
-        return TruckService.getAll();
+        return truckService.getAll();
     }
 }

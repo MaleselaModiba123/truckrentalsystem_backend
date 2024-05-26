@@ -14,8 +14,6 @@ import java.util.List;
 public class ManagerController {
     @Autowired
     private ManagerService ManagerService;
-    private String Manager;
-
     @PostMapping("/create")
     public Manager create(@RequestBody Manager Manager){
         return ManagerService.create(Manager);

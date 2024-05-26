@@ -16,8 +16,6 @@ import java.util.Objects;
  */
 @Entity
 public class Mechanic extends Employee {
-
-
     private String specialization;
 
     private boolean availability;
