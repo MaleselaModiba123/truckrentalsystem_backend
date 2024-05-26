@@ -33,8 +33,7 @@ class RentalAgentControllerTest {
                 "Modiba",
                 "Modiba@gmail.com",
                 750.50,
-                8,
-                003);
+                8);
     }
     @Test
     void a_create(){

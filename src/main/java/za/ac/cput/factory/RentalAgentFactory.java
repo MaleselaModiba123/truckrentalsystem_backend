@@ -11,16 +11,13 @@ public class RentalAgentFactory {
                                                String lastName,
                                                String email,
                                                double wages,
-                                               int hours,
-                                               int customerID){
+                                               int hours){
         if (Helper.isNullOrEmpty(employeeNumber)
                 || Helper.isNullOrEmpty(firstName)
                 || Helper.isNullOrEmpty(lastName)
                 || Helper.isNullOrEmpty(email)
-                || !Helper.isValidEmail(email)
                 || Helper.isDoubleNotValid(wages)
-                || Helper.isIntNotValid(hours)
-                ||Helper.isIntNotValid(customerID)){
+                || Helper.isIntNotValid(hours)){
             return null;
         }
 
@@ -31,7 +28,6 @@ public class RentalAgentFactory {
                 .setEmail(email)
                 .setWages(wages)
                 .setHours(hours)
-                .setCustomerID(customerID)
                 .build();
     }
 }

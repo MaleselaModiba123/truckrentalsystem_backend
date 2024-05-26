@@ -22,7 +22,7 @@ public class RentTruck {
     private boolean isPaymentMade;
 
     @ManyToOne
-    @JoinColumn(name ="customer_Id", nullable = false)
+    @JoinColumn(name ="customerID", nullable = false)
     private Customer customerID;
 
     @ManyToOne
@@ -30,7 +30,7 @@ public class RentTruck {
     private Truck vin;
 
     @OneToOne
-    @JoinColumn(name ="customer_Id", nullable = false)
+    @JoinColumn(name ="RentalId", nullable = false)
     private RentalAgent salesAgent;
 
     @ManyToOne

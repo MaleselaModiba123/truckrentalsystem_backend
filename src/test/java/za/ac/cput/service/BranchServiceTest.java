@@ -21,14 +21,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class BranchServiceTest {
     @Autowired
     private BranchService branchService;
+    private Branch branch1;
+    private Branch branch2;
 
-    private Branch branch1 = BranchFactory.buildBranch(3701,
-            "WiggleTrucksWC", "10 Main St, Cape Town, South Africa, 7972");
+    @BeforeEach
+    void setUp() {
+        branch1 = BranchFactory.buildBranch(3701,
+                "WiggleTrucksWC", "10 Main St, Cape Town, South Africa, 7972");
 
-    private Branch branch2 = BranchFactory.buildBranch(3702,
-            "WiggleTrucksKZN","10 Dorset St, Durban, South Africa, 7972");
+        branch2 = BranchFactory.buildBranch(3702,
+                "WiggleTrucksKZN", "10 Dorset St, Durban, South Africa, 7972");
 
+    }
 
+    @Order(1)
     @Test
     void create() {
         Branch created1 = branchService.create(branch1);
@@ -40,6 +46,7 @@ class BranchServiceTest {
         System.out.println(created2);
     }
 
+    @Order(2)
     @Test
     void read() {
         Branch read = branchService.read(branch1.getBranchId());
@@ -47,11 +54,13 @@ class BranchServiceTest {
         System.out.println("read: " + read);
     }
 
+    @Order(3)
     @Test
     @Disabled
     void delete() {
     }
 
+    @Order(4)
     @Test
     void getAll() {
         branchService.getAll();

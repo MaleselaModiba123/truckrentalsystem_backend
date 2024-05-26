@@ -1,8 +1,6 @@
 package za.ac.cput.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,10 +11,9 @@ import java.util.Objects;
 public class RentalAgent extends Employee{
     private double wages;
     private int hours;
-    @Id
-    private int customerID;
 
-
+    @OneToMany(mappedBy = "customerID",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List < Customer> customerID;
 
     protected RentalAgent(){
 
@@ -28,7 +25,6 @@ public class RentalAgent extends Employee{
         this.email = builder.email;
         this.wages = builder.wages;
         this.hours = builder.hours;
-        this.customerID = builder.customerID;
     }
 
     public double getWages() {
@@ -39,22 +35,18 @@ public class RentalAgent extends Employee{
         return hours;
     }
 
-    public int getCustomerID() {
-        return customerID;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         RentalAgent that = (RentalAgent) o;
-        return Double.compare(wages, that.wages) == 0 && hours == that.hours && customerID == that.customerID;
+        return Double.compare(wages, that.wages) == 0 && hours == that.hours;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), wages, hours, customerID);
+        return Objects.hash(super.hashCode(), wages, hours);
     }
 
     @Override
@@ -62,7 +54,6 @@ public class RentalAgent extends Employee{
         return "RentalAgent{" +
                 "wages=" + wages +
                 ", hours=" + hours +
-                ", customerID=" + customerID +
                 ", employeeNumber='" + employeeNumber + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -77,8 +68,6 @@ public class RentalAgent extends Employee{
         private String email;
         private double wages;
         private int hours;
-        private int customerID;
-
         public Builder setEmployeeNumber(String employeeNumber) {
             this.employeeNumber = employeeNumber;
             return this;
@@ -109,10 +98,6 @@ public class RentalAgent extends Employee{
             return this;
         }
 
-        public Builder setCustomerID(int customerID) {
-            this.customerID = customerID;
-            return this;
-        }
         public Builder copy(RentalAgent rentalAgent) {
             this.employeeNumber = rentalAgent.employeeNumber;
             this.firstName = rentalAgent.firstName;
@@ -120,7 +105,6 @@ public class RentalAgent extends Employee{
             this.email = rentalAgent.email;
             this.wages = rentalAgent.wages;
             this.hours = rentalAgent.hours;
-            this.customerID = rentalAgent.customerID;
             return this;
         }
         public RentalAgent build(){

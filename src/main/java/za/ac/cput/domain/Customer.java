@@ -23,7 +23,7 @@ public class Customer {
 
     private String cellNo;
 
-    @OneToMany(mappedBy = "customerID",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "rentId",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RentTruck> rentedTruck;
 
     @ManyToOne
