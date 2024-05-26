@@ -24,7 +24,7 @@ public class Insurance {
     private LocalDate effectiveDate;
     private String coverage;
     private double premium;
-    @OneToMany(mappedBy = "insurance")
+    @OneToMany(mappedBy = "insurance", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Truck> trucks;
 
     protected Insurance() {
