@@ -1,5 +1,6 @@
 package za.ac.cput.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -19,8 +20,8 @@ public class Mechanic extends Employee {
 
     private boolean availability;
 
-    @OneToOne(mappedBy = "employeeNumber")
-    private List<ServiceRecord> serviceRecords;
+    @OneToOne(cascade ={CascadeType.PERSIST, CascadeType.MERGE})
+    private ServiceRecord serviceRecords;
 
     protected Mechanic() {
     }
@@ -46,7 +47,7 @@ public class Mechanic extends Employee {
         return availability;
     }
 
-    public List <ServiceRecord> getServiceRecords() {
+    public ServiceRecord getServiceRecords() {
         return serviceRecords;
     }
 
@@ -88,7 +89,7 @@ public class Mechanic extends Employee {
         private String specialization;
         private boolean availability;
 
-        private List <ServiceRecord> serviceRecords;
+        private ServiceRecord serviceRecords;
 
         public Builder setSpecialization(String specialization) {
             this.specialization = specialization;
@@ -125,7 +126,7 @@ public class Mechanic extends Employee {
             return this;
         }
 
-        public Builder setServiceRecord(List <ServiceRecord> serviceRecords) {
+        public Builder setServiceRecord(ServiceRecord serviceRecords) {
             this.serviceRecords = serviceRecords;
             return this;
         }

@@ -16,7 +16,7 @@ class CustomerFactoryTest {
     @Test
     void buildCustomer() {
         Customer customer = CustomerFactory.buildCustomer(1, "Zukhanye", "Mene",
-                "bennie@gmail.com", "CY 739 28" , "0847466836", 1 );
+                "bennie@gmail.com", "CY 739 28" , "0847466836");
         assertNotNull(customer);
         System.out.println(customer.toString());
     }
@@ -24,7 +24,7 @@ class CustomerFactoryTest {
     @Test
     void buildCustomerWithFail() {
         Customer customer = CustomerFactory.buildCustomer(12, " ", "Mennne",
-                "bennie@gmail.om", " " , "084746686", 10 );
+                "bennie@gmail.om", " " , "084746686" );
         assertNotNull(customer);
         System.out.println(customer.toString());
     }
