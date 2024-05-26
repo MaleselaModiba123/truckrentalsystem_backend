@@ -12,7 +12,6 @@ import za.ac.cput.factory.CustomerFactory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-;
 
 /**
  * CustomerServiceTest.java
@@ -28,7 +27,7 @@ class CustomerServiceTest {
     @Autowired
     private CustomerService  customerService ;
     private Customer customer = CustomerFactory.buildCustomer(1, "Khanye", "West"
-            , "khanye@gmail.com","CY 6468" , "084 654 6878", 65);
+            , "khanye@gmail.com","CY 6468" , "084 654 6878");
 
 
     @Test
