@@ -1,6 +1,7 @@
 package za.ac.cput.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import za.ac.cput.domain.ServiceRecord;
 import za.ac.cput.repository.ServiceRecordRepository;
 
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 /*  Completed By Malesela Modiba
     23 May 2024
  */
+@Service
 public class ServiceRecordService implements IServiceRecordService {
     private ServiceRecordRepository serviceRecordRepository;
     @Autowired

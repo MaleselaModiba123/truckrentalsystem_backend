@@ -20,11 +20,11 @@ public class ServiceRecord {
     private LocalDate nextServiceDate;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Truck_Vin")
-    private List<Truck> trucks;
+    private Truck trucks;
 
     @OneToOne
     @JoinColumn(name = "Mechanic_Employee_Num")
-    private Machanic machanic;
+    private Mechanic mechanic;
     private String mechanicEmpNo;
 
 
@@ -40,7 +40,7 @@ public class ServiceRecord {
         this.nextServiceDate = builder.nextServiceDate;
         this.serviceType = builder.serviceType;
         this.mechanicEmpNo = builder.mechanicEmpNo;
-        this.trucks = builder.trucks;
+
 
     }
 
@@ -69,7 +69,7 @@ public class ServiceRecord {
         return mechanicEmpNo;
     }
 
-    public List<Truck> getTrucks() {
+    public Truck getTrucks() {
         return trucks;
     }
 
@@ -138,10 +138,7 @@ public class ServiceRecord {
         this.mechanicEmpNo = mechanicEmpNo;
         return this;
     }
-        public TruckType.Builder setTrucks(List<Truck> trucks) {
-            this.trucks = trucks;
-            return this;
-        }
+
 
 
 
@@ -153,7 +150,7 @@ public class ServiceRecord {
         this.mechanicEmpNo = serviceRecord.mechanicEmpNo;
 
         this.nextServiceDate = serviceRecord.nextServiceDate;
-        this.trucks = serviceRecord.trucks;
+
         return this;
     }
     public ServiceRecord build() {

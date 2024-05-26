@@ -42,7 +42,7 @@ class ServiceRecordServiceTest {
     }
     @Test
     void c_update(){
-        ServiceRecord newServiceRecord = new ServiceRecord.Builder().copy(serviceRecord).setVin("123GH92849jy3").build();
+        ServiceRecord newServiceRecord = new ServiceRecord.Builder().copy(serviceRecord).setCost(6530.50).build();
         ServiceRecord updated = serviceRecordService.update(newServiceRecord);
         assertNotNull(updated);
         System.out.println(updated);
