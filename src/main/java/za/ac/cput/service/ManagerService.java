@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Manager;
 import za.ac.cput.repository.ManagerRepository;
 import za.ac.cput.service.IManagerService;
+
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,7 +36,7 @@ public  class ManagerService implements IManagerService {
         managerRepository.deleteById(Integer.valueOf(EmplyoeeNumber));
     }
     @Override
-    public Set<Manager> getAll(){
-        return managerRepository.findAll().stream().collect(Collectors.toSet());
+    public List<Manager> getAll(){
+        return managerRepository.findAll();
     }
 }

@@ -2,6 +2,7 @@ package za.ac.cput.service;
 import org.springframework.stereotype.Repository;
 import za.ac.cput.domain.Manager;
 
+import java.util.List;
 import java.util.Set;
 /**
  * Ayanda Phumzile Khoza (218057172)
@@ -12,5 +13,5 @@ public interface IManagerService extends IService<Manager,String>{
 
     Manager update(Manager manager);
 
-    Set<Manager> getAll();
+    List<Manager> getAll();
 }

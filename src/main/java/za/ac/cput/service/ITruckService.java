@@ -1,5 +1,7 @@
 package za.ac.cput.service;
 import za.ac.cput.domain.Truck;
+
+import java.util.List;
 import java.util.Set;
 /**
  * Ayanda Phumzile Khoza (218057172)
@@ -10,5 +12,5 @@ public interface ITruckService extends IService<Truck,Integer>{
 
     Truck update(Truck truck);
 
-    Set<Truck> getAll();
+    List<Truck> getAll();
 }
