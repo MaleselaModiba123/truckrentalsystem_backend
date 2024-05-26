@@ -18,7 +18,7 @@ public class RentalAgentFactory {
                 || Helper.isNullOrEmpty(lastName)
                 || Helper.isNullOrEmpty(email)
                 || !Helper.isValidEmail(email)
-                || Helper.isDoubleNotNull(wages)
+                || Helper.isDoubleNotValid(wages)
                 || Helper.isIntNotValid(hours)
                 ||Helper.isIntNotValid(customerID)){
             return null;

@@ -16,12 +16,12 @@ public class RentalAgentService implements IRentalAgentService {
     private RentalAgentRepository rentalAgentAgentRepository;
 
     @Autowired
-    RentalAgentService(RentalAgentRepository rentalAgentAgentRepository){
-        this.rentalAgentAgentRepository = rentalAgentAgentRepository;
+    RentalAgentService(RentalAgentRepository rentalAgentRepository){
+        this.rentalAgentAgentRepository = rentalAgentRepository;
     }
     @Override
-    public RentalAgent create (RentalAgent rentalAgentAgent){
-        return rentalAgentAgentRepository.save(rentalAgentAgent);
+    public RentalAgent create (RentalAgent rentalAgent){
+        return rentalAgentAgentRepository.save(rentalAgent);
     }
     @Override
     public RentalAgent read(String EmployeeNumber){
@@ -29,8 +29,8 @@ public class RentalAgentService implements IRentalAgentService {
 
     }
     @Override
-    public RentalAgent update(RentalAgent rentalAgentAgent){
-        return rentalAgentAgentRepository.save(rentalAgentAgent);
+    public RentalAgent update(RentalAgent rentalAgent){
+        return rentalAgentAgentRepository.save(rentalAgent);
     }
     @Override
     public void delete(String EmplyoeeNumber){
