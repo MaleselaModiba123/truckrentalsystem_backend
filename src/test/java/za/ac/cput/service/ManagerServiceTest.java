@@ -25,9 +25,7 @@ class ManagerServiceTest {
     private ManagerService ManagerService;
     private Manager manager = ManagerFactory.buildManager("13142412",
             4200,
-            6
-
-    );
+            6);
 
 
     @Test

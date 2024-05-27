@@ -23,7 +23,7 @@ TruckServiceTest {
     @Autowired
     private TruckService truckService;
     private Truck truck = TruckFactory.buildTruck("7774444", "Scania", true
-            , "Diecast",44);
+            , "123455",44);
 
     @Test
     void a_create() {

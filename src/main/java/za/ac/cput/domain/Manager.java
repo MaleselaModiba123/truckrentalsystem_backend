@@ -10,21 +10,16 @@ import java.util.Objects;
 
 @Entity
 public class Manager extends Employee {
-
     private double wages;
     private int hours;
 
-    protected Manager(Manager manager) {
+    protected Manager() {
 
     }
 
     private Manager(Builder builder) {
         this.wages = builder.wages;
         this.hours = builder.hours;
-
-    }
-
-    public Manager() {
 
     }
 

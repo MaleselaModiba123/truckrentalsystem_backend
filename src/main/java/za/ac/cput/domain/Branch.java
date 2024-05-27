@@ -19,7 +19,7 @@ public class Branch {
     private String branchName;
     private String address;
 
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL,orphanRemoval =true)
+    @OneToMany(mappedBy = "rentId", cascade = CascadeType.ALL,orphanRemoval =true)
     private List<RentTruck> rentTrucks;
 
     protected Branch() {
@@ -77,9 +77,6 @@ public class Branch {
         private String branchName;
         private String address;
         private List<RentTruck> rentTrucks;
-
-        public Builder() {
-        }
 
         public Builder setBranchId(int branchId) {
             this.branchId = branchId;

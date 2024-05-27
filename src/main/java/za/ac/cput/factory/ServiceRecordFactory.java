@@ -21,7 +21,7 @@ public class ServiceRecordFactory {
                 || Helper.isNullOrEmpty((mechanicEmpNo))
                 || nextServiceDate == null
                 || !dateValidator.isValid(nextServiceDate.toString())
-                || Helper.isDoubleNotNull(cost ))
+                || Helper.isDoubleNotValid(cost ))
         {
 
             return null;

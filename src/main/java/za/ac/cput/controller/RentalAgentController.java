@@ -8,7 +8,7 @@ import za.ac.cput.service.RentalAgentService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/insurance")
+@RequestMapping("/rentalAgent")
 public class RentalAgentController {
     @Autowired
     private RentalAgentService rentalAgentService;

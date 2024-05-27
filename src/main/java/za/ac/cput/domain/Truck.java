@@ -12,7 +12,7 @@ import java.util.Objects;
 @Entity
 public class Truck {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private String vin;
     private String model;
     private boolean availability;

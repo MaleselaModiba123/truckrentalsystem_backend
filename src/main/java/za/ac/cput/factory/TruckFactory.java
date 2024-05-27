@@ -12,7 +12,7 @@ public class TruckFactory {
                                    double currentMileage) {
         if (Helper.isNullOrEmpty(vin) ||
                 Helper.isNullOrEmpty(model) ||
-                Helper.isNullOrEmpty(licensePate) || Helper.isNullOrEmpty(String.valueOf(currentMileage))){
+                Helper.isNullOrEmpty(licensePate) || Helper.isDoubleNotValid(currentMileage)){
             return null;
 
         }
