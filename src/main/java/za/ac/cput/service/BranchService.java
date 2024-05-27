@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Branch;
 import za.ac.cput.repository.BranchRepository;
+import za.ac.cput.repository.RentalAgentRepository;
 
 import java.util.List;
 
@@ -16,10 +17,11 @@ import java.util.List;
 
 @Service
 public class BranchService implements IBranchService{
-
-    @Autowired
     private BranchRepository branchRepository;
-
+    @Autowired
+    BranchService(BranchRepository branchRepository){
+        this.branchRepository = branchRepository;
+    }
     @Override
     public Branch create(Branch branch) {
         return branchRepository.save(branch);
