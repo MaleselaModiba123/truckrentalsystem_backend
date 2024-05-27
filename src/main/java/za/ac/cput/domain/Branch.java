@@ -78,9 +78,6 @@ public class Branch {
         private String address;
         private List<RentTruck> rentTrucks;
 
-        public Builder() {
-        }
-
         public Builder setBranchId(int branchId) {
             this.branchId = branchId;
             return this;

@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * Date: 18 May 2024
  */
 
-@SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@SpringBootTest
 class BranchServiceTest {
     @Autowired
     private BranchService branchService;
