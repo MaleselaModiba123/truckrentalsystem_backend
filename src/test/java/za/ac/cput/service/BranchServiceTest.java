@@ -21,50 +21,57 @@ import static org.junit.jupiter.api.Assertions.*;
 class BranchServiceTest {
     @Autowired
     private BranchService branchService;
-    private Branch branch1;
-    private Branch branch2;
+    static Branch branch1;
+    static Branch branch2;
+
 
     @Order(1)
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void a_setUp() {
         branch1 = BranchFactory.buildBranch(371,
-                "WiggleTrucksWC", "10 Main St, Cape Town, South Africa 7972");
-        assertNotNull(branch1);
+                "WiggleTrucksWC", "10 Main St, Cape Town, South Africa, 7972");
+        System.out.println(branch1);
 
         branch2 = BranchFactory.buildBranch(372,
-                "WiggleTrucksKZN", "10 Dorset St, Durban, South Africa 7972");
-        assertNotNull(branch2);
+                "WiggleTrucksKZN", "10 Dorset St, Durban, South Africa, 7972");
+        System.out.println(branch2);
     }
 
     @Order(2)
     @Test
-    void create() {
-        Branch created1 = branchService.create(branch1);
-        assertNotNull(created1);
-        System.out.println(created1);
+    void b_create() {
+        System.out.println("branch 1:" + branch1.getBranchId());
+        Branch savedBranch1 = branchService.create(branch1);
+        System.out.println(savedBranch1);
+        assertNotNull(savedBranch1);
 
-        Branch created2 = branchService.create(branch2);
-        assertNotNull(created2);
-        System.out.println(created2);
+        System.out.println("branch 2:" + branch2.getBranchId());
+        Branch savedBranch2 = branchService.create(branch2);
+        System.out.println(savedBranch2);
+        assertNotNull(savedBranch2);
     }
 
     @Order(3)
     @Test
-    void read() {
-        Branch read = branchService.read(branch1.getBranchId());
-        assertNotNull(read);
-        System.out.println("read: " + read);
+    void c_read() {
+        Branch read1 = branchService.read(branch1.getBranchId());
+        assertNotNull(read1);
+        System.out.println("read: " + read1);
+
+        Branch read2 = branchService.read(branch1.getBranchId());
+        assertNotNull(read2);
+        System.out.println("read: " + read2);
     }
 
     @Order(4)
     @Test
     @Disabled
-    void delete() {
+    void d_delete() {
     }
 
     @Order(5)
     @Test
-    void getAll() {
+    void e_getAll() {
         branchService.getAll();
     }
 }

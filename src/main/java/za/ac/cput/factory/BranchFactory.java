@@ -13,7 +13,7 @@ public class BranchFactory {
     public static Branch buildBranch(int branchId,String branchName, String address) {
                 if (Helper.isIntNotValid(branchId) ||
                  Helper.isNullOrEmpty(branchName)||
-                !Helper.isValidAddress(address)) {
+                 Helper.isValidAddress(address)) {
             return null;
         }
 

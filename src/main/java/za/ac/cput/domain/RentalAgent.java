@@ -12,7 +12,7 @@ public class RentalAgent extends Employee{
     private double wages;
     private int hours;
 
-    @OneToMany(mappedBy = "customerID",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customerID",cascade = CascadeType.ALL)
     private List < Customer> customerID;
 
     protected RentalAgent(){

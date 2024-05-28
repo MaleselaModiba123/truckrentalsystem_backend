@@ -11,7 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class ManagerFactoryTest {
     @Test
     void createManager() {
-        Manager createManager = ManagerFactory.buildManager("667745", 4300.0, 6);
+        Manager createManager = ManagerFactory.buildManager("667745","Ayanda",
+                "Phumzile", "ayanda@gmail.com",4300.0, 6);
         assertNotNull(createManager);
         System.out.println("Created: " + createManager);
     }
