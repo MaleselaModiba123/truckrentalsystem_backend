@@ -20,10 +20,10 @@ class BranchFactoryTest {
 
     @BeforeEach
     void setUp() {
-        branch1 = new BranchFactory().buildBranch(7834, "WiggleCPT",
+        branch1 = BranchFactory.buildBranch(7834, "WiggleCPT",
                 "10 Dorset St, Cape Town, South Africa, 8987");
 
-        branch2 = new BranchFactory().buildBranch(7674, "WiggleKZN",
+        branch2 = BranchFactory.buildBranch(7674, "WiggleKZN",
                 "11 Darling St ,KwaZulu-Natal,South Africa");
 
         branch3 = branch1;

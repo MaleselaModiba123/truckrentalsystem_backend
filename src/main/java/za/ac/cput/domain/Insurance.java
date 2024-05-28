@@ -24,7 +24,7 @@ public class Insurance {
     private LocalDate effectiveDate;
     private String coverage;
     private double premium;
-    @OneToMany(mappedBy = "insurance", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "insurance", cascade = CascadeType.ALL)
     private List<Truck> trucks;
 
     protected Insurance() {
@@ -38,7 +38,7 @@ public class Insurance {
         this.effectiveDate = builder.effectiveDate;
         this.coverage = builder.coverage;
         this.premium = builder.premium;
-        this.trucks=builder.trucks;
+        //this.trucks=builder.trucks;
     }
 
     public int getInsuranceID() {
@@ -69,21 +69,21 @@ public class Insurance {
         return premium;
     }
 
-    public List<Truck> getTrucks() {
-        return trucks;
-    }
+//    public List<Truck> getTrucks() {
+//        return trucks;
+//    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Insurance insurance = (Insurance) o;
-        return insuranceID == insurance.insuranceID && Double.compare(premium, insurance.premium) == 0 && Objects.equals(insuranceType, insurance.insuranceType) && Objects.equals(provider, insurance.provider) && Objects.equals(policyNumber, insurance.policyNumber) && Objects.equals(effectiveDate, insurance.effectiveDate) && Objects.equals(coverage, insurance.coverage) && Objects.equals(trucks, insurance.trucks);
+        return insuranceID == insurance.insuranceID && Double.compare(premium, insurance.premium) == 0 && Objects.equals(insuranceType, insurance.insuranceType) && Objects.equals(provider, insurance.provider) && Objects.equals(policyNumber, insurance.policyNumber) && Objects.equals(effectiveDate, insurance.effectiveDate) && Objects.equals(coverage, insurance.coverage);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(insuranceID, insuranceType, provider, policyNumber, effectiveDate, coverage, premium, trucks);
+        return Objects.hash(insuranceID, insuranceType, provider, policyNumber, effectiveDate, coverage, premium);
     }
 
     @Override
@@ -96,9 +96,9 @@ public class Insurance {
                         "Policy Number: %s\n" +
                         "Effective Date: %s\n" +
                         "Coverage: %s\n" +
-                        "Premium: %s\n"+
-                        "Truck: %s\n",
-                insuranceID, insuranceType, provider, policyNumber, effectiveDate, coverage, premium,trucks
+                        "Premium: %s\n",
+                     //   "Truck: %s\n",
+                insuranceID, insuranceType, provider, policyNumber, effectiveDate, coverage, premium
         );
     }
 
@@ -110,7 +110,7 @@ public class Insurance {
         private LocalDate effectiveDate;
         private String coverage;
         private double premium;
-        private List<Truck> trucks;
+       // private List<Truck> trucks;
 
         public Builder setInsuranceID(int insuranceID) {
             this.insuranceID = insuranceID;
@@ -147,10 +147,10 @@ public class Insurance {
             return this;
         }
 
-        public Builder setTrucks(List<Truck> trucks) {
-            this.trucks = trucks;
-            return this;
-        }
+//        public Builder setTrucks(List<Truck> trucks) {
+//            this.trucks = trucks;
+//            return this;
+//        }
 
         public Builder copy(Insurance insurance) {
             this.insuranceID = insurance.insuranceID;
@@ -160,7 +160,7 @@ public class Insurance {
             this.effectiveDate = insurance.effectiveDate;
             this.coverage = insurance.coverage;
             this.premium = insurance.premium;
-            this.trucks=insurance.trucks;
+           // this.trucks=insurance.trucks;
             return this;
         }
 

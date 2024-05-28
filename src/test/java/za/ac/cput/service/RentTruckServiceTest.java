@@ -46,8 +46,8 @@ class RentTruckServiceTest {
 
     @BeforeEach
     void setUp() {
-        customer1 = customerRepository.findById(3245).orElseThrow();
-        customer2 = customerRepository.findById(3246).orElseThrow();
+        customer1 = customerRepository.findById(1).orElseThrow();
+        customer2 = customerRepository.findById(1).orElseThrow();
         truck1 = truckRepository.findById(1245).orElseThrow();
         truck2 = truckRepository.findById(1254).orElseThrow();
         rentalAgent1 = rentalAgentRepository.findById("1234").orElseThrow();

@@ -39,6 +39,7 @@ class CustomerServiceTest {
 
     @Test
     void b_read() {
+        System.out.println("customer ID:" + customer);
         Customer read = customerService.read(customer.getCustomerID());
         assertNotNull(read);
         System.out.println("Read: " + read);
@@ -61,6 +62,6 @@ class CustomerServiceTest {
 
     @Test
     void d_getAll() {
-        System.out.println(customerService.getAll());
+        customerService.getAll();
     }
 }

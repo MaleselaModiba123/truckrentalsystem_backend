@@ -19,7 +19,7 @@ public class Branch {
     private String branchName;
     private String address;
 
-    @OneToMany(mappedBy = "rentId", cascade = CascadeType.ALL,orphanRemoval =true)
+    @OneToMany
     private List<RentTruck> rentTrucks;
 
     protected Branch() {
@@ -29,7 +29,7 @@ public class Branch {
         this.branchId = builder.branchId;
         this.branchName = builder.branchName;
         this.address = builder.address;
-        this.rentTrucks = builder.rentTrucks;
+  //      this.rentTrucks = builder.rentTrucks;
     }
 
     public int getBranchId() {
@@ -44,21 +44,21 @@ public class Branch {
         return address;
     }
 
-    public List<RentTruck> getRentTrucks() {
-        return rentTrucks;
-    }
+ //   public List<RentTruck> getRentTrucks() {
+   //     return rentTrucks;
+  //  }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Branch branch = (Branch) o;
-        return branchId == branch.branchId && Objects.equals(branchName, branch.branchName) && Objects.equals(address, branch.address)&& Objects.equals(rentTrucks, branch.rentTrucks);
+        return branchId == branch.branchId && Objects.equals(branchName, branch.branchName) && Objects.equals(address, branch.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(branchId, branchName, address, rentTrucks);
+        return Objects.hash(branchId, branchName, address);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class Branch {
                 "branchId=" + branchId +
                 ", branchName='" + branchName + '\'' +
                 ", address='" + address + '\'' +
-                ", rentTrucks=" + rentTrucks +
+            //    ", rentTrucks=" + rentTrucks +
                 '}';
     }
 
@@ -76,7 +76,7 @@ public class Branch {
         private int branchId;
         private String branchName;
         private String address;
-        private List<RentTruck> rentTrucks;
+       // private List<RentTruck> rentTrucks;
 
         public Builder setBranchId(int branchId) {
             this.branchId = branchId;
@@ -93,16 +93,16 @@ public class Branch {
             return this;
         }
 
-        public Builder setRentTrucks(List<RentTruck> rentTrucks) {
-            this.rentTrucks = rentTrucks;
-            return this;
-        }
+//        public Builder setRentTrucks(List<RentTruck> rentTrucks) {
+//            this.rentTrucks = rentTrucks;
+//            return this;
+//        }
 
         public Builder copy(Branch branch){
             this.branchId = branch.branchId;
             this.branchName = branch.branchName;
             this.address = branch.address;
-            this.rentTrucks = branch.rentTrucks;
+         //   this.rentTrucks = branch.rentTrucks;
             return this;
         }
 

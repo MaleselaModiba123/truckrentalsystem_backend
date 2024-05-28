@@ -12,11 +12,14 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ServiceRecordService implements IServiceRecordService {
+
     private ServiceRecordRepository serviceRecordRepository;
+
     @Autowired
     ServiceRecordService(ServiceRecordRepository serviceRecordRepository){
         this.serviceRecordRepository = serviceRecordRepository;
     }
+
     @Override
     public ServiceRecord create(ServiceRecord serviceRecord){
         return serviceRecordRepository.save(serviceRecord);
@@ -36,7 +39,7 @@ public class ServiceRecordService implements IServiceRecordService {
         serviceRecordRepository.deleteById(serviceRecord);
     }
     public List<ServiceRecord> getAll(){
-        return serviceRecordRepository.findAll().stream().collect(Collectors.toList());
+        return serviceRecordRepository.findAll();
     }
 
 

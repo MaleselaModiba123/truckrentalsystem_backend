@@ -23,7 +23,7 @@ public class Customer {
 
     private String cellNo;
 
-    @OneToMany(mappedBy = "rentId",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "rentId",cascade = CascadeType.ALL)
     private List<RentTruck> rentedTruck;
 
     @ManyToOne
@@ -40,7 +40,7 @@ public class Customer {
         this.email = builder.email;
         this.license = builder.license;
         this.cellNo = builder.cellNo;
-        this.rentedTruck=builder.rentedTruck;
+        //this.rentedTruck=builder.rentedTruck;
         this.rentalAgents=builder.rentalAgents;
     }
 
@@ -73,9 +73,9 @@ public class Customer {
         return cellNo;
     }
 
-    public List<RentTruck> getRentedTruck() {
-        return rentedTruck;
-    }
+//    public List<RentTruck> getRentedTruck() {
+//        return rentedTruck;
+//    }
 
     public RentalAgent getRentalAgent() {
         return rentalAgents;
@@ -86,12 +86,12 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(customerID, customer.customerID) && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(license, customer.license) && Objects.equals(cellNo, customer.cellNo)  && Objects.equals(rentedTruck, customer.rentedTruck)  && Objects.equals(rentalAgents, customer.rentalAgents);
+        return Objects.equals(customerID, customer.customerID) && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(license, customer.license) && Objects.equals(cellNo, customer.cellNo) && Objects.equals(rentalAgents, customer.rentalAgents);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerID, firstName, lastName, email, license, cellNo, rentedTruck, rentalAgents);
+        return Objects.hash(customerID, firstName, lastName, email, license, cellNo, rentalAgents);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class Customer {
                 ", email='" + email + '\'' +
                 ", license='" + license + '\'' +
                 ", cellNo='" + cellNo + '\'' +
-                ", rentedTruck='" + rentedTruck + '\'' +
+             //   ", rentedTruck='" + rentedTruck + '\'' +
                 ", rentalAgents='" + rentalAgents + '\'' +
                 '}';
     }
@@ -117,7 +117,7 @@ public class Customer {
 
         private String cellNo;
 
-        private List<RentTruck> rentedTruck;
+       // private List<RentTruck> rentedTruck;
 
         private RentalAgent rentalAgents;
 
@@ -151,10 +151,10 @@ public class Customer {
             return this;
         }
 
-        public Builder setRentedTruck(List<RentTruck> rentedTruck ) {
-            this.rentedTruck = rentedTruck;
-            return this;
-        }
+//        public Builder setRentedTruck(List<RentTruck> rentedTruck ) {
+//            this.rentedTruck = rentedTruck;
+//            return this;
+//        }
 
         public Builder setRentalAgent(RentalAgent rentalAgents ) {
             this.rentalAgents = rentalAgents;
@@ -168,7 +168,7 @@ public class Customer {
             this.email = customer.email;
             this.license = customer.license;
             this.cellNo = customer.cellNo;
-            this.rentedTruck = customer.rentedTruck;
+          //  this.rentedTruck = customer.rentedTruck;
             this.rentalAgents = customer.rentalAgents;
             return this;
         }

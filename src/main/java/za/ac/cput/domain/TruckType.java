@@ -25,7 +25,7 @@ public class TruckType {
     private double fuelConsumption; // km per liter
     private String fuelType;
 
-    @OneToMany(mappedBy = "vin", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "vin", cascade = CascadeType.ALL)
     private List<Truck> trucks;
 
     protected TruckType() {
@@ -40,7 +40,7 @@ public class TruckType {
         this.transmission=builder.transmission;
         this.fuelConsumption=builder.fuelConsumption;
         this.fuelType=builder.fuelType;
-        this.trucks=builder.trucks;
+//        this.trucks=builder.trucks;
     }
 
     public int getTruckTypeId() {
@@ -75,37 +75,36 @@ public class TruckType {
         return fuelType;
     }
 
-    public List<Truck> getTrucks() {
-        return trucks;
-    }
+//    public List<Truck> getTrucks() {
+//        return trucks;
+//    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TruckType truckType = (TruckType) o;
-        return truckTypeId == truckType.truckTypeId && Double.compare(capacity, truckType.capacity) == 0 && Double.compare(fuelConsumption, truckType.fuelConsumption) == 0 && Objects.equals(typeName, truckType.typeName) && Objects.equals(description, truckType.description) && Objects.equals(dimensions, truckType.dimensions) && Objects.equals(transmission, truckType.transmission) && Objects.equals(fuelType, truckType.fuelType) && Objects.equals(trucks, truckType.trucks);
+        return truckTypeId == truckType.truckTypeId && Double.compare(capacity, truckType.capacity) == 0 && Double.compare(fuelConsumption, truckType.fuelConsumption) == 0 && Objects.equals(typeName, truckType.typeName) && Objects.equals(description, truckType.description) && Objects.equals(dimensions, truckType.dimensions) && Objects.equals(transmission, truckType.transmission) && Objects.equals(fuelType, truckType.fuelType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(truckTypeId, typeName, description, dimensions, capacity, transmission, fuelConsumption, fuelType, trucks);
+        return Objects.hash(truckTypeId, typeName, description, dimensions, capacity, transmission, fuelConsumption, fuelType);
     }
 
     @Override
     public String toString() {
-        return String.format("Truck Type:\n" +
-                        "Truck Type ID: %s\n" +
-                        "Type Name: %s\n" +
-                        "Description: %s\n" +
-                        "Dimensions: %s\n" +
-                        "Capacity: %s\n" +
-                        "Transmission: %s\n" +
-                        "Fuel Consumption: %s\n" +
-                        "Fuel Type: %s\n" +
-                        "Trucks: %s\n",
-                truckTypeId, typeName, description, dimensions, capacity, transmission, fuelConsumption, fuelType, trucks
-        );
+        return "TruckType{" +
+                "truckTypeId=" + truckTypeId +
+                ", typeName='" + typeName + '\'' +
+                ", description='" + description + '\'' +
+                ", dimensions='" + dimensions + '\'' +
+                ", capacity=" + capacity +
+                ", transmission='" + transmission + '\'' +
+                ", fuelConsumption=" + fuelConsumption +
+                ", fuelType='" + fuelType + '\'' +
+            //    ", trucks=" + trucks +
+                '}';
     }
 
     public static class Builder{
@@ -117,7 +116,7 @@ public class TruckType {
         private String transmission;
         private double fuelConsumption;
         private String fuelType;
-        private List<Truck> trucks;
+      //  private List<Truck> trucks;
 
         public Builder setTruckTypeId(int truckTypeId) {
             this.truckTypeId = truckTypeId;
@@ -159,10 +158,10 @@ public class TruckType {
             return this;
         }
 
-        public Builder setTrucks(List<Truck> trucks) {
-            this.trucks = trucks;
-            return this;
-        }
+//        public Builder setTrucks(List<Truck> trucks) {
+//            this.trucks = trucks;
+//            return this;
+//        }
 
         public Builder copy(TruckType truckType){
             this.truckTypeId=truckType.truckTypeId;
@@ -173,7 +172,7 @@ public class TruckType {
             this.transmission=truckType.transmission;
             this.fuelConsumption=truckType.fuelConsumption;
             this.fuelType=truckType.fuelType;
-            this.trucks=truckType.trucks;
+            //    this.trucks=truckType.trucks;
             return this;
 
         }

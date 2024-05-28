@@ -17,8 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @SpringBootTest
-class
-TruckServiceTest {
+class TruckServiceTest {
 
     @Autowired
     private TruckService truckService;

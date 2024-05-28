@@ -15,7 +15,7 @@ public class CustomerFactory {
                 Helper.isIntNotValid(customerID) ||
                 Helper.isNullOrEmpty(firstName) ||
                 Helper.isNullOrEmpty(lastName) ||
-                Helper.isNullOrEmpty(email) || !Helper.isValidEmail(email) ||
+               !Helper.isValidEmail(email) ||
                 Helper.isNullOrEmpty(license) ||
                 Helper.isNullOrEmpty(cellNo) ) {
 

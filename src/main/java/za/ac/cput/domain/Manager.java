@@ -20,7 +20,11 @@ public class Manager extends Employee {
     private Manager(Builder builder) {
         this.wages = builder.wages;
         this.hours = builder.hours;
-
+        this.firstName =  builder.firstName;
+        this.lastName = builder.lastName;
+        this.email = builder.email;
+        this.employeeNumber = builder.employeeNumber;
+        this.employeeType = builder.employeeType;
     }
 
     public double getWages() {

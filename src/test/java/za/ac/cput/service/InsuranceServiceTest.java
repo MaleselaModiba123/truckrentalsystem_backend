@@ -61,6 +61,6 @@ class InsuranceServiceTest {
 
     @Test
     void d_getAll() {
-        System.out.println(insuranceService.getAll());
+        insuranceService.getAll();
     }
 }
