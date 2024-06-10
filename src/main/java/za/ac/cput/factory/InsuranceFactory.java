@@ -13,11 +13,11 @@ import java.time.format.DateTimeFormatter;
  * Date: 17 May 2024
  */
 public class InsuranceFactory {
-    public static Insurance buildInsurance(int insuranceID, String insuranceType, String provider, String policyNumber,
+    public static Insurance buildInsurance(String insuranceType, String provider, String policyNumber,
                                            LocalDate effectiveDate, String coverage, double premium) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Helper.DateValidatorUsingLocalDate dateValidator = new Helper.DateValidatorUsingLocalDate(dateFormatter);
-        if (Helper.isIntNotValid(insuranceID) ||
+        if (
                 Helper.isNullOrEmpty(insuranceType) ||
                 Helper.isNullOrEmpty(provider) ||
                 Helper.isNullOrEmpty(policyNumber) ||
@@ -26,7 +26,7 @@ public class InsuranceFactory {
                 Helper.isDoubleNotValid(premium)) {
             return null;
         }
-        return new Insurance.Builder().setInsuranceID(insuranceID)
+        return new Insurance.Builder()
                 .setInsuranceType(insuranceType)
                 .setProvider(provider)
                 .setPolicyNumber(policyNumber)

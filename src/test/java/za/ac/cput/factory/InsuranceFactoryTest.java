@@ -19,23 +19,17 @@ class InsuranceFactoryTest {
 
     @Test
     void buildInsurance() {
-        Insurance insurance = InsuranceFactory.buildInsurance(1, "Truck Insurance", "Out Surance"
+        Insurance insurance = InsuranceFactory.buildInsurance("Truck Insurance", "Out Surance"
                 , "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", 1500);
         assertNotNull(insurance);
         System.out.println(insurance.toString());
     }
 
-    @Test
-    void buildInsuranceFailWithID() {
-        Insurance insurance = InsuranceFactory.buildInsurance(-1, "Truck Insurance", "Out Surance"
-                , "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", 1500);
-        assertNotNull(insurance);
-        System.out.println(insurance.toString());
-    }
+
 
     @Test
     void buildInsuranceFailWithDate() {
-        Insurance insurance = InsuranceFactory.buildInsurance(1, "Truck Insurance", "Out Surance"
+        Insurance insurance = InsuranceFactory.buildInsurance( "Truck Insurance", "Out Surance"
                 , "POL-12345", LocalDate.of(2024, 13, 24), "Truck damage or theft,Natural disasters", 1500);
         assertNotNull(insurance);
         System.out.println(insurance.toString());
@@ -43,7 +37,7 @@ class InsuranceFactoryTest {
 
     @Test
     void buildInsuranceFailWithPremium() {
-        Insurance insurance = InsuranceFactory.buildInsurance(1, "Truck Insurance", "Out Surance"
+        Insurance insurance = InsuranceFactory.buildInsurance( "Truck Insurance", "Out Surance"
                 , "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", -1);
         assertNotNull(insurance);
         System.out.println(insurance.toString());

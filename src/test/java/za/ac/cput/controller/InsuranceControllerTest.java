@@ -23,10 +23,11 @@ class InsuranceControllerTest {
     private final String BASE_URL = "http://localhost:8080/truckrentalsystem/insurance";
     
     private static Insurance insurance;
+    private static int generatedInsuranceId;
     
     @BeforeAll
     public static void setUp(){
-        insurance= InsuranceFactory.buildInsurance(1, "Truck Insurance", "Out Surance"
+        insurance= InsuranceFactory.buildInsurance( "Truck Insurance", "Out Surance"
                 , "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", 1500);
     }
     @Test
@@ -36,30 +37,34 @@ class InsuranceControllerTest {
         assertNotNull(response);
         assertNotNull(response.getBody());
         Insurance insuranceCreated = response.getBody();
+        generatedInsuranceId = insuranceCreated.getInsuranceID();
+        assertEquals(generatedInsuranceId, response.getBody().getInsuranceID());
         System.out.println("Created insurance: " + insuranceCreated);
     }
 
     @Test
     void b_read() {
-        String url = BASE_URL + "/read/" + insurance.getInsuranceID();
+        String url = BASE_URL + "/read/" + generatedInsuranceId;
         System.out.println("URL: " + url);
         ResponseEntity<Insurance> response = restTemplate.getForEntity(url, Insurance.class);
-//        assertEquals(insurance.getInsuranceID(), response.getBody().getInsuranceID());
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(generatedInsuranceId, response.getBody().getInsuranceID());
         System.out.println("Read: " + response.getBody());
     }
 
     @Test
-    void delete() {
-        String url = BASE_URL + "/delete/" + insurance.getInsuranceID();
+    void e_delete() {
+        String url = BASE_URL + "/delete/" + generatedInsuranceId;
         System.out.println("URL:" + url);
         restTemplate.delete(url);
         System.out.println("Success: Deleted insurance");
     }
 
     @Test
-    void update() {
+    void c_update() {
         String url = BASE_URL + "/update";
-        Insurance newInsurance = new Insurance.Builder().copy(insurance).setProvider("Auto general").build();
+        Insurance newInsurance = new Insurance.Builder().copy(insurance).setInsuranceID(generatedInsuranceId).setProvider("Auto general").build();
         // Create the updated insurance in the system
         ResponseEntity<Insurance> createResponse = restTemplate.postForEntity(url, newInsurance, Insurance.class);
         assertNotNull(createResponse);
@@ -67,12 +72,13 @@ class InsuranceControllerTest {
 
         // Check if the retrieved insurance matches the updated information
         Insurance retrievedInsurance = createResponse.getBody();
-        assertEquals(newInsurance.getInsuranceID(), retrievedInsurance.getInsuranceID());
+        assertEquals(generatedInsuranceId, retrievedInsurance.getInsuranceID());
+        assertEquals("Auto general", retrievedInsurance.getProvider());
         System.out.println("Updated insurance: " + retrievedInsurance);
     }
 
     @Test
-    void getAll() {
+    void d_getAll() {
         String url = BASE_URL + "/getAll";
         HttpHeaders httpHeaders = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(null, httpHeaders);

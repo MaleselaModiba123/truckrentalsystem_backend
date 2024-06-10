@@ -27,29 +27,42 @@ class InsuranceServiceTest {
 
     @Autowired
     private InsuranceService insuranceService;
-    private Insurance insurance = InsuranceFactory.buildInsurance(1, "Truck Insurance", "Out Surance"
+    private Insurance insurance = InsuranceFactory.buildInsurance("Truck Insurance", "Autogeneral"
             , "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", 1500);
-
+    private static int generatedInsuranceId;
     @Test
     void a_create() {
         Insurance createdInsurance = insuranceService.create(insurance);
-        assertEquals(insurance.getInsuranceID(), createdInsurance.getInsuranceID());
+        assertNotNull(createdInsurance);
+        //assertEquals(insurance.getInsuranceID(), createdInsurance.getInsuranceID());
         System.out.println("Created Insurance: " + createdInsurance);
+        generatedInsuranceId = createdInsurance.getInsuranceID();
     }
 
     @Test
     void b_read() {
-        Insurance read = insuranceService.read(insurance.getInsuranceID());
+        Insurance read = insuranceService.read(generatedInsuranceId);
         assertNotNull(read);
         System.out.println("Read: " + read);
     }
 
     @Test
     void c_update() {
-        Insurance newInsurance = new Insurance.Builder().copy(insurance).setProvider("MiWay").build();
-        Insurance updated = insuranceService.update(newInsurance);
+        // Fetch the insurance record to be updated
+        Insurance insuranceToUpdate = insuranceService.read(generatedInsuranceId);
+        assertNotNull(insuranceToUpdate);
+
+        // Update the provider
+        Insurance updatedInsurance = new Insurance.Builder()
+                .copy(insuranceToUpdate)
+                .setProvider("Budget")
+                .build();
+
+        // Save the updated insurance record
+        Insurance updated = insuranceService.update(updatedInsurance);
         assertNotNull(updated);
-        System.out.println(updated);
+        assertEquals("Budget", updated.getProvider());
+        System.out.println("Updated Insurance: " + updated);
     }
 
     @Test
@@ -61,6 +74,6 @@ class InsuranceServiceTest {
 
     @Test
     void d_getAll() {
-        insuranceService.getAll();
+        System.out.println(insuranceService.getAll());
     }
 }

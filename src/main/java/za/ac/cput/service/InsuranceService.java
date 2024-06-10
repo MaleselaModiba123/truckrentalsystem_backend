@@ -34,8 +34,14 @@ public class InsuranceService implements IInsuranceService {
     }
 
     @Override
+//    public Insurance update(Insurance insurance) {
+//        return insuranceRepository.save(insurance);
+//    }
     public Insurance update(Insurance insurance) {
-        return insuranceRepository.save(insurance);
+        if (insuranceRepository.existsById(insurance.getInsuranceID())) {
+            return insuranceRepository.save(insurance);
+        }
+        return null;
     }
 
     @Override
