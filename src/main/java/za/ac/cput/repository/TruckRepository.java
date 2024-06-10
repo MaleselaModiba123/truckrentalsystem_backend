@@ -9,7 +9,7 @@ import za.ac.cput.domain.Truck;
  * */
 
 @Repository
-public  interface TruckRepository extends JpaRepository<Truck, Integer> {
+public  interface TruckRepository extends JpaRepository<Truck, String> {
 }
 
 

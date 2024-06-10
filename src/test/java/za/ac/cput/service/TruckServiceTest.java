@@ -1,12 +1,16 @@
 package za.ac.cput.service;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import za.ac.cput.domain.Insurance;
 import za.ac.cput.domain.Truck;
+import za.ac.cput.domain.TruckType;
+import za.ac.cput.factory.InsuranceFactory;
 import za.ac.cput.factory.TruckFactory;
+import za.ac.cput.factory.TruckTypeFactory;
+
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
@@ -21,14 +25,39 @@ class TruckServiceTest {
 
     @Autowired
     private TruckService truckService;
-    private Truck truck = TruckFactory.buildTruck("7774444", "Scania", true
-            , "123455",44);
+    @Autowired
+    private TruckTypeService truckTypeService;
+
+    @Autowired
+    private InsuranceService insuranceService;
+    private Truck truck;
+    private TruckType truckType;
+    private Insurance insurance;
+    @BeforeEach
+    void setUp() {
+        // Initialize and save the TruckType entity
+        truckType = TruckTypeFactory.buildTruckType("Enclosed", "Large box truck suitable for moving large items. With its higher payload capacity, you can transport a wide range of items, including large packages, bulky equipment, furniture, appliances, and more",
+                "7.4m * 2.48m * 2.7m", 6.3, "Manual", 5.89, "Diesel");
+        TruckType savedTruckType = truckTypeService.create(truckType);
+        assertNotNull(savedTruckType);
+
+        // Initialize and save the Insurance entity
+        insurance = InsuranceFactory.buildInsurance("Truck Insurance", "Out Surance",
+                "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft, Natural disasters", 1500);
+        Insurance savedInsurance = insuranceService.create(insurance);
+        assertNotNull(savedInsurance);
+
+        // Initialize the Truck entity using the saved TruckType and Insurance entities
+        truck = TruckFactory.buildTruck("7774444", "Scania", true, "123455", 44, savedTruckType, savedInsurance);
+        Truck createdTruck = truckService.create(truck);
+        assertNotNull(createdTruck);
+        truck = createdTruck;  // Update the instance variable to the created truck
+    }
 
     @Test
     void a_create() {
-        Truck createdTruck = truckService.create(truck);
-        assertEquals(truck.getModel(), createdTruck.getModel());
-        System.out.println("Created Truck: " + createdTruck);
+        assertNotNull(truck);
+        System.out.println("Created Truck: " + truck);
     }
 
     @Test

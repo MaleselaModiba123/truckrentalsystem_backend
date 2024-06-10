@@ -8,7 +8,7 @@ import java.util.Set;
  * Date: 18 May 2024
  * */
 
-public interface ITruckService extends IService<Truck,Integer>{
+public interface ITruckService extends IService<Truck,String>{
 
     Truck update(Truck truck);
 

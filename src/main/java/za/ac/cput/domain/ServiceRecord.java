@@ -3,7 +3,6 @@ package za.ac.cput.domain;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 /*  Completed By Malesela Modiba
     23 May 2024
@@ -20,12 +19,12 @@ public class ServiceRecord {
     private LocalDate nextServiceDate;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Truck_Vin")
-    private Truck trucks;
+    private Truck truck;
 
     @OneToOne
     @JoinColumn(name = "Mechanic_Employee_Num")
-    private Mechanic mechanic;
-    private String mechanicEmpNo;
+    private Mechanic mechanicEmpNo;
+
 
 
 
@@ -35,11 +34,12 @@ public class ServiceRecord {
     }
     public ServiceRecord (Builder builder) {
         this.serviceID = builder.serviceID;
-        this.serviceDate = builder.serviceDate;
-        this.cost = builder.cost;
-        this.nextServiceDate = builder.nextServiceDate;
         this.serviceType = builder.serviceType;
+        this.cost = builder.cost;
+        this.serviceDate = builder.serviceDate;
+        this.nextServiceDate = builder.nextServiceDate;
         this.mechanicEmpNo = builder.mechanicEmpNo;
+        this.truck = builder.truck;
 
 
     }
@@ -64,13 +64,12 @@ public class ServiceRecord {
         return nextServiceDate;
     }
 
-
-    public String getMechanicEmpNo() {
+    public Mechanic getMechanicEmpNo() {
         return mechanicEmpNo;
     }
 
-    public Truck getTrucks() {
-        return trucks;
+    public Truck getTruck() {
+        return truck;
     }
 
     @Override
@@ -78,12 +77,12 @@ public class ServiceRecord {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ServiceRecord that = (ServiceRecord) o;
-        return serviceID == that.serviceID && Double.compare(cost, that.cost) == 0 && Objects.equals(serviceDate, that.serviceDate) && Objects.equals(serviceType, that.serviceType) && Objects.equals(nextServiceDate, that.nextServiceDate)  && Objects.equals(mechanicEmpNo, that.mechanicEmpNo) && Objects.equals(trucks, that.trucks);
+        return serviceID == that.serviceID && Double.compare(cost, that.cost) == 0 && Objects.equals(serviceDate, that.serviceDate) && Objects.equals(serviceType, that.serviceType) && Objects.equals(nextServiceDate, that.nextServiceDate) && Objects.equals(truck, that.truck) && Objects.equals(mechanicEmpNo, that.mechanicEmpNo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(serviceID, serviceDate, serviceType, cost, nextServiceDate, mechanicEmpNo, trucks);
+        return Objects.hash(serviceID, serviceDate, serviceType, cost, nextServiceDate, truck, mechanicEmpNo);
     }
 
     @Override
@@ -93,9 +92,7 @@ public class ServiceRecord {
                 ", serviceDate=" + serviceDate +
                 ", serviceType='" + serviceType + '\'' +
                 ", cost=" + cost +
-                ", nextServiceDate=" + nextServiceDate +
-                ", mechanicEmpNo='" + mechanicEmpNo + '\'' +
-                ", trucks=" + trucks +
+                ", nextServiceDate=" + nextServiceDate + ", mechanicEmpNo='" + mechanicEmpNo.getEmployeeNumber() + '\'' + ", trucks=" + truck.getVin() +
                 '}';
     }
 
@@ -105,8 +102,8 @@ public class ServiceRecord {
         private String serviceType;
         private double cost;
         private LocalDate nextServiceDate;
-        private String mechanicEmpNo;
-        private List<Truck> trucks;
+        private Mechanic mechanicEmpNo;
+        private Truck truck;
 
 
     public Builder setServiceID(int serviceID) {
@@ -134,24 +131,25 @@ public class ServiceRecord {
         return this;
     }
 
-    public  Builder setMechanicEmpNo(String mechanicEmpNo) {
-        this.mechanicEmpNo = mechanicEmpNo;
-        return this;
-    }
+        public Builder setMechanicEmpNo(Mechanic mechanicEmpNo) {
+            this.mechanicEmpNo = mechanicEmpNo;
+            return this;
+        }
 
-
-
+        public Builder setTruck(Truck truck) {
+            this.truck = truck;
+            return this;
+        }
 
         public Builder copy(ServiceRecord serviceRecord) {
-        this.serviceID = serviceRecord.serviceID;
-        this.serviceDate = serviceRecord.serviceDate;
-        this.serviceType = serviceRecord.serviceType;
-        this.cost = serviceRecord.cost;
-        this.mechanicEmpNo = serviceRecord.mechanicEmpNo;
-
-        this.nextServiceDate = serviceRecord.nextServiceDate;
-
-        return this;
+            this.serviceID = serviceRecord.serviceID;
+            this.cost = serviceRecord.cost;
+            this.serviceDate = serviceRecord.serviceDate;
+            this.serviceType = serviceRecord.serviceType;
+            this.nextServiceDate = serviceRecord.nextServiceDate;
+            this.mechanicEmpNo = serviceRecord.mechanicEmpNo;
+            this.truck = serviceRecord.truck;
+            return this;
     }
     public ServiceRecord build() {
         return new ServiceRecord(this);

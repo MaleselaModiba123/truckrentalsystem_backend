@@ -117,11 +117,11 @@ public class RentTruck {
                 ", returnDate=" + returnDate +
                 ", totalCost=" + totalCost +
                 ", isPaymentMade=" + isPaymentMade +
-                ", customerID=" + customerID +
-                ", vin=" + vin +
-                ", salesAgent=" + salesAgent +
-                ", pickUp=" + pickUp +
-                ", dropOff=" + dropOff +
+                ", customerID=" + customerID.getCustomerID() +
+                ", vin=" + vin.getVin() +
+                ", salesAgent=" + salesAgent.getEmployeeNumber() +
+                ", pickUp=" + pickUp.getBranchId() +
+                ", dropOff=" + dropOff.getBranchId() +
                 '}';
     }
 

@@ -22,9 +22,12 @@ class RentTruckFactoryTest {
         LocalDate returnDate = LocalDate.of(2023, 5, 7);
         double totalCost = 500.0;
         boolean isPaymentMade = true;
-
+        TruckType truckType= TruckTypeFactory.buildTruckType("Enclosed", "Large box truck suitable for moving large items.With its higher payload capacity, you can transport a wide range of items, including large packages, bulky equipment, furniture, appliances, and more", "7.4m * 2.48m*2.7m",
+                6.3, "Manual", 5.89, "Diesel");
+        Insurance insurance=InsuranceFactory.buildInsurance("Truck Insurance", "Out Surance"
+                , "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", 1500);
         Customer customer = CustomerFactory.buildCustomer(1, "John", "Doe", "john.doe@example.com", "Code10", "123456789");
-        Truck truck = TruckFactory.buildTruck("VIN123", "Model X", true, "NVM11263", 70.50);
+        Truck truck = TruckFactory.buildTruck("VIN123", "Model X", true, "NVM11263", 70.50,truckType,insurance);
         RentalAgent salesPerson = RentalAgentFactory.buildRentalAgent("EMP001", "Jane", "Doe", "jane.doe@example.com", 50.0, 40);
         Branch pickUp = BranchFactory.buildBranch(1, "WiggleCPT", "123 Main Street, Woodstock, South Africa, 7980");
         Branch dropOff = BranchFactory.buildBranch(3, "WiggleKZN", "10 Main Street, Durban, South Africa, 7000");
@@ -45,5 +48,6 @@ class RentTruckFactoryTest {
         Assertions.assertEquals(salesPerson, rentTruck.getSalesAgent());
         Assertions.assertEquals(pickUp, rentTruck.getPickUp());
         Assertions.assertEquals(dropOff, rentTruck.getDropOff());
+        System.out.println(rentTruck.toString());
     }
 }

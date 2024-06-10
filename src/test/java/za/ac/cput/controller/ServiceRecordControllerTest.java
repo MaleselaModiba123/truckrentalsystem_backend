@@ -11,8 +11,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import za.ac.cput.domain.ServiceRecord;
-import za.ac.cput.factory.ServiceRecordFactory;
+import za.ac.cput.domain.*;
+import za.ac.cput.factory.*;
 
 import java.time.LocalDate;
 
@@ -27,15 +27,25 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
     private final String BASE_URL = "http://localhost:8080/truckrentalsystem/insurance";
 
     private static ServiceRecord serviceRecord;
+    private static TruckType truckType;
+    private static Insurance insurance;
+    private static Truck truck;
+    private static Mechanic mechanic;
 
     @BeforeAll
     public static void setUp(){
-        serviceRecord = ServiceRecordFactory.buildServiceRecord(001,
-                LocalDate.of(2024,3,25),
+        truckType= TruckTypeFactory.buildTruckType("Enclosed", "Large box truck suitable for moving large items.With its higher payload capacity, you can transport a wide range of items, including large packages, bulky equipment, furniture, appliances, and more", "7.4m * 2.48m*2.7m",
+                6.3, "Manual", 5.89, "Diesel");
+        insurance= InsuranceFactory.buildInsurance("Truck Insurance", "Out Surance"
+                , "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", 1500);
+        truck = TruckFactory.buildTruck("1FUJGBDV7PLCW1234", " Volvo VNL 760", true, "CA 652-589", 478920.50,truckType,insurance);
+        mechanic = MechanicFactory.buildMechanic("001","Zukhanye", "Mene", "bennie@gmail.com", "Mechanic", "Engen" , true);
+        serviceRecord =  ServiceRecordFactory.buildServiceRecord(001,
                 "Normal Service",
                 3500.99,
-                "03",
-                LocalDate.of(2024,6,25));
+                LocalDate.of(2024,3,25),
+                LocalDate.of(2024,6,25)
+                ,mechanic,truck);
     }
     @Test
     void a_create(){

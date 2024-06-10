@@ -48,8 +48,8 @@ class RentTruckServiceTest {
     void setUp() {
         customer1 = customerRepository.findById(1).orElseThrow();
         customer2 = customerRepository.findById(1).orElseThrow();
-        truck1 = truckRepository.findById(1245).orElseThrow();
-        truck2 = truckRepository.findById(1254).orElseThrow();
+        truck1 = truckRepository.findById("1FUJGBDV7PLCW1234").orElseThrow();
+        truck2 = truckRepository.findById("2NPNAL0X9PC123456").orElseThrow();
         rentalAgent1 = rentalAgentRepository.findById("1234").orElseThrow();
         rentalAgent2 = rentalAgentRepository.findById("1235").orElseThrow();
         branch1 = branchRepository.findById(3701).orElseThrow();

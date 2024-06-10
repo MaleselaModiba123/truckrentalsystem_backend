@@ -16,20 +16,20 @@ public class TruckController {
     private TruckService truckService;
 
     @PostMapping("/create")
-    public Truck create(@RequestBody Truck Truck){
-        return truckService.create(Truck);
+    public Truck create(@RequestBody Truck truck){
+        return truckService.create(truck);
     }
-    @GetMapping("/read/{TruckID}")
-    public Truck read(@PathVariable int TruckID){
-        return truckService.read(TruckID);
+    @GetMapping("/read/{truckID}")
+    public Truck read(@PathVariable String truckID){
+        return truckService.read(truckID);
     }
-    @DeleteMapping("/delete/{TruckID}")
-    public void delete(@PathVariable int TruckID){
-        truckService.delete(TruckID);
+    @DeleteMapping("/delete/{truckID}")
+    public void delete(@PathVariable String truckID){
+        truckService.delete(truckID);
     }
     @PostMapping("/update")
-    public Truck update(@RequestBody Truck Truck){
-        return truckService.update(Truck);
+    public Truck update(@RequestBody Truck truck){
+        return truckService.update(truck);
     }
     @GetMapping("/getAll")
     public List<Truck> getAll(){

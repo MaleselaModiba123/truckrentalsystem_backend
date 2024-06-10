@@ -6,6 +6,7 @@ import za.ac.cput.domain.Insurance;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * InsuranceFactoryTest.java
@@ -31,7 +32,7 @@ class InsuranceFactoryTest {
     void buildInsuranceFailWithDate() {
         Insurance insurance = InsuranceFactory.buildInsurance( "Truck Insurance", "Out Surance"
                 , "POL-12345", LocalDate.of(2024, 13, 24), "Truck damage or theft,Natural disasters", 1500);
-        assertNotNull(insurance);
+        assertNull(insurance);
         System.out.println(insurance.toString());
     }
 
@@ -39,7 +40,7 @@ class InsuranceFactoryTest {
     void buildInsuranceFailWithPremium() {
         Insurance insurance = InsuranceFactory.buildInsurance( "Truck Insurance", "Out Surance"
                 , "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", -1);
-        assertNotNull(insurance);
+        assertNull(insurance);
         System.out.println(insurance.toString());
     }
 }

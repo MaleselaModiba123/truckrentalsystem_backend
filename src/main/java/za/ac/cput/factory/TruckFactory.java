@@ -1,5 +1,8 @@
 package za.ac.cput.factory;
+
+import za.ac.cput.domain.Insurance;
 import za.ac.cput.domain.Truck;
+import za.ac.cput.domain.TruckType;
 import za.ac.cput.util.Helper;
 /**
  *Truck.java
@@ -9,10 +12,11 @@ import za.ac.cput.util.Helper;
  * */
 public class TruckFactory {
     public static Truck buildTruck(String vin, String model, boolean availability, String licensePate,
-                                   double currentMileage) {
+                                   double currentMileage, TruckType truckType, Insurance insurance) {
         if (Helper.isNullOrEmpty(vin) ||
                 Helper.isNullOrEmpty(model) ||
-                Helper.isNullOrEmpty(licensePate) || Helper.isDoubleNotValid(currentMileage)){
+                Helper.isNullOrEmpty(licensePate) || Helper.isDoubleNotValid(currentMileage)
+                || truckType == null || insurance == null) {
             return null;
 
         }
@@ -20,8 +24,10 @@ public class TruckFactory {
                 .setVin(vin)
                 .setModel(model)
                 .setAvailability(availability)
-                .setLicensePate(Double.parseDouble(licensePate))
+                .setLicensePate(licensePate)
                 .setCurrentMileage(currentMileage)
+                .setTruckype(truckType)
+                .setInsurance(insurance)
                 .build();
     }
 

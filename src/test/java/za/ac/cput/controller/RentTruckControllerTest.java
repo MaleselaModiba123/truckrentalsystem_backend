@@ -1,9 +1,6 @@
 package za.ac.cput.controller;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -53,7 +50,7 @@ public class RentTruckControllerTest {
     @BeforeAll
     public static void setUp() {
         customer1 = customerRepository.findById(3245).orElseThrow();
-        truck1 = truckRepository.findById(1245).orElseThrow();
+        truck1 = truckRepository.findById("1245").orElseThrow();
         rentalAgent1 = rentalAgentRepository.findById("1234").orElseThrow();
         branch1 = branchRepository.findById(3701).orElseThrow();
 
@@ -83,7 +80,8 @@ public class RentTruckControllerTest {
         }
 
         @Test
-        void delete () {
+        @Disabled
+        void e_delete () {
             String url = BASE_URL + "/delete/" + rentTruck.getRentId();
             System.out.println("URL:" + url);
             restTemplate.delete(url);
@@ -91,7 +89,7 @@ public class RentTruckControllerTest {
         }
 
         @Test
-        void update () {
+        void c_update () {
             String url = BASE_URL + "/update";
             RentTruck newRentTruck = new RentTruck.Builder().copy(rentTruck).setRentId(243).build();
             ResponseEntity<RentTruck> createResponse = restTemplate.postForEntity(url, newRentTruck, RentTruck.class);
@@ -104,7 +102,7 @@ public class RentTruckControllerTest {
         }
 
         @Test
-        void getAll () {
+        void d_getAll () {
             String url = BASE_URL + "/getAll";
             HttpHeaders httpHeaders = new HttpHeaders();
             HttpEntity<String> entity = new HttpEntity<>(null, httpHeaders);

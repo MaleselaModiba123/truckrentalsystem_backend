@@ -25,7 +25,7 @@ public class TruckType {
     private double fuelConsumption; // km per liter
     private String fuelType;
 
-    @OneToMany(mappedBy = "vin", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vin", cascade = CascadeType.ALL) //one truckType to many trucks
     private List<Truck> trucks;
 
     protected TruckType() {
@@ -40,7 +40,6 @@ public class TruckType {
         this.transmission=builder.transmission;
         this.fuelConsumption=builder.fuelConsumption;
         this.fuelType=builder.fuelType;
-//        this.trucks=builder.trucks;
     }
 
     public int getTruckTypeId() {
@@ -75,9 +74,6 @@ public class TruckType {
         return fuelType;
     }
 
-//    public List<Truck> getTrucks() {
-//        return trucks;
-//    }
 
     @Override
     public boolean equals(Object o) {
@@ -103,7 +99,6 @@ public class TruckType {
                 ", transmission='" + transmission + '\'' +
                 ", fuelConsumption=" + fuelConsumption +
                 ", fuelType='" + fuelType + '\'' +
-            //    ", trucks=" + trucks +
                 '}';
     }
 
@@ -116,7 +111,6 @@ public class TruckType {
         private String transmission;
         private double fuelConsumption;
         private String fuelType;
-      //  private List<Truck> trucks;
 
         public Builder setTruckTypeId(int truckTypeId) {
             this.truckTypeId = truckTypeId;
@@ -158,11 +152,6 @@ public class TruckType {
             return this;
         }
 
-//        public Builder setTrucks(List<Truck> trucks) {
-//            this.trucks = trucks;
-//            return this;
-//        }
-
         public Builder copy(TruckType truckType){
             this.truckTypeId=truckType.truckTypeId;
             this.typeName=truckType.typeName;
@@ -172,7 +161,6 @@ public class TruckType {
             this.transmission=truckType.transmission;
             this.fuelConsumption=truckType.fuelConsumption;
             this.fuelType=truckType.fuelType;
-            //    this.trucks=truckType.trucks;
             return this;
 
         }

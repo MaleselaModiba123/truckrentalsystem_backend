@@ -1,12 +1,12 @@
 package za.ac.cput.service;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Truck;
+import za.ac.cput.repository.InsuranceRepository;
 import za.ac.cput.repository.TruckRepository;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 /**
  *Truck.java
  * Ayanda Phumzile Khoza (218057172)
@@ -24,11 +24,12 @@ public class TruckService implements ITruckService {
 
     @Override
     public Truck create(Truck truck) {
+
         return truckRepository.save(truck);
     }
 
     @Override
-    public Truck read(Integer truckID) {
+    public Truck read(String truckID) {
         return this.truckRepository.findById(truckID).orElse(null);
     }
 
@@ -38,7 +39,7 @@ public class TruckService implements ITruckService {
     }
 
     @Override
-    public void delete(Integer truckID) {
+    public void delete(String truckID) {
         truckRepository.deleteById(truckID);
     }
 
