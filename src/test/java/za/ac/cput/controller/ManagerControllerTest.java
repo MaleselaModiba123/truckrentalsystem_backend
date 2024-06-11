@@ -33,7 +33,7 @@ class ManagerControllerTest {
     public static void setUp(){
         Manager= ManagerFactory.buildManager("123", "Ayanda",
                 "Phumzile", "ayanda@gmail.com",
-                4200, 44);
+                "Manager",4200, 44);
 
     }
     @Test

@@ -23,6 +23,7 @@ public class RentalAgent extends Employee{
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.email = builder.email;
+        this.employeeType=builder.employeeType;
         this.wages = builder.wages;
         this.hours = builder.hours;
     }
@@ -41,12 +42,12 @@ public class RentalAgent extends Employee{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         RentalAgent that = (RentalAgent) o;
-        return Double.compare(wages, that.wages) == 0 && hours == that.hours;
+        return Double.compare(wages, that.wages) == 0 && hours == that.hours && Objects.equals(customerID, that.customerID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), wages, hours);
+        return Objects.hash(super.hashCode(), wages, hours, customerID);
     }
 
     @Override
@@ -61,11 +62,13 @@ public class RentalAgent extends Employee{
                 ", employeeType='" + employeeType + '\'' +
                 '}';
     }
+
     public static class Builder{
         private String employeeNumber;
         private String firstName;
         private String lastName;
         private String email;
+        private String employeeType;
         private double wages;
         private int hours;
         public Builder setEmployeeNumber(String employeeNumber) {
@@ -88,6 +91,11 @@ public class RentalAgent extends Employee{
             return this;
         }
 
+        public Builder setEmployeeType(String employeeType) {
+            this.employeeType = employeeType;
+            return this;
+        }
+
         public Builder setWages(double wages) {
             this.wages = wages;
             return this;
@@ -103,6 +111,7 @@ public class RentalAgent extends Employee{
             this.firstName = rentalAgent.firstName;
             this.lastName = rentalAgent.lastName;
             this.email = rentalAgent.email;
+            this.employeeType=rentalAgent.employeeType;
             this.wages = rentalAgent.wages;
             this.hours = rentalAgent.hours;
             return this;

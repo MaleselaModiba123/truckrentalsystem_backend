@@ -28,7 +28,7 @@ public class Customer {
 
     @ManyToOne
     @JoinColumn(name = "rentalAgentEmpNo", insertable = false, updatable = false)
-    private RentalAgent rentalAgents;
+    private RentalAgent rentalAgent;
 
     protected Customer() {
     }
@@ -41,7 +41,7 @@ public class Customer {
         this.license = builder.license;
         this.cellNo = builder.cellNo;
         //this.rentedTruck=builder.rentedTruck;
-        this.rentalAgents=builder.rentalAgents;
+        this.rentalAgent=builder.rentalAgent;
     }
 
     public int getCustomerID() {
@@ -78,7 +78,7 @@ public class Customer {
 //    }
 
     public RentalAgent getRentalAgent() {
-        return rentalAgents;
+        return rentalAgent;
     }
 
     @Override
@@ -86,12 +86,12 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(customerID, customer.customerID) && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(license, customer.license) && Objects.equals(cellNo, customer.cellNo) && Objects.equals(rentalAgents, customer.rentalAgents);
+        return Objects.equals(customerID, customer.customerID) && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(license, customer.license) && Objects.equals(cellNo, customer.cellNo) && Objects.equals(rentalAgent, customer.rentalAgent);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerID, firstName, lastName, email, license, cellNo, rentalAgents);
+        return Objects.hash(customerID, firstName, lastName, email, license, cellNo, rentalAgent);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class Customer {
                 ", license='" + license + '\'' +
                 ", cellNo='" + cellNo + '\'' +
              //   ", rentedTruck='" + rentedTruck + '\'' +
-                ", rentalAgents='" + rentalAgents + '\'' +
+                ", rentalAgent='" + rentalAgent.getEmployeeNumber() + '\'' +
                 '}';
     }
 
@@ -119,7 +119,7 @@ public class Customer {
 
        // private List<RentTruck> rentedTruck;
 
-        private RentalAgent rentalAgents;
+        private RentalAgent rentalAgent;
 
         public Builder setCustomerID(int customerID) {
             this.customerID = customerID;
@@ -156,8 +156,8 @@ public class Customer {
 //            return this;
 //        }
 
-        public Builder setRentalAgent(RentalAgent rentalAgents ) {
-            this.rentalAgents = rentalAgents;
+        public Builder setRentalAgent(RentalAgent rentalAgent ) {
+            this.rentalAgent = rentalAgent;
             return this;
         }
 
@@ -169,7 +169,7 @@ public class Customer {
             this.license = customer.license;
             this.cellNo = customer.cellNo;
           //  this.rentedTruck = customer.rentedTruck;
-            this.rentalAgents = customer.rentalAgents;
+            this.rentalAgent = customer.rentalAgent;
             return this;
         }
 

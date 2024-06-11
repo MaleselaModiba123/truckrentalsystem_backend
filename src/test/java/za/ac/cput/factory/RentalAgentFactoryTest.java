@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class RentalAgentFactoryTest {
     @Test
     void buildRentalAgent() {
-        RentalAgent rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Malesela", "Modiba", "Modiba@gmail.com", 750.50, 8);
+        RentalAgent rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Malesela", "Modiba", "Modiba@gmail.com", "Rental Agent",750.50, 8);
         assertNotNull(rentalAgent);
         System.out.println(rentalAgent);
     }
     @Test
     void buildRentalAgentWithFail(){
-        RentalAgent rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Malesela", "Modiba", "Modibagmail.com", 750.50, 8);
+        RentalAgent rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Malesela", "Modiba", "Modibagmail.com", "Rental Agent",750.50, 8);
         assertNotNull(rentalAgent);
         System.out.println(rentalAgent);
     }

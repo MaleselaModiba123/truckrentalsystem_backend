@@ -32,7 +32,7 @@ class RentalAgentControllerTest {
                 "Malesela",
                 "Modiba",
                 "Modiba@gmail.com",
-                750.50,
+                "Rental Agent",750.50,
                 8);
     }
     @Test
