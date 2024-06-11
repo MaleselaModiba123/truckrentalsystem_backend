@@ -33,7 +33,7 @@ public class ServiceRecordFactory {
                 .setCost(cost)
                 .setServiceDate(serviceDate)
                 .setNextServiceDate(nextServiceDate)
-                .setMechanicEmpNo(mechanic)
+                .setMechanic(mechanic)
                 .setTruck(truck)
                 .build();
     }

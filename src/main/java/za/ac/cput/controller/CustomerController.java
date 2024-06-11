@@ -6,6 +6,7 @@ import za.ac.cput.domain.Customer;
 import za.ac.cput.service.CustomerService;
 
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -39,7 +40,7 @@ public class CustomerController {
         return customerService.update(customer);
     }
     @GetMapping("/getAll")
-    public Set<Customer> getAll(){
+    public List<Customer> getAll(){
         return customerService.getAll();
     }
 }

@@ -10,7 +10,7 @@ import java.util.Objects;
 @Entity
 public class ServiceRecord {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int serviceID;
     private LocalDate serviceDate;
     private String serviceType;
@@ -18,16 +18,12 @@ public class ServiceRecord {
 
     private LocalDate nextServiceDate;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Truck_Vin")
+    @JoinColumn(name = "vin")
     private Truck truck;
 
-    @OneToOne
-    @JoinColumn(name = "Mechanic_Employee_Num")
-    private Mechanic mechanicEmpNo;
-
-
-
-
+    @ManyToOne
+    @JoinColumn(name = "Mechanic_Employee_Num", referencedColumnName = "employeeNumber")
+    private Mechanic mechanic;
 
     protected ServiceRecord(){
 
@@ -38,7 +34,7 @@ public class ServiceRecord {
         this.cost = builder.cost;
         this.serviceDate = builder.serviceDate;
         this.nextServiceDate = builder.nextServiceDate;
-        this.mechanicEmpNo = builder.mechanicEmpNo;
+        this.mechanic = builder.mechanic;
         this.truck = builder.truck;
 
 
@@ -64,8 +60,8 @@ public class ServiceRecord {
         return nextServiceDate;
     }
 
-    public Mechanic getMechanicEmpNo() {
-        return mechanicEmpNo;
+    public Mechanic getMechanic() {
+        return mechanic;
     }
 
     public Truck getTruck() {
@@ -77,12 +73,12 @@ public class ServiceRecord {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ServiceRecord that = (ServiceRecord) o;
-        return serviceID == that.serviceID && Double.compare(cost, that.cost) == 0 && Objects.equals(serviceDate, that.serviceDate) && Objects.equals(serviceType, that.serviceType) && Objects.equals(nextServiceDate, that.nextServiceDate) && Objects.equals(truck, that.truck) && Objects.equals(mechanicEmpNo, that.mechanicEmpNo);
+        return serviceID == that.serviceID && Double.compare(cost, that.cost) == 0 && Objects.equals(serviceDate, that.serviceDate) && Objects.equals(serviceType, that.serviceType) && Objects.equals(nextServiceDate, that.nextServiceDate) && Objects.equals(truck, that.truck) && Objects.equals(mechanic, that.mechanic);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(serviceID, serviceDate, serviceType, cost, nextServiceDate, truck, mechanicEmpNo);
+        return Objects.hash(serviceID, serviceDate, serviceType, cost, nextServiceDate, truck, mechanic);
     }
 
     @Override
@@ -92,7 +88,7 @@ public class ServiceRecord {
                 ", serviceDate=" + serviceDate +
                 ", serviceType='" + serviceType + '\'' +
                 ", cost=" + cost +
-                ", nextServiceDate=" + nextServiceDate + ", mechanicEmpNo='" + mechanicEmpNo.getEmployeeNumber() + '\'' + ", trucks=" + truck.getVin() +
+                ", nextServiceDate=" + nextServiceDate + ", mechanic='" + (mechanic != null ? mechanic.getEmployeeNumber() : "null") + + '\'' + ", trucks=" + truck.getVin() +
                 '}';
     }
 
@@ -102,7 +98,7 @@ public class ServiceRecord {
         private String serviceType;
         private double cost;
         private LocalDate nextServiceDate;
-        private Mechanic mechanicEmpNo;
+        private Mechanic mechanic;
         private Truck truck;
 
 
@@ -131,8 +127,8 @@ public class ServiceRecord {
         return this;
     }
 
-        public Builder setMechanicEmpNo(Mechanic mechanicEmpNo) {
-            this.mechanicEmpNo = mechanicEmpNo;
+        public Builder setMechanic(Mechanic mechanic) {
+            this.mechanic = mechanic;
             return this;
         }
 
@@ -147,7 +143,7 @@ public class ServiceRecord {
             this.serviceDate = serviceRecord.serviceDate;
             this.serviceType = serviceRecord.serviceType;
             this.nextServiceDate = serviceRecord.nextServiceDate;
-            this.mechanicEmpNo = serviceRecord.mechanicEmpNo;
+            this.mechanic = serviceRecord.mechanic;
             this.truck = serviceRecord.truck;
             return this;
     }

@@ -11,8 +11,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import za.ac.cput.domain.Customer;
+import za.ac.cput.domain.RentalAgent;
 import za.ac.cput.factory.CustomerFactory;
-
+import za.ac.cput.factory.RentalAgentFactory;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,11 +32,13 @@ class CustomerControllerTest {
     private TestRestTemplate restTemplate;
 
     private final String BASE_URL = "http://localhost:8080/truckrentalsystem/customer";
+    private static RentalAgent rentalAgent;
     private static Customer customer;
 
     @BeforeAll
     public static void setUp(){
-        customer = CustomerFactory.buildCustomer(1, "Leroy", "Sane", "leroysane@gmail.com", "CY 764824", "0846775627");
+      rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Malesela", "Modiba", "Modiba@gmail.com", "Rental Agent",750.50, 8);
+        customer = CustomerFactory.buildCustomer(1, "Leroy", "Sane", "leroysane@gmail.com", "CY 764824", "0846775627",rentalAgent);
     }
 
     @Test

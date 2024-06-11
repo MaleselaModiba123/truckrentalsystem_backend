@@ -27,7 +27,7 @@ public class Customer {
     private List<RentTruck> rentedTruck;
 
     @ManyToOne
-    @JoinColumn(name = "rentalAgentEmpNo", insertable = false, updatable = false)
+    @JoinColumn(name = "rentalAgentEmpNo", updatable = false)
     private RentalAgent rentalAgent;
 
     protected Customer() {

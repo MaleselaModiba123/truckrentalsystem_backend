@@ -26,9 +26,10 @@ class RentTruckFactoryTest {
                 6.3, "Manual", 5.89, "Diesel");
         Insurance insurance=InsuranceFactory.buildInsurance("Truck Insurance", "Out Surance"
                 , "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", 1500);
-        Customer customer = CustomerFactory.buildCustomer(1, "John", "Doe", "john.doe@example.com", "Code10", "123456789");
+        RentalAgent rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Malesela", "Modiba", "Modiba@gmail.com", "Rental Agent",750.50, 8);
+        Customer customer = CustomerFactory.buildCustomer(1, "John", "Doe", "john.doe@example.com", "Code10", "123456789",rentalAgent);
         Truck truck = TruckFactory.buildTruck("VIN123", "Model X", true, "NVM11263", 70.50,truckType,insurance);
-        RentalAgent salesPerson = RentalAgentFactory.buildRentalAgent("EMP001", "Jane", "Doe", "jane.doe@example.com", 50.0, 40);
+        RentalAgent salesPerson = RentalAgentFactory.buildRentalAgent("EMP001", "Jane", "Doe", "jane.doe@example.com", "Rental Agent",50.0, 40);
         Branch pickUp = BranchFactory.buildBranch(1, "WiggleCPT", "123 Main Street, Woodstock, South Africa, 7980");
         Branch dropOff = BranchFactory.buildBranch(3, "WiggleKZN", "10 Main Street, Durban, South Africa, 7000");
 

@@ -20,8 +20,8 @@ public class Mechanic extends Employee {
 
     private boolean availability;
 
-    @OneToOne(cascade ={CascadeType.PERSIST, CascadeType.MERGE})
-    private ServiceRecord serviceRecords;
+    @OneToMany(mappedBy = "serviceID")
+    private List<ServiceRecord> serviceRecords;
 
     protected Mechanic() {
     }
@@ -34,7 +34,7 @@ public class Mechanic extends Employee {
         this.employeeType = builder.employeeType;
         this.specialization = builder.specialization;
         this.availability = builder.availability;
-        this.serviceRecords = builder.serviceRecords;
+//        this.serviceRecords = builder.serviceRecords;
 
     }
 
@@ -43,13 +43,14 @@ public class Mechanic extends Employee {
         return specialization;
     }
 
-    public boolean getAvailability() {
+
+    public boolean isAvailability() {
         return availability;
     }
 
-    public ServiceRecord getServiceRecords() {
-        return serviceRecords;
-    }
+//    public List<ServiceRecord> getServiceRecords() {
+//        return serviceRecords;
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -74,7 +75,6 @@ public class Mechanic extends Employee {
                 ", employeeType='" + employeeType + '\'' +
                 ", Specialization='" + specialization + '\'' +
                 ", Availability='" + availability + '\'' +
-                ", ServiceRecords='" + serviceRecords + '\'' +
                 '}';
     }
 
@@ -89,7 +89,8 @@ public class Mechanic extends Employee {
         private String specialization;
         private boolean availability;
 
-        private ServiceRecord serviceRecords;
+
+//        private List<ServiceRecord> serviceRecords;
 
         public Builder setSpecialization(String specialization) {
             this.specialization = specialization;
@@ -126,10 +127,10 @@ public class Mechanic extends Employee {
             return this;
         }
 
-        public Builder setServiceRecord(ServiceRecord serviceRecords) {
-            this.serviceRecords = serviceRecords;
-            return this;
-        }
+//        public Builder setServiceRecords(List<ServiceRecord> serviceRecords) {
+//            this.serviceRecords = serviceRecords;
+//            return this;
+//        }
 
         public Builder copy(Mechanic mechanic) {
             this.employeeNumber = mechanic.employeeNumber;
@@ -139,7 +140,7 @@ public class Mechanic extends Employee {
             this.employeeType = mechanic.employeeType;
             this.specialization = mechanic.specialization;
             this.availability = mechanic.availability;
-            this.serviceRecords = mechanic.serviceRecords;
+//            this.serviceRecords = mechanic.serviceRecords;
             return this;
         }
 

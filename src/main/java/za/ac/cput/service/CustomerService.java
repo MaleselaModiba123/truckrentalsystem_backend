@@ -6,6 +6,7 @@ import za.ac.cput.domain.Customer;
 import za.ac.cput.repository.CustomerRepository;
 
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public Set<Customer> getAll() {
-        return customerRepository.findAll().stream().collect(Collectors.toSet());
+    public List<Customer> getAll() {
+        return customerRepository.findAll();
     }
 }

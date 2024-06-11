@@ -52,7 +52,7 @@ class ServiceRecordServiceTest {
         assertNotNull(savedInsurance);
 
         // Initialize and save Truck entity
-        truck = TruckFactory.buildTruck("1FUJGBDV7PLCW1234", "Volvo VNL 760", true, "CA 652-589", 478920.50, savedTruckType, savedInsurance);
+        truck = TruckFactory.buildTruck("1FUJGBDV7PLCW12", "Volvo VNL 760", true, "CA 652-589", 478920.50, savedTruckType, savedInsurance);
         Truck savedTruck = truckService.create(truck);
         assertNotNull(savedTruck);
 
@@ -75,7 +75,7 @@ class ServiceRecordServiceTest {
     @Order(1)
     void create() {
         ServiceRecord createdServiceRecord = serviceRecordService.create(serviceRecord);
-        assertNotNull(createdServiceRecord);
+        assertNotNull(createdServiceRecord, "ServiceRecord should be created and not null");
         System.out.println("Created Service Record: " + createdServiceRecord);
     }
 
@@ -83,7 +83,7 @@ class ServiceRecordServiceTest {
     @Order(2)
     void read() {
         ServiceRecord read = serviceRecordService.read(serviceRecord.getServiceID());
-        assertNotNull(read);
+        assertNotNull(read,"ServiceRecord should be read and not null");
         System.out.println("Read: " + read);
     }
 
@@ -93,7 +93,7 @@ class ServiceRecordServiceTest {
     void update(){
         ServiceRecord newServiceRecord = new ServiceRecord.Builder().copy(serviceRecord).setCost(6530.50).build();
         ServiceRecord updated = serviceRecordService.update(newServiceRecord);
-        assertNotNull(updated);
+        assertNotNull(updated,"ServiceRecord should be updated and not null");
         System.out.println(updated);
     }
 
