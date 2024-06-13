@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TruckTypeControllerTest {
-@Autowired
-private static TestRestTemplate restTemplate;
+    @Autowired
+    private TestRestTemplate restTemplate;
     private static final String BASE_URL = "http://localhost:8080/truckrentalsystem/truckType";
     private static TruckType truckType;
     private static int generatedTruckTypeId;
@@ -25,6 +25,7 @@ private static TestRestTemplate restTemplate;
    public static void setUp() {
         truckType= TruckTypeFactory.buildTruckType("Enclosed", "Large box truck suitable for moving large items.With its higher payload capacity, you can transport a wide range of items, including large packages, bulky equipment, furniture, appliances, and more", "7.4m * 2.48m*2.7m",
                 6.3, "Manual", 5.89, "Diesel");
+
     }
 
     @Test
@@ -68,5 +69,9 @@ private static TestRestTemplate restTemplate;
         System.out.println("Show All: ");
         System.out.println(responseEntity);
         System.out.println(responseEntity.getBody());
+    }
+
+    public static int getGeneratedTruckTypeId() {
+        return generatedTruckTypeId;
     }
 }

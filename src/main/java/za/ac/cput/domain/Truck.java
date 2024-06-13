@@ -12,7 +12,7 @@ import java.util.Objects;
 @Entity
 public class Truck {
     @Id
-    private String vin;
+    private String  vin;
     private String model;
     private boolean availability;
     private String licensePate;
@@ -92,8 +92,8 @@ public class Truck {
                 ", availability=" + availability +
                 ", licensePate='" + licensePate + '\'' +
                 ", currentMileage=" + currentMileage +
-                ", truckTypeId=" + truckype.getTruckTypeId() +
-                ", insuranceId=" + insurance.getInsuranceID() +
+                ", truckTypeId=" + truckype+
+                ", insuranceId=" + insurance+
                 '}';
     }
 

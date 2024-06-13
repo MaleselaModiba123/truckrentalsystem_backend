@@ -18,7 +18,7 @@ public class ServiceRecord {
 
     private LocalDate nextServiceDate;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vin")
+    @JoinColumn(name = "Truck_Vin",referencedColumnName = "vin")
     private Truck truck;
 
     @ManyToOne
@@ -88,7 +88,9 @@ public class ServiceRecord {
                 ", serviceDate=" + serviceDate +
                 ", serviceType='" + serviceType + '\'' +
                 ", cost=" + cost +
-                ", nextServiceDate=" + nextServiceDate + ", mechanic='" + (mechanic != null ? mechanic.getEmployeeNumber() : "null") + + '\'' + ", trucks=" + truck.getVin() +
+                ", nextServiceDate=" + nextServiceDate +
+                ", truck=" + truck+
+                ", mechanic=" + mechanic +
                 '}';
     }
 
