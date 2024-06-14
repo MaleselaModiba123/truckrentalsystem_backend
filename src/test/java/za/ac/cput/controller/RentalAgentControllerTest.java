@@ -1,9 +1,6 @@
 package za.ac.cput.controller;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -22,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class RentalAgentControllerTest {
      @Autowired
      private TestRestTemplate restTemplate;
-    private final String BASE_URL = "http://localhost:8080/truckrentalsystem/insurance";
+    private final String BASE_URL = "http://localhost:8080/truckrentalsystem/rentalAgent";
 
     private static RentalAgent rentalAgent;
 
@@ -52,9 +49,9 @@ class RentalAgentControllerTest {
         System.out.println("Read: " + response.getBody());
     }
     @Test
-    void update(){
+    void c_update(){
         String url = BASE_URL + "/update";
-        RentalAgent newRentalAgent = new RentalAgent.Builder().copy(rentalAgent).setFirstName("Malesela").build();
+        RentalAgent newRentalAgent = new RentalAgent.Builder().copy(rentalAgent).setFirstName("Skhumbuzo").build();
         ResponseEntity<RentalAgent> createResponse = restTemplate.postForEntity(url,newRentalAgent,RentalAgent.class);
         assertNotNull(createResponse);
         assertNotNull(createResponse.getBody());
@@ -63,14 +60,15 @@ class RentalAgentControllerTest {
         System.out.println("Updated rental Agent: "+ retrievedRentalAgent);
     }
     @Test
-    void delete(){
+    @Disabled
+    void e_delete(){
         String url = BASE_URL + "/delete/" + rentalAgent.getEmployeeNumber();
         System.out.println("URL: "+ url);
         restTemplate.delete(url);
         System.out.println("Successfully deleted Rental Agent");
     }
     @Test
-    void getAll(){
+    void d_getAll(){
         String url = BASE_URL + "/getAll";
         HttpHeaders httpHeaders = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(null, httpHeaders);

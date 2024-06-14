@@ -22,7 +22,8 @@ class ServiceRecordFactoryTest {
                 6.3, "Manual", 5.89, "Diesel");
         insurance = InsuranceFactory.buildInsurance("Truck Insurance", "Out Surance",
                 "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", 1500);
-        truck = TruckFactory.buildTruck("1FUJGBDV7PLCW1234", "Volvo VNL 760", true, "CA 652-589", 478920.50, truckType, insurance);
+        byte[] photo = new byte[0];
+        truck = TruckFactory.buildTruck("1FUJGBDV7PLCW1234", "Volvo VNL 760",photo, true, "CA 652-589", 478920.50, truckType, insurance);
         mechanic = MechanicFactory.buildMechanic("001", "Zukhanye", "Mene", "bennie@gmail.com", "Mechanic", "Engine", true);
     }
     @Test

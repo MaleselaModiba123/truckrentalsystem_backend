@@ -66,11 +66,9 @@ class CustomerControllerTest {
     void c_update() {
         String url = BASE_URL + "/update";
         Customer newCustomer = new Customer.Builder().copy(customer).setFirstName("Bennie").build();
-
         ResponseEntity<Customer> updateResponse = restTemplate.postForEntity(url, newCustomer, Customer.class);
         assertNotNull(updateResponse);
         assertNotNull(updateResponse.getBody());
-
         Customer updatedCustomer = updateResponse.getBody();
         assertEquals(newCustomer.getCustomerID(), updatedCustomer.getCustomerID());
         System.out.println("Updated customer: " + updatedCustomer);

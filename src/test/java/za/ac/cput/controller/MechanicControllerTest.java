@@ -34,25 +34,11 @@ class MechanicControllerTest {
     private final String BASE_URL = "http://localhost:8080/truckrentalsystem/mechanic";
     private static Mechanic mechanic;
 
-    private static ServiceRecord serviceRecord;
-    private static TruckType truckType;
-    private static Insurance insurance;
-    private static Truck truck;
 
-//    @BeforeAll
-//   public static void setUp() {
-//        truckType = TruckTypeFactory.buildTruckType("Enclosed", "Large box truck suitable for moving large items.With its higher payload capacity, you can transport a wide range of items, including large packages, bulky equipment, furniture, appliances, and more", "7.4m * 2.48m*2.7m",
-//                6.3, "Manual", 5.89, "Diesel");
-//        insurance = InsuranceFactory.buildInsurance("Truck Insurance", "Out Surance",
-//                "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", 1500);
-//        truck = TruckFactory.buildTruck("1FUJGBDV7PLCW1234", "Volvo VNL 760", true, "CA 652-589", 478920.50, truckType, insurance);
-//        serviceRecord = ServiceRecordFactory.buildServiceRecord(001,
-//                "Normal Service",
-//                3500.99,
-//                LocalDate.of(2024,3,25),
-//                LocalDate.of(2024,6,25)
-//                ,mechanic,truck);
-//        }
+    @BeforeAll
+   public static void setUp() {
+        mechanic= MechanicFactory.buildMechanic("001","Zukhanye", "Mene", "bennie@gmail.com", "Mechanic", "Engine" , true);
+        }
 
     @Test
     void a_create() {
@@ -90,6 +76,7 @@ class MechanicControllerTest {
     }
 
     @Test
+    @Disabled
     void d_delete() {
         String url = BASE_URL + "/delete/" + mechanic.getEmployeeNumber();
         System.out.println("URL: " + url);

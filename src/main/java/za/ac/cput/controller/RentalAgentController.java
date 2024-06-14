@@ -17,13 +17,13 @@ public class RentalAgentController {
     public RentalAgent create(@RequestBody RentalAgent rentalAgent) {
         return rentalAgentService.create(rentalAgent);
     }
-    @GetMapping("/read/{EmployeeNumber}")
-    public RentalAgent read(@RequestBody String EmployeeNumber){
-        return rentalAgentService.read(EmployeeNumber);
+    @GetMapping("/read/{employeeNumber}")
+    public RentalAgent read(@PathVariable String employeeNumber){
+        return rentalAgentService.read(employeeNumber);
     }
-    @DeleteMapping("/delete{EmployeeNumber}")
-    public void delete(@PathVariable String EmployeeNumber){
-        rentalAgentService.delete(EmployeeNumber);
+    @DeleteMapping("/delete{employeeNumber}")
+    public void delete(@PathVariable String employeeNumber){
+        rentalAgentService.delete(employeeNumber);
     }
     @PostMapping("/update")
     public RentalAgent update(@RequestBody RentalAgent rentalAgent){

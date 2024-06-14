@@ -41,8 +41,8 @@ class TruckControllerTest {
         ResponseEntity<Insurance> insuranceResponse = restTemplate.postForEntity(BASE_URL + "/insurance/create", insurance, Insurance.class);
         Insurance savedInsurance = insuranceResponse.getBody();
         assertNotNull(savedInsurance);
-
-        truck = TruckFactory.buildTruck("7774444", "Scania", true, "Diecast", 44, savedTruckType,
+        byte[] photo = new byte[0];
+        truck = TruckFactory.buildTruck("7774444", "Scania", photo,true, "Diecast", 44, savedTruckType,
                 savedInsurance);
 
     }

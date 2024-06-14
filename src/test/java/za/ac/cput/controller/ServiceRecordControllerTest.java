@@ -56,9 +56,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
         // Create Truck using saved TruckType and Insurance
+        byte[] photo = new byte[0];
         Truck truck = TruckFactory.buildTruck(
                 "1FUJGBDV7PLCW12",
                 "Volvo VNL 760",
+                photo,
                 true,
                 "CA 652-589",
                 478920.50,

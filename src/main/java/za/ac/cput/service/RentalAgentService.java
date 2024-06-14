@@ -24,8 +24,8 @@ public class RentalAgentService implements IRentalAgentService {
         return rentalAgentAgentRepository.save(rentalAgent);
     }
     @Override
-    public RentalAgent read(String EmployeeNumber){
-        return this.rentalAgentAgentRepository.findById(EmployeeNumber).orElse(null);
+    public RentalAgent read(String employeeNumber){
+        return this.rentalAgentAgentRepository.findById(employeeNumber).orElse(null);
 
     }
     @Override
@@ -33,8 +33,8 @@ public class RentalAgentService implements IRentalAgentService {
         return rentalAgentAgentRepository.save(rentalAgent);
     }
     @Override
-    public void delete(String EmplyoeeNumber){
-        rentalAgentAgentRepository.deleteById(EmplyoeeNumber);
+    public void delete(String employeeNumber){
+        rentalAgentAgentRepository.deleteById(employeeNumber);
     }
     @Override
     public List<RentalAgent> getAll(){

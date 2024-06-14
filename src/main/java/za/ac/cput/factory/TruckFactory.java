@@ -11,8 +11,12 @@ import za.ac.cput.util.Helper;
  * Date: 07 May 2024
  * */
 public class TruckFactory {
-    public static Truck buildTruck(String vin, String model, boolean availability, String licensePate,
+    public static Truck buildTruck(String vin, String model, byte[] photo, boolean availability, String licensePate,
                                    double currentMileage, TruckType truckType, Insurance insurance) {
+        if (photo == null || photo.length == 0) {
+            // Create an empty byte array as a placeholder for the photo
+            photo = new byte[1];
+        }
         if (Helper.isNullOrEmpty(vin) ||
                 Helper.isNullOrEmpty(model) ||
                 Helper.isNullOrEmpty(licensePate) || Helper.isDoubleNotValid(currentMileage)
@@ -23,6 +27,7 @@ public class TruckFactory {
         return new Truck.Builder()
                 .setVin(vin)
                 .setModel(model)
+                .setPhoto(photo)
                 .setAvailability(availability)
                 .setLicensePate(licensePate)
                 .setCurrentMileage(currentMileage)

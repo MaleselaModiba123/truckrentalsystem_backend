@@ -52,7 +52,8 @@ class ServiceRecordServiceTest {
         assertNotNull(savedInsurance);
 
         // Initialize and save Truck entity
-        truck = TruckFactory.buildTruck("1FUJGBDV7PLCW12", "Volvo VNL 760", true, "CA 652-589", 478920.50, savedTruckType, savedInsurance);
+        byte[] photo = new byte[0];
+        truck = TruckFactory.buildTruck("1FUJGBDV7PLCW12", "Volvo VNL 760", photo,true, "CA 652-589", 478920.50, savedTruckType, savedInsurance);
         Truck savedTruck = truckService.create(truck);
         assertNotNull(savedTruck);
 

@@ -25,7 +25,8 @@ class TruckFactoryTest {
                 6.3, "Manual", 5.89, "Diesel");
         Insurance insurance=InsuranceFactory.buildInsurance("Truck Insurance", "Out Surance"
                 , "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", 1500);
-        Truck createTruck = TruckFactory.buildTruck("1FUJGBDV7PLCW1234", " Volvo VNL 760", true, "CA 652-589", 478920.50,truckType,insurance);
+        byte[] photo = new byte[0];
+        Truck createTruck = TruckFactory.buildTruck("1FUJGBDV7PLCW1234", " Volvo VNL 760",photo, true, "CA 652-589", 478920.50,truckType,insurance);
         assertNotNull(createTruck);
         System.out.println("Created: " + createTruck);
     }

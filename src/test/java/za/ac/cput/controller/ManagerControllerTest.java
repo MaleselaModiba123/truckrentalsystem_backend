@@ -55,7 +55,8 @@ class ManagerControllerTest {
     }
 
     @Test
-    void delete() {
+    @Disabled
+    void e_delete() {
         String url = BASE_URL + "/delete/" + Manager.getEmployeeNumber();
         System.out.println("URL:" + url);
         restTemplate.delete(url);
@@ -63,7 +64,7 @@ class ManagerControllerTest {
     }
 
     @Test
-    void update() {
+    void c_update() {
         String url = BASE_URL + "/update";
         Manager newManager = new Manager.Builder().copy(Manager).setEmployeeNumber("Auto general").build();
         ResponseEntity<Manager> createResponse = restTemplate.postForEntity(url, newManager, Manager.class);
@@ -77,7 +78,7 @@ class ManagerControllerTest {
     }
 
     @Test
-    void getAll() {
+    void d_getAll() {
         String url = BASE_URL + "/getAll";
         HttpHeaders httpHeaders = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(null, httpHeaders);

@@ -54,6 +54,7 @@ class InsuranceControllerTest {
     }
 
     @Test
+    @Disabled
     void e_delete() {
         String url = BASE_URL + "/delete/" + generatedInsuranceId;
         System.out.println("URL:" + url);

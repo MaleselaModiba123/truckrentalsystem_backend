@@ -1,6 +1,7 @@
 package za.ac.cput.domain;
 import jakarta.persistence.*;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -14,9 +15,14 @@ public class Truck {
     @Id
     private String  vin;
     private String model;
+    @Lob
+    @Column(length = 100000)
+    private byte[] photo;
     private boolean availability;
     private String licensePate;
     private double currentMileage;
+
+
     @ManyToOne
     @JoinColumn(name = "truckTypeId")
     private TruckType truckype;
@@ -31,6 +37,7 @@ public class Truck {
     private Truck(Builder builder) {
         this.vin = builder.vin;
         this.model = builder.model;
+        this.photo=builder.photo;
         this.availability = builder.availability;
         this.licensePate =builder.licensePate;
         this.currentMileage = builder.currentMileage;
@@ -50,6 +57,9 @@ public class Truck {
     public String getModel() {
         return model;
     }
+    public byte[] getPhoto() {
+        return photo;
+    }
 
     public boolean isAvailability() {
         return availability;
@@ -62,6 +72,8 @@ public class Truck {
     public double getCurrentMileage() {
         return currentMileage;
     }
+
+
 
     public TruckType getTruckype() {
         return truckype;
@@ -76,12 +88,14 @@ public class Truck {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Truck truck = (Truck) o;
-        return availability == truck.availability && Double.compare(currentMileage, truck.currentMileage) == 0 && Objects.equals(vin, truck.vin) && Objects.equals(model, truck.model) && Objects.equals(licensePate, truck.licensePate) && Objects.equals(truckype, truck.truckype) && Objects.equals(insurance, truck.insurance);
+        return availability == truck.availability && Double.compare(currentMileage, truck.currentMileage) == 0 && Objects.equals(vin, truck.vin) && Objects.equals(model, truck.model) && Arrays.equals(photo, truck.photo) && Objects.equals(licensePate, truck.licensePate) && Objects.equals(truckype, truck.truckype) && Objects.equals(insurance, truck.insurance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(vin, model, availability, licensePate, currentMileage, truckype, insurance);
+        int result = Objects.hash(vin, model, availability, licensePate, currentMileage, truckype, insurance);
+        result = 31 * result + Arrays.hashCode(photo);
+        return result;
     }
 
     @Override
@@ -89,19 +103,20 @@ public class Truck {
         return "Truck{" +
                 "vin='" + vin + '\'' +
                 ", model='" + model + '\'' +
+                ", photo=" + Arrays.toString(photo) +
                 ", availability=" + availability +
                 ", licensePate='" + licensePate + '\'' +
                 ", currentMileage=" + currentMileage +
-                ", truckTypeId=" + truckype+
-                ", insuranceId=" + insurance+
+                ", truckype=" + truckype +
+                ", insurance=" + insurance +
                 '}';
     }
-
 
 
     public static class Builder {
         private String vin;
         private String model;
+        private byte[] photo;
         private boolean availability;
         private String licensePate;
         private double currentMileage;
@@ -116,7 +131,10 @@ public class Truck {
             this.model = model;
             return this;
         }
-
+        public Builder setPhoto(byte[] photo) {
+            this.photo = photo;
+            return this;
+        }
         public Builder setAvailability(boolean availability) {
             this.availability = availability;
             return this;
@@ -133,6 +151,7 @@ public class Truck {
             return this;
         }
 
+
         public Builder setTruckype(TruckType truckype) {
             this.truckype = truckype;
             return this;
@@ -146,6 +165,7 @@ public class Truck {
         public Builder copy(Truck truck) {
             this.vin = truck.vin;
             this.model = truck.model;
+            this.photo=truck.photo;
             this.availability = truck.availability;
             this.licensePate = truck.licensePate;
             this.truckype = truck.truckype;

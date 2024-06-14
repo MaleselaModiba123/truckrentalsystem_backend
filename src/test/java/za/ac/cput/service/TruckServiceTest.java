@@ -46,9 +46,9 @@ class TruckServiceTest {
                 "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft, Natural disasters", 1500);
         Insurance savedInsurance = insuranceService.create(insurance);
         assertNotNull(savedInsurance);
-
+        byte[] photo = new byte[0];
         // Initialize the Truck entity using the saved TruckType and Insurance entities
-        truck = TruckFactory.buildTruck("7774444", "Scania", true, "123455", 44, savedTruckType, savedInsurance);
+        truck = TruckFactory.buildTruck("7774444", "Scania", photo,true, "123455", 44, savedTruckType, savedInsurance);
         Truck createdTruck = truckService.create(truck);
         assertNotNull(createdTruck);
         truck = createdTruck;  // Update the instance variable to the created truck

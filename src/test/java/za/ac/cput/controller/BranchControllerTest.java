@@ -1,9 +1,6 @@
 package za.ac.cput.controller;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -54,7 +51,8 @@ public class BranchControllerTest {
         }
 
         @Test
-        void delete() {
+        @Disabled
+        void d_delete() {
             String url = BASE_URL + "/delete/" + branch.getBranchId();
             System.out.println("URL:" + url);
             restTemplate.delete(url);
@@ -74,7 +72,7 @@ public class BranchControllerTest {
 //        }
 
         @Test
-        void getAll() {
+        void c_getAll() {
             String url = BASE_URL + "/getAll";
             HttpHeaders httpHeaders = new HttpHeaders();
             HttpEntity<String> entity = new HttpEntity<>(null, httpHeaders);

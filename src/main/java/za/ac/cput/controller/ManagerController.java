@@ -19,12 +19,12 @@ public class ManagerController {
         return ManagerService.create(Manager);
     }
     @GetMapping("/read/{Manager}")
-    public Manager read(@PathVariable int Manager){
-        return ManagerService.read(String.valueOf(Manager));
+    public Manager read(@PathVariable String empNum){
+        return ManagerService.read(empNum);
     }
     @DeleteMapping("/delete/{EmployeeNumber}")
-    public void delete(@PathVariable int Manager){
-        ManagerService.delete(String.valueOf(Manager));
+    public void delete(@PathVariable String empNum){
+        ManagerService.delete(empNum);
     }
     @PostMapping("/update")
     public Manager update(@RequestBody Manager Manager){
