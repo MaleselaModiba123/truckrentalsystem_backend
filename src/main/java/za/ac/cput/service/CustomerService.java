@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Customer;
 import za.ac.cput.repository.CustomerRepository;
 
-
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * CustomerService.java
@@ -38,9 +35,11 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public Customer update(Customer customer) {
-        return customerRepository.save(customer);
+        if (customerRepository.existsById(customer.getCustomerID())) {
+            return customerRepository.save(customer);
+        }
+        return null;
     }
-
     @Override
     public void delete(Integer customerID) {
         customerRepository.deleteById(customerID);

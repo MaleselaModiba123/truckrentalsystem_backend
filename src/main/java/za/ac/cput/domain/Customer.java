@@ -18,9 +18,10 @@ public class Customer {
 
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String email;
     private String license;
-
+    @Column(unique = true)
     private String cellNo;
 
     @OneToMany(mappedBy = "rentId",cascade = CascadeType.ALL)

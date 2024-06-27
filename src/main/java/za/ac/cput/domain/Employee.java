@@ -1,5 +1,6 @@
 package za.ac.cput.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
@@ -17,6 +18,7 @@ public class Employee {
     protected String employeeNumber;
     protected String firstName;
     protected String lastName;
+    @Column(unique = true)
     protected String email;
     protected String employeeType;
 

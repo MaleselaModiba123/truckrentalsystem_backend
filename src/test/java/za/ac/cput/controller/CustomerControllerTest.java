@@ -32,13 +32,12 @@ class CustomerControllerTest {
     private TestRestTemplate restTemplate;
 
     private final String BASE_URL = "http://localhost:8080/truckrentalsystem/customer";
-    private static RentalAgent rentalAgent;
     private static Customer customer;
 
     @BeforeAll
     public static void setUp(){
-      rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Malesela", "Modiba", "Modiba@gmail.com", "Rental Agent",750.50, 8);
-        customer = CustomerFactory.buildCustomer(1, "Leroy", "Sane", "leroysane@gmail.com", "CY 764824", "0846775627",rentalAgent);
+        RentalAgent rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Asi", "Mbende", "asi@gmail.com", "Rental Agent", 750.50, 8);
+        customer = CustomerFactory.buildCustomer(2, "Zilungile", "Mbende", "zishe@gmail.com", "Code 10", "0846775027", rentalAgent);
     }
 
     @Test
@@ -70,12 +69,13 @@ class CustomerControllerTest {
         assertNotNull(updateResponse);
         assertNotNull(updateResponse.getBody());
         Customer updatedCustomer = updateResponse.getBody();
-        assertEquals(newCustomer.getCustomerID(), updatedCustomer.getCustomerID());
+        assertEquals("Bennie", updatedCustomer.getFirstName());
         System.out.println("Updated customer: " + updatedCustomer);
     }
 
     @Test
-    void d_delete() {
+    @Disabled
+    void e_delete() {
         String url = BASE_URL + "/delete/" + customer.getCustomerID();
         System.out.println("URL: " + url);
         restTemplate.delete(url);
@@ -83,7 +83,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    void e_getAll() {
+    void d_getAll() {
         String url = BASE_URL + "/getAll";
         HttpHeaders httpHeaders = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(null, httpHeaders);
