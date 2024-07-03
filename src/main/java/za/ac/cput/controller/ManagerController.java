@@ -8,7 +8,7 @@ import java.util.List;
  * Ayanda Phumzile Khoza (218057172)
  * Date: 25 May 2024
  * */
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/Manager")
 public class ManagerController {

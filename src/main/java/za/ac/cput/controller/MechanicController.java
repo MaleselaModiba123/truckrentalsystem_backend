@@ -14,7 +14,7 @@ import java.util.Set;
  * @aurthor Zukhanye Anele Mene (219404275)
  * Date: 25 May 2024
  */
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/mechanic")
 public class MechanicController {

@@ -6,7 +6,7 @@ import za.ac.cput.domain.ServiceRecord;
 import za.ac.cput.service.ServiceRecordService;
 
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/serviceRecord")
 public class ServiceRecordController {

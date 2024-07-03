@@ -11,7 +11,7 @@ import java.util.List;
  * @author Thandolwethu Zamasiba Khoza (221797289)
  * Date: 27 May 2024
  */
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/branch")
 public class BranchController {

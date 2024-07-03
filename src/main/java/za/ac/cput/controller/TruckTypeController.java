@@ -7,7 +7,7 @@ import za.ac.cput.domain.TruckType;
 import za.ac.cput.service.TruckTypeService;
 
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/truckType")
 public class TruckTypeController {

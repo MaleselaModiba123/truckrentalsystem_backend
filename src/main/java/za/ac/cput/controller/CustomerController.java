@@ -15,7 +15,7 @@ import java.util.List;
  * Date: 25 May 2024
  */
 
-@CrossOrigin("*")
+@CrossOrigin(origins="*")
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {

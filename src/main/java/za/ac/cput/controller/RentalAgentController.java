@@ -6,7 +6,7 @@ import za.ac.cput.domain.RentalAgent;
 import za.ac.cput.service.RentalAgentService;
 
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/rentalAgent")
 public class RentalAgentController {
