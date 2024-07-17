@@ -10,6 +10,7 @@ const CustomerComponent = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [license, setLicense] = useState('');
     const [cellNo, setCellNo] = useState('');
     const [errors, setErrors] = useState({});
@@ -24,6 +25,7 @@ const CustomerComponent = () => {
                     setFirstName(response.data.firstName);
                     setLastName(response.data.lastName);
                     setEmail(response.data.email);
+                    setPassword(response.data.password);
                     setLicense(response.data.license);
                     setCellNo(response.data.cellNo);
                 })
@@ -36,7 +38,7 @@ const CustomerComponent = () => {
     const saveCustomer=(e) =>{
         e.preventDefault();
         if (validateForm()) {
-            const customer = { firstName,lastName, email, license, cellNo };
+            const customer = { firstName,lastName, email, password,license, cellNo };
             console.log(customer);
             updateCustomer(customerID, customer)
                 .then((response) => {
@@ -63,6 +65,10 @@ const CustomerComponent = () => {
         }
         if (!email.trim()) {
             errorsCopy.email = 'Email is required';
+            valid = false;
+        }
+        if (!password.trim()) {
+            errorsCopy.password = 'Password is required';
             valid = false;
         }
         if (!license.trim()) {
@@ -126,6 +132,19 @@ const CustomerComponent = () => {
                                 />
                                 {errors.email && (
                                     <div className="invalid-feedback">{errors.email}</div>
+                                )}
+                                <label className="form=label">Password:</label>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    value={password}
+                                    className={`form-control form-control-sm ${
+                                        errors.password ? "is-invalid" : ""
+                                    }`}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                                {errors.password && (
+                                    <div className="invalid-feedback">{errors.password}</div>
                                 )}
 
                                 <label className="form=label">License:</label>

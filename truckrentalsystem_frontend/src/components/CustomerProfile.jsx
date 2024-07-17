@@ -61,6 +61,10 @@ const CustomerProfile = () => {
                         <td>{customer.email}</td>
                     </tr>
                     <tr>
+                        <th>Password</th>
+                        <td>{customer.password}</td>
+                    </tr>
+                    <tr>
                         <th>Licence</th>
                         <td>{customer.license}</td>
                     </tr>
