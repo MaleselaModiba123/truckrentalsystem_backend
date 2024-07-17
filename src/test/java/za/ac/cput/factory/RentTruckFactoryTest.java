@@ -27,7 +27,7 @@ class RentTruckFactoryTest {
         Insurance insurance=InsuranceFactory.buildInsurance("Truck Insurance", "Out Surance"
                 , "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", 1500);
         RentalAgent rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Malesela", "Modiba", "Modiba@gmail.com", "Rental Agent",750.50, 8);
-        Customer customer = CustomerFactory.buildCustomer(1, "John", "Doe", "john.doe@example.com", "Code10", "123456789",rentalAgent);
+        Customer customer = CustomerFactory.buildCustomer(1, "John", "Doe", "john.doe@example.com", "12345","Code10", "123456789",rentalAgent);
         byte[] photo = new byte[0];
         Truck truck = TruckFactory.buildTruck("VIN123", "Model X", photo,true, "NVM11263", 70.50,truckType,insurance);
         RentalAgent salesPerson = RentalAgentFactory.buildRentalAgent("EMP001", "Jane", "Doe", "jane.doe@example.com", "Rental Agent",50.0, 40);

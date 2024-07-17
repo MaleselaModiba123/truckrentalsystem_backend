@@ -37,7 +37,7 @@ class CustomerControllerTest {
     @BeforeAll
     public static void setUp(){
         RentalAgent rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Asi", "Mbende", "asi@gmail.com", "Rental Agent", 750.50, 8);
-        customer = CustomerFactory.buildCustomer(2, "Zilungile", "Mbende", "zishe@gmail.com", "Code 10", "0846775027", rentalAgent);
+        customer = CustomerFactory.buildCustomer(2, "Zilungile", "Mbende", "zishe@gmail.com", "12345","Code 10", "0846775027", rentalAgent);
     }
 
     @Test

@@ -36,7 +36,7 @@ void setUp(){
     rentalAgent = rentalAgentService.create(rentalAgent);
     assertNotNull(rentalAgent, "RentalAgent should be created and not null");
 
-    customer = CustomerFactory.buildCustomer(1, "Khanye", "West", "khanye@gmail.com", "Code 10", "084 654 6878", rentalAgent);
+    customer = CustomerFactory.buildCustomer(1, "Khanye", "West", "khanye@gmail.com", "12345","Code 10", "084 654 6878", rentalAgent);
     customer = customerService.create(customer);
     assertNotNull(customer, "Customer should be created and not null");
 }

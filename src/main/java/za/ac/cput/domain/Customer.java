@@ -20,6 +20,7 @@ public class Customer {
     private String lastName;
     @Column(unique = true)
     private String email;
+    private String password;
     private String license;
     @Column(unique = true)
     private String cellNo;
@@ -39,6 +40,7 @@ public class Customer {
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.email = builder.email;
+        this.password=builder.password;
         this.license = builder.license;
         this.cellNo = builder.cellNo;
         //this.rentedTruck=builder.rentedTruck;
@@ -64,6 +66,10 @@ public class Customer {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public String getLicense() {
 
         return license;
@@ -87,12 +93,12 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(customerID, customer.customerID) && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(license, customer.license) && Objects.equals(cellNo, customer.cellNo) && Objects.equals(rentalAgent, customer.rentalAgent);
+        return Objects.equals(customerID, customer.customerID) && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(password, customer.password)  && Objects.equals(license, customer.license) && Objects.equals(cellNo, customer.cellNo) && Objects.equals(rentalAgent, customer.rentalAgent);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerID, firstName, lastName, email, license, cellNo, rentalAgent);
+        return Objects.hash(customerID, firstName, lastName, email,password, license, cellNo, rentalAgent);
     }
 
     @Override
@@ -102,6 +108,7 @@ public class Customer {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", license='" + license + '\'' +
                 ", cellNo='" + cellNo + '\'' +
              //   ", rentedTruck='" + rentedTruck + '\'' +
@@ -114,6 +121,7 @@ public class Customer {
         private String firstName;
         private String lastName;
         private String email;
+        private String password;
         private String license;
 
         private String cellNo;
@@ -139,6 +147,10 @@ public class Customer {
 
         public Builder setEmail(String email) {
             this.email = email;
+            return this;
+        }
+        public Builder setPassword(String password) {
+            this.password = password;
             return this;
         }
 
@@ -167,6 +179,7 @@ public class Customer {
             this.firstName = customer.firstName;
             this.lastName = customer.lastName;
             this.email = customer.email;
+            this.password = customer.password;
             this.license = customer.license;
             this.cellNo = customer.cellNo;
           //  this.rentedTruck = customer.rentedTruck;
