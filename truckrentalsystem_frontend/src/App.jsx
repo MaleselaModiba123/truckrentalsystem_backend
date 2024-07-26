@@ -5,6 +5,7 @@ import CustomerComponent from "./components/CustomerComponent.jsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import HeaderComponent from "./components/HeaderComponent.jsx";
 import CustomerProfile from "./components/CustomerProfile.jsx";
+import CustomerSignUp from "./components/CustomerSignUp.jsx";
 
 function App() {
     return (
@@ -17,6 +18,12 @@ function App() {
                         <Route
                             path="/update-customer/:customerID"
                             element={<CustomerComponent />}
+                        />
+
+                        <Route path="/" element={<CustomerSignUp />} />
+                        <Route
+                             path="/Sign Up"
+                             element={<CustomerSignUp />}
                         />
 
                     </Routes>
