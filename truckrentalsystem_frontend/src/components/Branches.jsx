@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { getAllBranches } from '../services/BranchService';
+import React, {useEffect, useState} from 'react';
+import {getAllBranches} from '../services/BranchService';
 
-const Branches = () => {
-    const [showDropdown, setShowDropdown] = useState(false); // State to manage dropdown visibility
-    const [branches, setBranches] = useState([]); // State to store branch data
-    const [loading, setLoading] = useState(true); // State to manage loading state
-    const [error, setError] = useState(null); // State to manage error state
-    const toggleDropdown = () => {
-        setShowDropdown(!showDropdown);
-    };
+const Branches = ({ showDropdown }) => {
+    const [branches, setBranches] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // List of branches - replace with actual data from your database or state
     useEffect(() => {
         const fetchBranches = async () => {
             try {
@@ -35,20 +30,13 @@ const Branches = () => {
     }
 
     return (
-        <div className="nav-dropdown">
-            <button className="nav-button" onClick={toggleDropdown}>
-                Branches
-            </button>
-            {showDropdown && (
-                <div className="dropdown-content">
-                    {branches.map((branch) => (
-                        <a key={branch.branchId} href={`#${branch.branchName.toLowerCase().replace(' ', '-')}`}>
-                            {branch.branchName}
-                        </a>
-                    ))}
-                </div>
-            )}
-        </div>
+        <React.Fragment>
+            {branches.map((branch) => (
+                <a key={branch.branchId} className="dropdown-item" href={`#${branch.branchName.toLowerCase().replace(' ', '-')}`}>
+                    {branch.branchName}
+                </a>
+            ))}
+        </React.Fragment>
     );
 };
 

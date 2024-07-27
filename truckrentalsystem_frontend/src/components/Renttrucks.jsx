@@ -4,7 +4,7 @@ import React from 'react';
 const truckData = [
     {
         id: 1,
-        image: '../public/smaller _truck.jpeg',
+        image: '/smaller _truck.jpeg',
         model: 'Model A',
         type: 'Flatbed',
         payload: '5000 kg',
@@ -13,7 +13,7 @@ const truckData = [
     },
     {
         id: 2,
-        image: '../public/small_truck.jpeg',
+        image: '/small_truck.jpeg',
         model: 'Model B',
         type: 'Refrigerated',
         payload: '3000 kg',
@@ -22,7 +22,7 @@ const truckData = [
     },
     {
         id: 3,
-        image: '../public/Medium_truck.jpeg',
+        image: '/Medium_truck.jpeg',
         model: 'Model c',
         type: 'Refrigerated',
         payload: '3080 kg',
@@ -31,7 +31,7 @@ const truckData = [
     },
     {
         id: 4,
-        image: '../public/Logistics_truck copy.jpeg',
+        image: '/Logistics_truck copy.jpeg',
         model: 'Model d',
         type: 'Refrigerated',
         payload: '3081 kg',
@@ -40,7 +40,7 @@ const truckData = [
     },
     {
         id: 5,
-        image: '/public/large_Medium_truck.jpeg',
+        image: '/large_Medium_truck.jpeg',
         model: 'Model e',
         type: 'Refrigerated',
         payload: '3082 kg',
@@ -49,7 +49,7 @@ const truckData = [
     },
     {
         id: 6,
-        image: '../public/Landing1.jpeg',
+        image: '/Landing1.jpeg',
         model: 'Model f',
         type: 'Refrigerated',
         payload: '3083 kg',
@@ -58,7 +58,7 @@ const truckData = [
     },
     {
         id: 7,
-        image: '../public/Construction_truck.jpeg',
+        image: '/Construction_truck.jpeg',
         model: 'Model g',
         type: 'Refrigerated',
         payload: '3084 kg',
@@ -67,7 +67,7 @@ const truckData = [
     },
     {
         id: 8,
-        image: '../public/code_10.jpeg',
+        image: '/code_10.jpeg',
         model: 'Model h',
         type: 'Refrigerated',
         payload: '3085 kg',
