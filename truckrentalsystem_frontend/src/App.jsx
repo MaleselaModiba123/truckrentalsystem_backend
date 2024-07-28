@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import Renttrucks from './components/Renttrucks';
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
 import Branches from './components/Branches';
+import GetQuote from './components/GetQuote';
 import CustomerProfile from './components/CustomerProfile.jsx';
 import CustomerComponent from './components/CustomerComponent.jsx';
 import CustomerSignUp from "./components/CustomerSignUp.jsx";
 import FooterComponent from './components/FooterComponent.jsx';
 import HeaderComponent from './components/HeaderComponent.jsx';
-
-import './App.css';
 import SignUpComponent from "./components/SignUpComponent.jsx";
 import SignInComponent from "./components/SignInComponent.jsx";
-
+import './App.css';
 
 function App() {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -37,7 +36,6 @@ function App() {
                 <HeaderComponent />
                 <div className="content-container">
                     <Routes>
-
                         <Route exact path="/" element={<Home />} />
                         <Route path="/home" element={<Home />} />
                         <Route path="/rent-trucks" element={<Renttrucks />} />
@@ -47,8 +45,9 @@ function App() {
                         <Route path="/sign-in" element={<SignInComponent />} />
                         <Route path="/sign-up" element={<SignUpComponent />} />
                         <Route path="/update-customer/:customerID" element={<CustomerComponent />} />
-                        <Route path="/Sign Up" element={<CustomerSignUp />} />
+                        <Route path="/customer-sign-up" element={<CustomerSignUp />} />
                         <Route path="/customer-profile" element={<CustomerProfile />} />
+                        <Route path="/get-quote/:truckId" element={<GetQuote />} />
                     </Routes>
                 </div>
                 {/*<FooterComponent />*/}
