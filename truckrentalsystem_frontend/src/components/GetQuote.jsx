@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { truckData } from './Renttrucks';
 
 const GetQuote = () => {
     const { truckId } = useParams();
+    const navigate = useNavigate();
     const selectedTruck = truckData.find(truck => truck.id === parseInt(truckId));
 
-    const [formData, setFormData] = useState({ rentalDuration: '' });
+    const [formData, setFormData] = useState({
+        rentalDuration: 0,
+        pickupLocation: '',
+        dropoffLocation: ''
+    });
     const [price, setPrice] = useState(null);
 
     const handleChange = (e) => {
@@ -19,50 +24,61 @@ const GetQuote = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const duration = parseInt(formData.rentalDuration);
-        if (!isNaN(duration) && duration > 0) {
-            const calculatedPrice = calculatePrice(duration, selectedTruck);
-            setPrice(calculatedPrice);
-        } else {
-            alert('Please enter a valid rental duration.');
-        }
+        const calculatedPrice = calculatePrice(formData.rentalDuration, formData.pickupLocation, formData.dropoffLocation, selectedTruck);
+        setPrice(calculatedPrice);
     };
 
-    const calculatePrice = (duration, truck) => {
+    const calculatePrice = (duration, pickupLocation, dropoffLocation, truck) => {
         if (!truck) return 0;
-        const basePrice = truck.type === 'Flatbed' ? 100 : 500; // Example pricing logic
-        return basePrice * duration;
+        const basePrice = truck.type === 'Flatbed' ? 100 : 500; // Example base pricing logic
+        const distanceFactor = pickupLocation !== dropoffLocation ? 1.5 : 1.0; // Example factor for different locations
+        return basePrice * duration * distanceFactor;
     };
 
     return (
-        <div>
-            <h1>Truck Rental Form</h1>
-            {selectedTruck ? (
-                <div>
-                    <h2>{selectedTruck.model}</h2>
-                    <p><strong>Type:</strong> {selectedTruck.type}</p>
-                    <p><strong>Payload:</strong> {selectedTruck.payload}</p>
-                    <p><strong>Dimension:</strong> {selectedTruck.dimension}</p>
-                    <p><strong>License:</strong> {selectedTruck.license}</p>
+        <div className="get-quote-container">
+            <div className="get-quote-box">
+                <div className="truck-info">
+                    {selectedTruck && (
+                        <div>
+                            <img src={selectedTruck.image} alt={`Truck ${selectedTruck.model}`} className="truck-image" />
+                            <h2>{selectedTruck.model}</h2>
+                            <p><strong>Type:</strong> {selectedTruck.type}</p>
+                            <p><strong>Payload:</strong> {selectedTruck.payload}</p>
+                            <p><strong>Dimension:</strong> {selectedTruck.dimension}</p>
+                            <p><strong>License:</strong> {selectedTruck.license}</p>
+                        </div>
+                    )}
                 </div>
-            ) : (
-                <p>Truck not found.</p>
-            )}
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Rental Duration (days):
-                    <input type="number" name="rentalDuration" value={formData.rentalDuration} onChange={handleChange} />
-                </label>
-                <br />
-                <button type="submit">Calculate Price</button>
-            </form>
-            {price !== null && (
-                <div>
-                    <h2>Total Price: R{price}</h2>
+                <div className="quote-form">
+                    <h1>Truck Rental Form</h1>
+                    <form onSubmit={handleSubmit}>
+                        <label>
+                            Rental Duration (days):
+                            <input type="number" name="rentalDuration" value={formData.rentalDuration} onChange={handleChange} />
+                        </label>
+                        <label>
+                            Pickup Location:
+                            <input type="text" name="pickupLocation" value={formData.pickupLocation} onChange={handleChange} />
+                        </label>
+                        <label>
+                            Dropoff Location:
+                            <input type="text" name="dropoffLocation" value={formData.dropoffLocation} onChange={handleChange} />
+                        </label>
+                        <button type="submit">Calculate Price</button>
+                    </form>
+                    {price !== null && (
+                        <div className="get-quote-result">
+                            <h2>Total Price: R{price}</h2>
+                            <button className="back-button" onClick={() => navigate('/rent-trucks')}>Back to Rent Trucks</button>
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
         </div>
     );
 };
 
 export default GetQuote;
+
+
