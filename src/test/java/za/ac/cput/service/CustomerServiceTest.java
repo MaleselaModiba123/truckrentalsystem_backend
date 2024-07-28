@@ -32,11 +32,11 @@ class CustomerServiceTest {
 @BeforeEach
 void setUp(){
 
-    rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Malesela", "Modiba", "Modiba@gmail.com", "Rental Agent", 750.50, 8);
-    rentalAgent = rentalAgentService.create(rentalAgent);
-    assertNotNull(rentalAgent, "RentalAgent should be created and not null");
+//    rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Malesela", "Modiba", "Modiba@gmail.com", "Rental Agent", 750.50, 8);
+//    rentalAgent = rentalAgentService.create(rentalAgent);
+//    assertNotNull(rentalAgent, "RentalAgent should be created and not null");
 
-    customer = CustomerFactory.buildCustomer(1, "Khanye", "West", "khanye@gmail.com", "12345","Code 10", "084 654 6878", rentalAgent);
+    customer = CustomerFactory.buildCustomer(1, "Khanye", "West", "khanye@gmail.com", "12345","Code 10", "084 654 6878");
     customer = customerService.create(customer);
     assertNotNull(customer, "Customer should be created and not null");
 }

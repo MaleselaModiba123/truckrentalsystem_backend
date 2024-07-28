@@ -57,4 +57,14 @@ public class CustomerController {
     public List<Customer> getAll(){
         return customerService.getAll();
     }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> authenticate(@RequestBody Customer customer) {
+        Customer authenticatedCustomer = customerService.authenticate(customer.getEmail(), customer.getPassword());
+        if (authenticatedCustomer != null) {
+            return ResponseEntity.ok(authenticatedCustomer);
+        } else {
+            return ResponseEntity.status(401).body("Invalid email or password");
+        }
+    }
 }

@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { signIn } from "../services/CustomerProfileService.js";
+import { AuthContext } from "./AuthContext.jsx";
 
 const SignInComponent = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { setAuth } = useContext(AuthContext);
 
-    const handleSignIn = (e) => {
+    const handleSignIn = async (e) => {
         e.preventDefault();
-        // sign-in logic still needs to be done
-        navigate("/customer-profile"); // Navigate to the customer profile after successful sign-in
+        try {
+            const response = await signIn(email, password);
+            if (response.data) {
+                setAuth(response.data); // Update auth context
+                setError(''); // Clear any previous errors
+                navigate("/customer-profile");
+            } else {
+                setError('Invalid email or password');
+            }
+        } catch (error) {
+            console.error("Error during sign in:", error);
+            setError('Invalid email or password');
+        }
     };
 
     return (
@@ -46,6 +61,7 @@ const SignInComponent = () => {
                                 </button>
                             </div>
                         </form>
+                        {error && <p style={{ color: 'red' }} className="text-center">{error}</p>}
                         <div className="text-center mt-3">
                             <button
                                 className="btn btn-link"

@@ -51,7 +51,7 @@ function App() {
                         <Route path="/customer-profile" element={<CustomerProfile />} />
                     </Routes>
                 </div>
-                <FooterComponent />
+                {/*<FooterComponent />*/}
             </div>
         </Router>
     );

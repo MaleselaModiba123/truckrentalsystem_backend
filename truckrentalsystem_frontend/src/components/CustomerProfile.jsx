@@ -1,43 +1,55 @@
-import React, { useEffect, useState } from "react";
-import {
-    deleteCustomerById,
-    getCustomerById,
-} from "../services/CustomerProfileService";
+import React, { useContext, useEffect, useState } from "react";
+import { deleteCustomerById, getCustomerById } from "../services/CustomerProfileService";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext.jsx";
 
 const CustomerProfile = () => {
     const [customer, setCustomer] = useState(null);
-    const navigator = useNavigate();
+    const [loading, setLoading] = useState(true);
+    const { auth } = useContext(AuthContext);
+    const navigate = useNavigate();
+
     useEffect(() => {
-        const customerID = 1;
-        getCustomerById(customerID)
-            .then((response) => {
-                setCustomer(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);
+        console.log("Auth state in CustomerProfile:", auth); // Debug log
+        if (auth && auth.customerID !== undefined) {
+            getCustomerById(auth.customerID)
+                .then((response) => {
+                    console.log("Customer data retrieved:", response.data); // Debug log
+                    setCustomer(response.data);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error retrieving customer data:", error);
+                    setLoading(false);
+                });
+        } else {
+            setLoading(false);
+        }
+    }, [auth]);
 
-    function updateCustomer(customerID) {
-        navigator(`/update-customer/${customerID}`);
-    }
+    const updateCustomer = (customerID) => {
+        navigate(`/update-customer/${customerID}`);
+    };
 
-    //Delete Method
-    function deleteAccount(customerID) {
-        console.log(customerID);
+    const deleteAccount = (customerID) => {
         deleteCustomerById(customerID)
             .then((response) => {
                 console.log("Customer deleted:", response);
-                navigator('/');
+                navigate('/');
             })
             .catch((error) => {
-                console.error(error);
+                console.error("Error deleting customer:", error);
             });
-    }
-    if (!customer) {
+    };
+
+    if (loading) {
         return <div>Loading...</div>;
     }
+
+    if (!customer) {
+        return <div>No customer data available.</div>;
+    }
+
     return (
         <div className="container d-flex flex-column align-items-center">
             <h2 className="text-center">Customer Profile</h2>

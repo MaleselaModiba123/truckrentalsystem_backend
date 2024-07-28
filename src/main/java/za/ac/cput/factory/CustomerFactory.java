@@ -11,7 +11,7 @@ import za.ac.cput.util.Helper;
  * Date: 03 May 2024
  */
 public class CustomerFactory {
-    public static Customer buildCustomer(int customerID, String firstName, String lastName, String email, String password, String license, String cellNo, RentalAgent rentalAgent) {
+    public static Customer buildCustomer(int customerID, String firstName, String lastName, String email, String password, String license, String cellNo) {
         if (
                 Helper.isIntNotValid(customerID) ||
                 Helper.isNullOrEmpty(firstName) ||
@@ -20,7 +20,7 @@ public class CustomerFactory {
                         Helper.isNullOrEmpty(license) ||
                         !Helper.isValidEmail(email) ||
                         Helper.isNullOrEmpty(cellNo)
-                        || rentalAgent == null) {
+                        ) {
 
 
             return null;
@@ -32,7 +32,7 @@ public class CustomerFactory {
                 .setPassword(password)
                 .setLicense(license)
                 .setCellNo(cellNo)
-                .setRentalAgent(rentalAgent)
+//                .setRentalAgent(rentalAgent)
                 .build();
     }
 

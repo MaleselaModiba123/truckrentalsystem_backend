@@ -13,11 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * Date: 03 May 2024
  */
 class CustomerFactoryTest {
-   RentalAgent rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Malesela", "Modiba", "Modiba@gmail.com", "Rental Agent",750.50, 8);
+//   RentalAgent rentalAgent = RentalAgentFactory.buildRentalAgent("10", "Malesela", "Modiba", "Modiba@gmail.com", "Rental Agent",750.50, 8);
     @Test
     void buildCustomer() {
         Customer customer = CustomerFactory.buildCustomer(1, "Zukhanye", "Mene",
-                "bennie@gmail.com", "12345","Code 10" , "0847466836",rentalAgent);
+                "bennie@gmail.com", "12345","Code 10" , "0847466836");
         assertNotNull(customer);
         System.out.println(customer.toString());
     }
@@ -25,7 +25,7 @@ class CustomerFactoryTest {
     @Test
     void buildCustomerWithFail() {
         Customer customer = CustomerFactory.buildCustomer(12, "", "Mennne",
-                "bennie@gmail.om", "12345","" , "084746686" ,rentalAgent);
+                "bennie@gmail.om", "12345","" , "084746686" );
         assertNotNull(customer);
         System.out.println(customer.toString());
     }

@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-    updateCustomer,
-    getCustomerById,
-} from "../services/CustomerProfileService";
+import { updateCustomer, getCustomerById } from "../services/CustomerProfileService";
 import { useNavigate, useParams } from "react-router-dom";
 
 const CustomerComponent = () => {
@@ -16,18 +13,17 @@ const CustomerComponent = () => {
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
-
     useEffect(() => {
         if (customerID) {
             getCustomerById(customerID)
                 .then((response) => {
                     const customer = response.data;
-                    setFirstName(response.data.firstName);
-                    setLastName(response.data.lastName);
-                    setEmail(response.data.email);
-                    setPassword(response.data.password);
-                    setLicense(response.data.license);
-                    setCellNo(response.data.cellNo);
+                    setFirstName(customer.firstName);
+                    setLastName(customer.lastName);
+                    setEmail(customer.email);
+                    setPassword(customer.password);
+                    setLicense(customer.license);
+                    setCellNo(customer.cellNo);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -35,21 +31,20 @@ const CustomerComponent = () => {
         }
     }, [customerID]);
 
-    const saveCustomer=(e) =>{
+    const saveCustomer = (e) => {
         e.preventDefault();
         if (validateForm()) {
-            const customer = { firstName,lastName, email, password,license, cellNo };
-            console.log(customer);
+            const customer = { firstName, lastName, email, password, license, cellNo };
             updateCustomer(customerID, customer)
                 .then((response) => {
                     console.log(response.data);
-                    navigate("/");
+                    navigate("/customer-profile");
                 })
                 .catch((error) => {
                     console.error(error);
                 });
         }
-    }
+    };
 
     const validateForm = () => {
         const errorsCopy = {};
@@ -87,99 +82,87 @@ const CustomerComponent = () => {
         <div className="container">
             <br />
             <div className="row">
-                <div className="card col-md-4 offset-md-4 offset-md-3">
+                <div className="card col-md-4 offset-md-4">
                     <h2 className="text-center">Update Account</h2>
                     <div className="card-body">
-                        <form>
+                        <form onSubmit={saveCustomer}>
                             <div className="form-group mb-2">
-                                <label className="form=label">First Name:</label>
+                                <label className="form-label">First Name:</label>
                                 <input
                                     type="text"
                                     name="firstName"
                                     value={firstName}
-                                    className={`form-control form-control-sm ${
-                                        errors.firstName ? "is-invalid" : ""
-                                    }`}
+                                    className={`form-control form-control-sm ${errors.firstName ? "is-invalid" : ""}`}
                                     onChange={(e) => setFirstName(e.target.value)}
                                 />
                                 {errors.firstName && (
                                     <div className="invalid-feedback">{errors.firstName}</div>
                                 )}
 
-                                <label className="form=label">Last Name:</label>
+                                <label className="form-label">Last Name:</label>
                                 <input
                                     type="text"
                                     name="lastName"
                                     value={lastName}
-                                    className={`form-control form-control-sm ${
-                                        errors.LlstName ? "is-invalid" : ""
-                                    }`}
+                                    className={`form-control form-control-sm ${errors.lastName ? "is-invalid" : ""}`}
                                     onChange={(e) => setLastName(e.target.value)}
                                 />
                                 {errors.lastName && (
                                     <div className="invalid-feedback">{errors.lastName}</div>
                                 )}
 
-                                <label className="form=label">Email:</label>
+                                <label className="form-label">Email:</label>
                                 <input
                                     type="text"
                                     name="email"
                                     value={email}
-                                    className={`form-control form-control-sm ${
-                                        errors.email ? "is-invalid" : ""
-                                    }`}
+                                    className={`form-control form-control-sm ${errors.email ? "is-invalid" : ""}`}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                                 {errors.email && (
                                     <div className="invalid-feedback">{errors.email}</div>
                                 )}
-                                <label className="form=label">Password:</label>
+                                <label className="form-label">Password:</label>
                                 <input
                                     type="password"
                                     name="password"
                                     value={password}
-                                    className={`form-control form-control-sm ${
-                                        errors.password ? "is-invalid" : ""
-                                    }`}
+                                    className={`form-control form-control-sm ${errors.password ? "is-invalid" : ""}`}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
                                 {errors.password && (
                                     <div className="invalid-feedback">{errors.password}</div>
                                 )}
 
-                                <label className="form=label">License:</label>
+                                <label className="form-label">License:</label>
                                 <input
                                     type="text"
                                     name="license"
                                     value={license}
-                                    className={`form-control form-control-sm ${
-                                        errors.license ? "is-invalid" : ""
-                                    }`}
+                                    className={`form-control form-control-sm ${errors.license ? "is-invalid" : ""}`}
                                     onChange={(e) => setLicense(e.target.value)}
                                 />
                                 {errors.license && (
                                     <div className="invalid-feedback">{errors.license}</div>
                                 )}
 
-                                <label className="form=label">Cell Number:</label>
+                                <label className="form-label">Cell Number:</label>
                                 <input
                                     type="text"
                                     name="cellNo"
                                     value={cellNo}
-                                    className={`form-control form-control-sm ${
-                                        errors.cellNo ? "is-invalid" : ""
-                                    }`}
+                                    className={`form-control form-control-sm ${errors.cellNo ? "is-invalid" : ""}`}
                                     onChange={(e) => setCellNo(e.target.value)}
                                 />
-                                {errors.firstName && (
-                                    <div cellNo="invalid-feedback">{errors.cellNo}</div>
+                                {errors.cellNo && (
+                                    <div className="invalid-feedback">{errors.cellNo}</div>
                                 )}
                             </div>
                             <div className="text-center">
                                 <button
+                                    type="submit"
                                     className="btn btn-success"
                                     style={{ width: "100px" }}
-                                    onClick={saveCustomer}
                                 >
                                     Save
                                 </button>
