@@ -54,6 +54,9 @@ const SignUpComponent = () => {
         if (!cellNo.trim()) {
             errorsCopy.cellNo = 'Cell Number is required';
             valid = false;
+        } else if (!/^\d{10}$/.test(cellNo)) {
+            errorsCopy.cellNo = 'Cell Number must be exactly 10 digits';
+            valid = false;
         }
         setErrors(errorsCopy);
         return valid;
@@ -121,13 +124,17 @@ const SignUpComponent = () => {
                             </div>
                             <div className="form-group mb-2">
                                 <label>License:</label>
-                                <input
-                                    type="text"
+                                <select
                                     name="license"
                                     className={`form-control ${errors.license ? "is-invalid" : ""}`}
                                     value={license}
                                     onChange={(e) => setLicense(e.target.value)}
-                                />
+                                >
+                                    <option value="">Select License</option>
+                                    <option value="Code 8">Code 8</option>
+                                    <option value="Code 10">Code 10</option>
+                                    <option value="Code 14">Code 14</option>
+                                </select>
                                 {errors.license && (
                                     <div className="invalid-feedback">{errors.license}</div>
                                 )}

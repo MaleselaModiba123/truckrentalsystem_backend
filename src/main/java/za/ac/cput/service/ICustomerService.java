@@ -14,6 +14,6 @@ import java.util.Set;
 
 public interface ICustomerService extends IService<Customer,Integer>{
 
-    Customer update(Customer customer);
+    Customer update(Integer customerID,Customer customer);
     List<Customer> getAll();
 }

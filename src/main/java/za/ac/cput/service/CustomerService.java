@@ -33,10 +33,19 @@ public class CustomerService implements ICustomerService {
         return this.customerRepository.findById(customerID).orElse(null);
     }
 
-    @Override
-    public Customer update(Customer customer) {
-        if (customerRepository.existsById(customer.getCustomerID())) {
-            return customerRepository.save(customer);
+    public Customer update(Integer customerID, Customer customer) {
+        Customer existingCustomer = read(customerID);
+        if (existingCustomer != null) {
+            existingCustomer = new Customer.Builder()
+                    .copy(existingCustomer)
+                    .setFirstName(customer.getFirstName())
+                    .setLastName(customer.getLastName())
+                    .setEmail(customer.getEmail())
+                    .setPassword(customer.getPassword())
+                    .setLicense(customer.getLicense())
+                    .setCellNo(customer.getCellNo())
+                    .build();
+            return customerRepository.save(existingCustomer);
         }
         return null;
     }

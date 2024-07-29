@@ -49,7 +49,8 @@ public class CustomerController {
                 .setLicense(customer.getLicense())
                 .setCellNo(customer.getCellNo())
                 .build();
-        updatedCustomer = customerService.update(updatedCustomer);
+
+        updatedCustomer = customerService.update(customerID,updatedCustomer);
         return ResponseEntity.ok(updatedCustomer);
     }
 

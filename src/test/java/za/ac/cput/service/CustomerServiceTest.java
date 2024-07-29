@@ -36,7 +36,7 @@ void setUp(){
 //    rentalAgent = rentalAgentService.create(rentalAgent);
 //    assertNotNull(rentalAgent, "RentalAgent should be created and not null");
 
-    customer = CustomerFactory.buildCustomer(1, "Khanye", "West", "khanye@gmail.com", "12345","Code 10", "084 654 6878");
+    customer = CustomerFactory.buildCustomer("Khanye", "West", "khanye@gmail.com", "12345","Code 10", "084 654 6878");
     customer = customerService.create(customer);
     assertNotNull(customer, "Customer should be created and not null");
 }
@@ -57,8 +57,9 @@ void setUp(){
 
     @Test
     void c_update() {
+        Integer customerID = customer.getCustomerID();
         Customer newCustomer = new Customer.Builder().copy(customer).setFirstName("Nito").build();
-        Customer updated = customerService.update(newCustomer);
+        Customer updated = customerService.update(customerID,newCustomer);
         assertNotNull(updated);
         System.out.println(updated);
     }

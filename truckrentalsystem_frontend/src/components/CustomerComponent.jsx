@@ -66,12 +66,15 @@ const CustomerComponent = () => {
             errorsCopy.password = 'Password is required';
             valid = false;
         }
-        if (!license.trim()) {
+        if (!license) {
             errorsCopy.license = 'License is required';
             valid = false;
         }
         if (!cellNo.trim()) {
             errorsCopy.cellNo = 'Cell Number is required';
+            valid = false;
+        } else if (!/^\d{10}$/.test(cellNo)) {
+            errorsCopy.cellNo = 'Cell Number must be exactly 10 digits';
             valid = false;
         }
         setErrors(errorsCopy);
@@ -135,13 +138,17 @@ const CustomerComponent = () => {
                                 )}
 
                                 <label className="form-label">License:</label>
-                                <input
-                                    type="text"
+                                <select
                                     name="license"
                                     value={license}
                                     className={`form-control form-control-sm ${errors.license ? "is-invalid" : ""}`}
                                     onChange={(e) => setLicense(e.target.value)}
-                                />
+                                >
+                                    <option value="">Select License</option>
+                                    <option value="Code 8">Code 8</option>
+                                    <option value="Code 10">Code 10</option>
+                                    <option value="Code 14">Code 14</option>
+                                </select>
                                 {errors.license && (
                                     <div className="invalid-feedback">{errors.license}</div>
                                 )}

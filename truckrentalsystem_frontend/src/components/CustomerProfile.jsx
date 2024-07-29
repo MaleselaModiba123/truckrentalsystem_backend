@@ -10,11 +10,9 @@ const CustomerProfile = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("Auth state in CustomerProfile:", auth); // Debug log
         if (auth && auth.customerID !== undefined) {
             getCustomerById(auth.customerID)
                 .then((response) => {
-                    console.log("Customer data retrieved:", response.data); // Debug log
                     setCustomer(response.data);
                     setLoading(false);
                 })
@@ -51,57 +49,57 @@ const CustomerProfile = () => {
     }
 
     return (
-        <div className="container d-flex flex-column align-items-center">
-            <h2 className="text-center">Customer Profile</h2>
-            <div className="table-container w-100 d-flex justify-content-center">
-                <table className="table table-striped table-bordered w-50">
-                    <tbody>
-                    <tr>
-                        <th>Customer ID</th>
-                        <td>{customer.customerID}</td>
-                    </tr>
-                    <tr>
-                        <th>First Name</th>
-                        <td>{customer.firstName}</td>
-                    </tr>
-                    <tr>
-                        <th>Last Name</th>
-                        <td>{customer.lastName}</td>
-                    </tr>
-                    <tr>
-                        <th>Email Address</th>
-                        <td>{customer.email}</td>
-                    </tr>
-                    <tr>
-                        <th>Password</th>
-                        <td>{customer.password}</td>
-                    </tr>
-                    <tr>
-                        <th>Licence</th>
-                        <td>{customer.license}</td>
-                    </tr>
-                    <tr>
-                        <th>Cell Number</th>
-                        <td>{customer.cellNo}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div className="button-container d-flex justify-content-center mt-3">
-                <button
-                    className="btn btn-success mx-2"
-                    style={{ width: "140px" }}
-                    onClick={() => updateCustomer(customer.customerID)}
-                >
-                    Update Account
-                </button>
-                <button
-                    className="btn btn-danger mx-2"
-                    style={{ width: "140px" }}
-                    onClick={() => deleteAccount(customer.customerID)}
-                >
-                    Delete Account
-                </button>
+        <div className="container h-100 d-flex justify-content-center align-items-center">
+            <div className="w-75" style={{ maxWidth: '500px', marginTop: '20px', marginBottom: '50px' }}>
+                <h2 className="text-center">Profile</h2>
+                <div className="card">
+                    <div className="card-body">
+                        <div className="mb-1">
+                            <h6 className="mb-0">Customer ID:</h6>
+                            <p className="text-muted">{customer.customerID}</p>
+                        </div>
+                        <div className="mb-1">
+                            <h6 className="mb-0">First Name:</h6>
+                            <p className="text-muted">{customer.firstName}</p>
+                        </div>
+                        <div className="mb-1">
+                            <h6 className="mb-0">Last Name:</h6>
+                            <p className="text-muted">{customer.lastName}</p>
+                        </div>
+                        <div className="mb-1">
+                            <h6 className="mb-0">Email Address:</h6>
+                            <p className="text-muted">{customer.email}</p>
+                        </div>
+                        <div className="mb-1">
+                            <h6 className="mb-0">Password:</h6>
+                            <p className="text-muted">{customer.password}</p>
+                        </div>
+                        <div className="mb-1">
+                            <h6 className="mb-0">License:</h6>
+                            <p className="text-muted">{customer.license}</p>
+                        </div>
+                        <div className="mb-1">
+                            <h6 className="mb-0">Cell Number:</h6>
+                            <p className="text-muted">{customer.cellNo}</p>
+                        </div>
+                        <div className="d-flex justify-content-center mt-3">
+                            <button
+                                className="btn btn-success mx-2"
+                                style={{ width: "120px" }}
+                                onClick={() => updateCustomer(customer.customerID)}
+                            >
+                                Update
+                            </button>
+                            <button
+                                className="btn btn-danger mx-2"
+                                style={{ width: "120px" }}
+                                onClick={() => deleteAccount(customer.customerID)}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

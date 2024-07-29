@@ -11,9 +11,8 @@ import za.ac.cput.util.Helper;
  * Date: 03 May 2024
  */
 public class CustomerFactory {
-    public static Customer buildCustomer(int customerID, String firstName, String lastName, String email, String password, String license, String cellNo) {
+    public static Customer buildCustomer(String firstName, String lastName, String email, String password, String license, String cellNo) {
         if (
-                Helper.isIntNotValid(customerID) ||
                 Helper.isNullOrEmpty(firstName) ||
                 Helper.isNullOrEmpty(lastName) ||
                         Helper.isNullOrEmpty(password) ||
@@ -25,7 +24,7 @@ public class CustomerFactory {
 
             return null;
         }
-        return new Customer.Builder().setCustomerID(customerID)
+        return new Customer.Builder()
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setEmail(email)
