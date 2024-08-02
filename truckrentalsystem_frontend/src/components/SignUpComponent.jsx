@@ -131,7 +131,6 @@ const SignUpComponent = () => {
                                     onChange={(e) => setLicense(e.target.value)}
                                 >
                                     <option value="">Select License</option>
-                                    <option value="Code 8">Code 8</option>
                                     <option value="Code 10">Code 10</option>
                                     <option value="Code 14">Code 14</option>
                                 </select>
