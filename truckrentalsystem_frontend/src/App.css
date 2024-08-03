@@ -489,3 +489,7 @@ button:hover {
   background-color: #5a6268;
 }
 
+.signup-background {
+  background-image: url('../public/HomePage.jpeg');
+  background-size: cover;
+}

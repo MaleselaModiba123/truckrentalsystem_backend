@@ -14,6 +14,7 @@ import HeaderComponent from './components/HeaderComponent.jsx';
 import SignUpComponent from "./components/SignUpComponent.jsx";
 import SignInComponent from "./components/SignInComponent.jsx";
 import './App.css';
+import ManagerPortal from "./components/ManagerPortal.jsx";
 
 function App() {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -39,6 +40,7 @@ function App() {
                         <Route exact path="/" element={<Home />} />
                         <Route path="/home" element={<Home />} />
                         <Route path="/rent-trucks" element={<Renttrucks />} />
+                        <Route path="/manager-portal/dashboard" element={<ManagerPortal />} />
                         <Route path="/about-us" element={<AboutUs />} />
                         <Route path="/branches" element={<Branches />} />
                         <Route path="/contact-us" element={<ContactUs />} />

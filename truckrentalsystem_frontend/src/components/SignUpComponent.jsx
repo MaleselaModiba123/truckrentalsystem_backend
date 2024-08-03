@@ -63,15 +63,15 @@ const SignUpComponent = () => {
     };
 
     return (
-        <div className="container">
+        <div className="container ">
             <br />
             <div className="row">
-                <div className="card col-md-4 offset-md-4">
-                    <h2 className="text-center">Sign Up</h2>
-                    <div className="card-body">
+                <div className="card col-md-4 offset-md-4 signup-background">
+                    <h2 className="text-center text-white fw-bold">Sign Up</h2>
+                    <div className="card-body " >
                         <form onSubmit={handleSignUp}>
-                            <div className="form-group mb-2">
-                                <label>First Name:</label>
+                            <div className="form-group mb-2 ">
+                                <label className="text-white fw-bold">First Name:</label>
                                 <input
                                     type="text"
                                     name="firstName"
@@ -84,7 +84,7 @@ const SignUpComponent = () => {
                                 )}
                             </div>
                             <div className="form-group mb-2">
-                                <label>Last Name:</label>
+                                <label className="text-white fw-bold">Last Name:</label>
                                 <input
                                     type="text"
                                     name="lastName"
@@ -97,7 +97,7 @@ const SignUpComponent = () => {
                                 )}
                             </div>
                             <div className="form-group mb-2">
-                                <label>Email:</label>
+                                <label className="text-white fw-bold">Email:</label>
                                 <input
                                     type="email"
                                     name="email"
@@ -110,7 +110,7 @@ const SignUpComponent = () => {
                                 )}
                             </div>
                             <div className="form-group mb-2">
-                                <label>Password:</label>
+                                <label className="text-white fw-bold">Password:</label>
                                 <input
                                     type="password"
                                     name="password"
@@ -123,7 +123,7 @@ const SignUpComponent = () => {
                                 )}
                             </div>
                             <div className="form-group mb-2">
-                                <label>License:</label>
+                                <label className="text-white fw-bold">License:</label>
                                 <select
                                     name="license"
                                     className={`form-control ${errors.license ? "is-invalid" : ""}`}
@@ -139,7 +139,7 @@ const SignUpComponent = () => {
                                 )}
                             </div>
                             <div className="form-group mb-2">
-                                <label>Cell Number:</label>
+                                <label className="text-white fw-bold">Cell Number:</label>
                                 <input
                                     type="text"
                                     name="cellNo"

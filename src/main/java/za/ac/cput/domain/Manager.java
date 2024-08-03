@@ -23,6 +23,7 @@ public class Manager extends Employee {
         this.firstName =  builder.firstName;
         this.lastName = builder.lastName;
         this.email = builder.email;
+        this.password = builder.password;
         this.employeeNumber = builder.employeeNumber;
         this.employeeType = builder.employeeType;
     }
@@ -58,6 +59,7 @@ public class Manager extends Employee {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", employeeType='" + employeeType + '\'' +
                 '}';
     }
@@ -70,6 +72,7 @@ public class Manager extends Employee {
         private String firstName;
         private String lastName;
         private String email;
+        private String password;
         private String employeeType;
 
         public Builder setWages(double wages) {
@@ -102,6 +105,11 @@ public class Manager extends Employee {
             return this;
         }
 
+        public Builder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
         public Builder setEmployeeType(String employeeType) {
             this.employeeType = employeeType;
             return this;
@@ -114,6 +122,7 @@ public class Manager extends Employee {
             this.firstName = manager.firstName;
             this.lastName = manager.lastName;
             this.email = manager.email;
+            this.password = manager.password;
             this.employeeType = manager.employeeType;
             return this;
 

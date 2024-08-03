@@ -9,6 +9,7 @@ import za.ac.cput.domain.Truck;
  * */
 
 public  interface ManagerRepository extends JpaRepository<Manager, Integer> {
+    Manager findByEmailAndPassword(String email, String password);
 }
 
 

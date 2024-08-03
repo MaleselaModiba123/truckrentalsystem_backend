@@ -31,12 +31,12 @@ const SignInComponent = () => {
         <div className="container">
             <br />
             <div className="row">
-                <div className="card col-md-4 offset-md-4">
-                    <h2 className="text-center">Sign In</h2>
+                <div className="card col-md-4 offset-md-4 signup-background">
+                    <h2 className="text-center text-white fw-bold">Sign In</h2>
                     <div className="card-body">
                         <form onSubmit={handleSignIn}>
                             <div className="form-group mb-2">
-                                <label>Email:</label>
+                                <label className="text-white fw-bold">Email:</label>
                                 <input
                                     type="email"
                                     name="email"
@@ -46,7 +46,7 @@ const SignInComponent = () => {
                                 />
                             </div>
                             <div className="form-group mb-2">
-                                <label>Password:</label>
+                                <label className="text-white fw-bold">Password:</label>
                                 <input
                                     type="password"
                                     name="password"
@@ -64,7 +64,7 @@ const SignInComponent = () => {
                         {error && <p style={{ color: 'red' }} className="text-center">{error}</p>}
                         <div className="text-center mt-3">
                             <button
-                                className="btn btn-link"
+                                className="btn btn-link text-danger fw-bold"
                                 onClick={() => navigate("/sign-up")}
                             >
                                 Don't have an account? Sign Up

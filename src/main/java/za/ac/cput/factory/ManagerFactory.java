@@ -8,12 +8,13 @@ import za.ac.cput.util.Helper;
 
 public class ManagerFactory {
     public static Manager buildManager(String employeeNumber, String firstName, String lastName,
-                                       String email,String employeeType,
+                                       String email,String password,String employeeType,
                                        double wages, int hours){
         if (Helper.isNullOrEmpty(employeeNumber)
                 || Helper.isNullOrEmpty(firstName)
                 || Helper.isNullOrEmpty(lastName)
                 || Helper.isValidAddress(email)
+                || Helper.isNullOrEmpty(password)
                 || Helper.isNullOrEmpty(employeeType)
                 || Helper.isDoubleNotValid(wages)
                 || Helper.isIntNotValid(hours)){
@@ -24,6 +25,7 @@ public class ManagerFactory {
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setEmail(email)
+                .setPassword(password)
                 .setEmployeeType(employeeType)
                 .setWages(wages)
                 .setHours(hours)

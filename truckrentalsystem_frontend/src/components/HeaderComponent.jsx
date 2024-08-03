@@ -5,6 +5,7 @@ import Branches from "./Branches.jsx";
 
 const HeaderComponent = () => {
     const [showDropdown, setShowDropdown] = useState(false);
+    const [branchesData, setBranchesData] = useState([]);  // Store branches data here
     const dropdownRef = useRef(null);
 
     const toggleDropdown = () => {
@@ -49,9 +50,21 @@ const HeaderComponent = () => {
                                     Branches
                                 </Link>
                                 <div className={`dropdown-menu ${showDropdown ? 'show' : ''}`} aria-labelledby="branchesDropdown">
-                                    <Branches showDropdown={showDropdown} />
+                                    {showDropdown && branchesData.length > 0 && (
+                                        branchesData.map(branch => (
+                                            <a key={branch.branchId} className="dropdown-item" href={`#${branch.branchName.toLowerCase().replace(' ', '-')}`}>
+                                                {branch.branchName }- {branch.address}
+                                            </a>
+                                        ))
+                                    )}
+                                    {showDropdown && branchesData.length === 0 && (
+                                        <span className="dropdown-item">Loading...</span>
+                                    )}
                                 </div>
                             </li>
+                            {/*<li className="nav-item me-lg-5">*/}
+                            {/*    <Link to="/manager-portal/dashboard" className="nav-link">Manager Portal</Link>*/}
+                            {/*</li>*/}
                             <li className="nav-item me-lg-5">
                                 <Link to="/about-us" className="nav-link">About Us</Link>
                             </li>
@@ -64,6 +77,8 @@ const HeaderComponent = () => {
                         </ul>
                     </div>
                 </nav>
+                {/* Render the Branches component here to fetch the branches */}
+                <Branches setBranchesData={setBranchesData} />
             </header>
         </div>
     );

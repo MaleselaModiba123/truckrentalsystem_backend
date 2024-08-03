@@ -25,7 +25,9 @@ class ManagerServiceTest {
     private ManagerService ManagerService;
     private Manager manager = ManagerFactory.buildManager("13142412", "Ayanda",
             "Phumzile",
-            "ayanda@gmail.com","Manager"
+            "ayanda@gmail.com",
+            "12345",
+            "Manager"
             ,4200,
             6);
 

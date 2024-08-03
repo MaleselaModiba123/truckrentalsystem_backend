@@ -20,6 +20,7 @@ public class Employee {
     protected String lastName;
     @Column(unique = true)
     protected String email;
+    protected String password;
     protected String employeeType;
 
     protected Employee() {
@@ -42,6 +43,10 @@ public class Employee {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public String getEmployeeType() {
         return employeeType;
     }
@@ -51,12 +56,12 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return Objects.equals(employeeNumber, employee.employeeNumber) && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(email, employee.email) && Objects.equals(employeeType, employee.employeeType);
+        return Objects.equals(employeeNumber, employee.employeeNumber) && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(email, employee.email)&& Objects.equals(password, employee.password) && Objects.equals(employeeType, employee.employeeType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(employeeNumber, firstName, lastName, email, employeeType);
+        return Objects.hash(employeeNumber, firstName, lastName, email,password, employeeType);
     }
 
     @Override
@@ -67,8 +72,9 @@ public class Employee {
                         "First Name: %s\n" +
                         "Last Name: %s\n" +
                         "Email: %s\n" +
+                        "Password: %s\n" +
                         "Employee Type: %s\n",
-                employeeNumber, firstName, lastName, email, employeeType
+                employeeNumber, firstName, lastName, email,password, employeeType
         );
     }
 
