@@ -15,6 +15,8 @@ import java.util.Objects;
 @Entity
 public class Branch {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "branch_seq")
+    @SequenceGenerator(name = "branch_seq", sequenceName = "branch_seq", allocationSize = 1, initialValue = 100)
     private int branchId;
     private String branchName;
     private String address;

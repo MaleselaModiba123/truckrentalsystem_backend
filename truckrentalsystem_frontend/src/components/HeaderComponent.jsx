@@ -62,9 +62,12 @@ const HeaderComponent = () => {
                                     )}
                                 </div>
                             </li>
-                            {/*<li className="nav-item me-lg-5">*/}
-                            {/*    <Link to="/manager-portal/dashboard" className="nav-link">Manager Portal</Link>*/}
-                            {/*</li>*/}
+                            {/*/!*<li className="nav-item me-lg-5">*!/*/}
+                            {/*/!*    <Link to="/manager-portal/dashboard" className="nav-link">Manager Portal</Link>*!/*/}
+                            {/*/!*</li> */}
+                            <li className="nav-item me-lg-5">
+                               <Link to="/manager-portall" className="nav-link">Manager Portall</Link>
+                            </li>
                             <li className="nav-item me-lg-5">
                                 <Link to="/about-us" className="nav-link">About Us</Link>
                             </li>

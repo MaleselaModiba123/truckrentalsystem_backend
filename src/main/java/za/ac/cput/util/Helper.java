@@ -1,5 +1,6 @@
 package za.ac.cput.util;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -13,6 +14,7 @@ import java.util.UUID;
  */
 
 public class Helper {
+    private static final SecureRandom random = new SecureRandom();
     public static boolean isNullOrEmpty(String s) {
         if (s == null || s.isEmpty())
             return true;
@@ -72,7 +74,9 @@ public class Helper {
             }
         }
     }
-
+    public static String generateEmployeeNumber() {
+        return String.format("%010d", random.nextInt(1000000000)); // Generates a 10-digit number
+    }
     public static boolean isValidAddress(String address){
         String streetPattern = "^[a-zA-Z0-9\\s,.-]{1,50}$";
         String cityPattern = "^[a-zA-Z]{1,50}$";

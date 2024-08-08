@@ -36,7 +36,7 @@ public class CustomerService implements ICustomerService {
     public Customer update(Integer customerID, Customer customer) {
         Customer existingCustomer = read(customerID);
         if (existingCustomer != null) {
-            existingCustomer = new Customer.Builder()
+           Customer updatedCustomer = new Customer.Builder()
                     .copy(existingCustomer)
                     .setFirstName(customer.getFirstName())
                     .setLastName(customer.getLastName())
@@ -45,7 +45,7 @@ public class CustomerService implements ICustomerService {
                     .setLicense(customer.getLicense())
                     .setCellNo(customer.getCellNo())
                     .build();
-            return customerRepository.save(existingCustomer);
+            return customerRepository.save(updatedCustomer);
         }
         return null;
     }

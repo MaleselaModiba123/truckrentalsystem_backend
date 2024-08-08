@@ -37,6 +37,21 @@ public class BranchService implements IBranchService{
         branchRepository.deleteById(branchId);
 
     }
+
+    @Override
+    public Branch update(Integer branchId, Branch branchDetails) {
+        Branch existingBranch = read(branchId);
+        if (existingBranch != null) {
+            Branch updatedBranch = new Branch.Builder()
+                    .copy(existingBranch)
+                    .setBranchName(branchDetails.getBranchName())
+                    .setAddress(branchDetails.getAddress())
+                    .build();
+            return branchRepository.save(updatedBranch);
+        }
+        return null;
+    }
+
     @Override
     public List<Branch> getAll() {
         return branchRepository.findAll();

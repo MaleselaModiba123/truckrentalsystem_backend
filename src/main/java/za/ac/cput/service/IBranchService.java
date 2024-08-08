@@ -13,5 +13,6 @@ import java.util.List;
  */
 
 public interface IBranchService extends IService<Branch, Integer>{
+    Branch update(Integer branchId, Branch branch);
     List<Branch> getAll();
 }

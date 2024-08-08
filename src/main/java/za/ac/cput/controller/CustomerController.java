@@ -36,22 +36,9 @@ public class CustomerController {
     }
 
     @PutMapping("/update/{customerID}")
-    public ResponseEntity<Customer> update(@PathVariable Integer customerID, @RequestBody Customer customer) {
-        Customer existingCustomer = customerService.read(customerID);
-        if (existingCustomer == null) {
-            return ResponseEntity.notFound().build();
-        }
-        Customer updatedCustomer = new Customer.Builder()
-                .copy(existingCustomer)
-                .setFirstName(customer.getFirstName())
-                .setLastName(customer.getLastName())
-                .setEmail(customer.getEmail())
-                .setLicense(customer.getLicense())
-                .setCellNo(customer.getCellNo())
-                .build();
+    public Customer update(@PathVariable int customerID, @RequestBody Customer customer) {
+        return customerService.update(customerID, customer);
 
-        updatedCustomer = customerService.update(customerID,updatedCustomer);
-        return ResponseEntity.ok(updatedCustomer);
     }
 
     @GetMapping("/getAll")
