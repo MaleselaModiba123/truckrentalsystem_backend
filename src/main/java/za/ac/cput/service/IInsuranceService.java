@@ -12,7 +12,7 @@ import java.util.List;
  * Date: 22 May 2024
  */
 public interface IInsuranceService extends IService<Insurance, Integer> {
-    Insurance update(Insurance insurance);
+    Insurance update(Integer insuranceID, Insurance insurance);
 
     List<Insurance> getAll();
 }

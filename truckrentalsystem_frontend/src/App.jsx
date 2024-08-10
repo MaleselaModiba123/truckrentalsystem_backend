@@ -20,6 +20,7 @@ import Trucks from "./components/manager/Trucks.jsx";
 import Branchez from "./components/manager/Branchez.jsx";
 import Employees from "./components/Employees.jsx";
 import TruckTypes from "./components/manager/TruckTypes.jsx";
+import InsuranceList from "./components/manager/InsuranceList.jsx";
 
 function App() {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -55,7 +56,7 @@ function App() {
                         <Route path="/manager/employees" element={<Employees />} />
                         <Route path="/manager/trucks" element={<Trucks />} />
                         <Route path="/manager/truck-types" element={<TruckTypes />} />
-                        {/*<Route path="/manager/insurances" element={<Insurances />} />*/}
+                        <Route path="/manager/insurances" element={<InsuranceList />} />
                         {/*---------MANAGER FUNCTIONALITY ENDS-----------*/}
 
                         <Route path="/contact-us" element={<ContactUs />} />
