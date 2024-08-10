@@ -2,6 +2,7 @@ package za.ac.cput.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import za.ac.cput.domain.Branch;
 import za.ac.cput.domain.Insurance;
 import za.ac.cput.repository.InsuranceRepository;
 
@@ -37,9 +38,20 @@ public class InsuranceService implements IInsuranceService {
 //    public Insurance update(Insurance insurance) {
 //        return insuranceRepository.save(insurance);
 //    }
-    public Insurance update(Insurance insurance) {
-        if (insuranceRepository.existsById(insurance.getInsuranceID())) {
-            return insuranceRepository.save(insurance);
+    public Insurance update(Integer insuranceID, Insurance insurance) {
+        Insurance existingInsurance = read(insuranceID);
+        if (existingInsurance != null) {
+            Insurance updatedInsurance = new Insurance.Builder()
+                    .copy(existingInsurance)
+                    .setInsuranceID(insurance.getInsuranceID())
+                    .setInsuranceType(insurance.getInsuranceType())
+                    .setProvider(insurance.getProvider())
+                    .setPolicyNumber(insurance.getPolicyNumber())
+                    .setEffectiveDate(insurance.getEffectiveDate())
+                    .setCoverage(insurance.getCoverage())
+                    .setPremium(insurance.getPremium())
+                    .build();
+            return insuranceRepository.save(updatedInsurance);
         }
         return null;
     }

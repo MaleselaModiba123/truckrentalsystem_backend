@@ -25,9 +25,9 @@ public class InsuranceController {
     public void delete(@PathVariable int insuranceID){
         insuranceService.delete(insuranceID);
     }
-    @PostMapping("/update")
-    public Insurance update(@RequestBody Insurance insurance){
-        return insuranceService.update(insurance);
+    @PutMapping("/update/{insuranceID}")
+    public Insurance update(@PathVariable int insuranceID , @RequestBody Insurance insurance){
+        return insuranceService.update(insuranceID, insurance);
     }
     @GetMapping("/getAll")
     public List<Insurance> getAll(){
