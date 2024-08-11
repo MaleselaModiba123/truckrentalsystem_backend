@@ -11,6 +11,8 @@ import java.util.Set;
 @Repository
 public interface IManagerService extends IService<Manager,String>{
 
+    Manager create(Manager manager);
+
     Manager update(Manager manager);
 
     List<Manager> getAll();

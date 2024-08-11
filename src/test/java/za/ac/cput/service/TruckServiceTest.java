@@ -1,7 +1,10 @@
 package za.ac.cput.service;
+
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 import za.ac.cput.domain.Insurance;
 import za.ac.cput.domain.Truck;
 import za.ac.cput.domain.TruckType;
@@ -11,7 +14,6 @@ import za.ac.cput.factory.TruckTypeFactory;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  *Truck.java
@@ -33,6 +35,8 @@ class TruckServiceTest {
     private Truck truck;
     private TruckType truckType;
     private Insurance insurance;
+    byte[] photo = new byte[0];
+    MultipartFile multipartFile = new MockMultipartFile("photo.jpg", photo);
     @BeforeEach
     void setUp() {
         // Initialize and save the TruckType entity
@@ -46,7 +50,7 @@ class TruckServiceTest {
                 "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft, Natural disasters", 1500);
         Insurance savedInsurance = insuranceService.create(insurance);
         assertNotNull(savedInsurance);
-        byte[] photo = new byte[0];
+
         // Initialize the Truck entity using the saved TruckType and Insurance entities
         truck = TruckFactory.buildTruck("7774444", "Scania", photo,true, "123455", 44, savedTruckType, savedInsurance);
         Truck createdTruck = truckService.create(truck);

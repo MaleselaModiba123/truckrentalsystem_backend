@@ -12,5 +12,7 @@ import java.util.List;
  * Date: 22 May 2024
  */
 public interface ITruckTypeService extends IService<TruckType, Integer> {
+    TruckType create(TruckType truckType);
+
     List<TruckType> getAll();
 }

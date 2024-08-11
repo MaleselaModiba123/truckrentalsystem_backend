@@ -69,10 +69,16 @@ const HeaderComponent = () => {
                                <Link to="/manager-portall" className="nav-link">Manager Portall</Link>
                             </li>
                             <li className="nav-item me-lg-5">
+                                <Link to="/truck-management" className="nav-link">Truck Management</Link>
+                            </li>
+                            <li className="nav-item me-lg-5">
                                 <Link to="/about-us" className="nav-link">About Us</Link>
                             </li>
                             <li className="nav-item me-lg-5">
                                 <Link to="/contact-us" className="nav-link">Contact Us</Link>
+                            </li>
+                            <li className="nav-item me-lg-5">
+                                <Link to="/manager/images" className="nav-link">Truck Images</Link>
                             </li>
                             <li className="nav-item me-lg-5">
                                 <Link to="/sign-in" className="nav-link">Sign in</Link>

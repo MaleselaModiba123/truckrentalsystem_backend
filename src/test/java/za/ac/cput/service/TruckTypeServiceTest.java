@@ -1,14 +1,13 @@
 package za.ac.cput.service;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import za.ac.cput.domain.Truck;
 import za.ac.cput.domain.TruckType;
-import za.ac.cput.factory.TruckFactory;
 import za.ac.cput.factory.TruckTypeFactory;
-
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

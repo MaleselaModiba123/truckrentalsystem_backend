@@ -3,6 +3,8 @@ package za.ac.cput.service;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 import za.ac.cput.domain.*;
 import za.ac.cput.factory.*;
 
@@ -53,6 +55,7 @@ class ServiceRecordServiceTest {
 
         // Initialize and save Truck entity
         byte[] photo = new byte[0];
+        MultipartFile multipartFile = new MockMultipartFile("photo.jpg", photo);
         truck = TruckFactory.buildTruck("1FUJGBDV7PLCW12", "Volvo VNL 760", photo,true, "CA 652-589", 478920.50, savedTruckType, savedInsurance);
         Truck savedTruck = truckService.create(truck);
         assertNotNull(savedTruck);

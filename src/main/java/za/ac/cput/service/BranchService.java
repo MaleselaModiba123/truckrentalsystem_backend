@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Branch;
 import za.ac.cput.repository.BranchRepository;
-import za.ac.cput.repository.RentalAgentRepository;
 
 import java.util.List;
 

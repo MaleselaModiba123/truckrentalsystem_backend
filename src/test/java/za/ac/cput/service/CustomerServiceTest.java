@@ -6,9 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.Customer;
 import za.ac.cput.domain.RentalAgent;
 import za.ac.cput.factory.CustomerFactory;
-import za.ac.cput.factory.RentalAgentFactory;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 

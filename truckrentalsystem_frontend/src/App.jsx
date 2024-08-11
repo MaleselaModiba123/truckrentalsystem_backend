@@ -20,6 +20,9 @@ import Trucks from "./components/manager/Trucks.jsx";
 import Branchez from "./components/manager/Branchez.jsx";
 import Employees from "./components/Employees.jsx";
 import TruckTypes from "./components/manager/TruckTypes.jsx";
+import TruckComponent from "./components/manager/TruckComponent.jsx";
+import ImagesComponent from "./components/manager/ImagesComponent.jsx";
+import TruckManagement from "./components/manager/TruckManagement.jsx";
 import InsuranceList from "./components/manager/InsuranceList.jsx";
 
 function App() {
@@ -49,12 +52,14 @@ function App() {
                         <Route path="/manager-portal/dashboard" element={<ManagerPortal />} />
                         <Route path="/about-us" element={<AboutUs />} />
                         <Route path="/branches" element={<Branches />} />
+                        <Route path="/truck-management" element={<TruckManagement />} />
 
                         {/*---------MANAGER FUNCTIONALITY STARTS-----------*/}
                         <Route path="/manager-portall" element={<ManagerPortall />} />
                         <Route path="/manager/branchez" element={<Branchez />} />
                         <Route path="/manager/employees" element={<Employees />} />
                         <Route path="/manager/trucks" element={<Trucks />} />
+                        <Route path="/manager/images" element={<ImagesComponent />} />
                         <Route path="/manager/truck-types" element={<TruckTypes />} />
                         <Route path="/manager/insurances" element={<InsuranceList />} />
                         {/*---------MANAGER FUNCTIONALITY ENDS-----------*/}

@@ -9,6 +9,15 @@ import {
 const styles = {
     container: {
         marginTop: '50px',
+        padding: '0 20px',
+    },
+    searchField: {
+        marginBottom: '20px',
+        padding: '10px',
+        width: '100%',
+        borderRadius: '4px',
+        border: '1px solid #ccc',
+        fontSize: '16px',
     },
     table: {
         width: '100%',
@@ -17,7 +26,7 @@ const styles = {
     },
     thTd: {
         border: '1px solid #dee2e6',
-        padding: '8px',
+        padding: '12px',
         textAlign: 'center',
         verticalAlign: 'middle',
     },
@@ -28,12 +37,16 @@ const styles = {
     stripedRow: {
         backgroundColor: 'rgba(0, 0, 0, 0.05)',
     },
+    hoveredRow: {
+        backgroundColor: '#f1f1f1',
+    },
     btn: {
-        padding: '5px 10px',
+        padding: '8px 16px',
         fontSize: '14px',
         cursor: 'pointer',
         border: 'none',
         borderRadius: '4px',
+        transition: 'background-color 0.3s',
     },
     btnEdit: {
         backgroundColor: '#007bff',
@@ -47,7 +60,7 @@ const styles = {
     btnAdd: {
         backgroundColor: '#28a745',
         color: 'white',
-        padding: '10px 20px',
+        padding: '12px 24px',
         marginTop: '20px',
     },
     modal: {
@@ -64,10 +77,12 @@ const styles = {
     },
     modalContent: {
         backgroundColor: 'white',
-        padding: '20px',
+        padding: '10px',
         borderRadius: '5px',
         width: '400px',
         boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+        maxHeight: '80vh',
+        overflowY: 'auto',
     },
     close: {
         position: 'absolute',
@@ -78,24 +93,38 @@ const styles = {
     },
     formLabel: {
         display: 'block',
-        marginBottom: '10px',
+        marginBottom: '5px',
+        fontSize: '14px',
     },
     formInput: {
         width: '100%',
-        padding: '8px',
-        marginBottom: '10px',
+        padding: '6px',
+        marginBottom: '8px',
         border: '1px solid #ccc',
         borderRadius: '4px',
+        fontSize: '14px',
     },
     formButton: {
+        padding: '8px 16px',
+        fontSize: '14px',
+        cursor: 'pointer',
+        border: 'none',
+        borderRadius: '4px',
         marginRight: '10px',
-    }
+    },
+    btnSave: {
+        backgroundColor: '#28a745',
+        color: 'white',
+    },
+    btnCancel: {
+        backgroundColor: '#dc3545',
+        color: 'white',
+    },
 };
 
 function InsuranceList() {
     const [insurances, setInsurances] = useState([]);
     const [formData, setFormData] = useState({
-        insuranceID: '',
         insuranceType: '',
         provider: '',
         policyNumber: '',
@@ -106,6 +135,7 @@ function InsuranceList() {
     const [editing, setEditing] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         fetchInsurances();
@@ -127,13 +157,13 @@ function InsuranceList() {
     };
 
     const handleDelete = async (insuranceID) => {
-        try {
-            console.log('Deleting insurance with ID:', insuranceID); // Debugging log
-            await deleteInsuranceById(insuranceID);
-            await fetchInsurances();
-        } catch (error) {
-            console.error('Error deleting insurance:', error);
-        }
+            try {
+                await deleteInsuranceById(insuranceID);
+                await fetchInsurances();
+            } catch (error) {
+                console.error('Error deleting insurance:', error);
+            }
+
     };
 
     const handleChange = (e) => {
@@ -143,24 +173,24 @@ function InsuranceList() {
 
     const handleSave = async (e) => {
         e.preventDefault();
-        try {
-            if (editing) {
-                await updateInsurance(formData.insuranceID, formData);
-            } else {
-                await createInsurance(formData);
+            try {
+                if (editing) {
+                    await updateInsurance(formData.insuranceID, formData);
+                } else {
+                    const {insuranceID, ...newInsurance} = formData;
+                    await createInsurance(newInsurance);
+                }
+                setEditing(false);
+                setIsEditModalOpen(false);
+                setIsAddModalOpen(false);
+                await fetchInsurances();
+            } catch (error) {
+                console.error('Error saving insurance:', error);
             }
-            setEditing(false);
-            setIsEditModalOpen(false);
-            setIsAddModalOpen(false);
-            await fetchInsurances();
-        } catch (error) {
-            console.error('Error saving insurance:', error);
-        }
     };
 
     const handleAdd = () => {
         setFormData({
-            insuranceID: '',
             insuranceType: '',
             provider: '',
             policyNumber: '',
@@ -171,24 +201,40 @@ function InsuranceList() {
         setEditing(false);
         setIsAddModalOpen(true);
     };
-
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value.toLowerCase());
+    };
+    const filteredInsurances = insurances.filter(
+        (insurance) =>
+            insurance.insuranceType.toLowerCase().includes(searchQuery) ||
+            insurance.provider.toLowerCase().includes(searchQuery) ||
+            insurance.policyNumber.toLowerCase().includes(searchQuery)
+    );
     return (
         <div style={styles.container}>
+            <div style={{ color: 'green', marginBottom: '20px' }}></div>
+            <input
+                type="text"
+                placeholder="Search by Insurance Type, Provider, or Policy Number..."
+                value={searchQuery}
+                onChange={handleSearch}
+                style={styles.searchField}
+            />
             <table style={styles.table} className="table-striped table-hover">
                 <thead>
                 <tr>
-                    <th style={{ ...styles.thTd, ...styles.th }}>Insurance ID</th>
-                    <th style={{ ...styles.thTd, ...styles.th }}>Insurance Type</th>
-                    <th style={{ ...styles.thTd, ...styles.th }}>Provider</th>
-                    <th style={{ ...styles.thTd, ...styles.th }}>Policy Number</th>
-                    <th style={{ ...styles.thTd, ...styles.th }}>Effective Date</th>
-                    <th style={{ ...styles.thTd, ...styles.th }}>Coverage</th>
-                    <th style={{ ...styles.thTd, ...styles.th }}>Premium</th>
-                    <th style={{ ...styles.thTd, ...styles.th }}>Actions</th>
+                    <th style={{...styles.thTd, ...styles.th}}>Insurance ID</th>
+                    <th style={{...styles.thTd, ...styles.th}}>Insurance Type</th>
+                    <th style={{...styles.thTd, ...styles.th}}>Provider</th>
+                    <th style={{...styles.thTd, ...styles.th}}>Policy Number</th>
+                    <th style={{...styles.thTd, ...styles.th}}>Effective Date</th>
+                    <th style={{...styles.thTd, ...styles.th}}>Coverage</th>
+                    <th style={{...styles.thTd, ...styles.th}}>Premium</th>
+                    <th style={{...styles.thTd, ...styles.th}}>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                {insurances.map((insurance, index) => (
+                {filteredInsurances.map((insurance, index) => (
                     <tr
                         key={insurance.insuranceID}
                         style={index % 2 === 0 ? styles.stripedRow : {}}
@@ -203,13 +249,13 @@ function InsuranceList() {
                         <td style={styles.thTd}>{insurance.premium}</td>
                         <td style={styles.thTd}>
                             <button
-                                style={{ ...styles.btn, ...styles.btnEdit }}
+                                style={{...styles.btn, ...styles.btnEdit}}
                                 onClick={() => handleEdit(insurance)}
                             >
                                 Edit
                             </button>
                             <button
-                                style={{ ...styles.btn, ...styles.btnDelete }}
+                                style={{...styles.btn, ...styles.btnDelete}}
                                 onClick={() => handleDelete(insurance.insuranceID)}
                             >
                                 Delete
@@ -237,17 +283,6 @@ function InsuranceList() {
                         </span>
                         <h2>{editing ? 'Edit' : 'Add'} Insurance</h2>
                         <form onSubmit={handleSave}>
-                            <label style={styles.formLabel}>
-                                Insurance ID:
-                                <input
-                                    type="text"
-                                    name="insuranceID"
-                                    value={formData.insuranceID}
-                                    onChange={handleChange}
-                                    required
-                                    style={styles.formInput}
-                                />
-                            </label>
                             <label style={styles.formLabel}>
                                 Insurance Type:
                                 <input
@@ -314,7 +349,7 @@ function InsuranceList() {
                                     style={styles.formInput}
                                 />
                             </label>
-                            <button type="submit" style={styles.formButton}>
+                            <button type="submit" style={{...styles.formButton, ...styles.btnSave}}>
                                 Save
                             </button>
                             <button
@@ -323,7 +358,7 @@ function InsuranceList() {
                                     setIsEditModalOpen(false);
                                     setIsAddModalOpen(false);
                                 }}
-                                style={styles.formButton}
+                                style={{...styles.formButton, ...styles.btnCancel}}
                             >
                                 Cancel
                             </button>

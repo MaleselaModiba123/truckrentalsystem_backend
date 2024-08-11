@@ -13,6 +13,8 @@ import java.util.Set;
  */
 public interface IMechanicService extends IService<Mechanic,String>{
 
+    Mechanic create(Mechanic mechanic);
+
     Mechanic update(Mechanic mechanic);
     Set<Mechanic> getAll();
 }

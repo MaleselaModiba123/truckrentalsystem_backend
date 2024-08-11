@@ -1,8 +1,6 @@
 package za.ac.cput.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -20,9 +18,11 @@ public class Employee {
     protected String lastName;
     @Column(unique = true)
     protected String email;
+    protected String contact;
     protected String password;
     protected String employeeType;
-
+//    @Enumerated(EnumType.STRING)
+//    private EmployeeType employeeType;
     protected Employee() {
     }
 

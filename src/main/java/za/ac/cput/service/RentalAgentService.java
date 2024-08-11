@@ -6,7 +6,6 @@ import za.ac.cput.domain.RentalAgent;
 import za.ac.cput.repository.RentalAgentRepository;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 /*  Completed By Malesela Modiba
     23 May 2024
@@ -20,7 +19,7 @@ public class RentalAgentService implements IRentalAgentService {
         this.rentalAgentAgentRepository = rentalAgentRepository;
     }
     @Override
-    public RentalAgent create (RentalAgent rentalAgent){
+    public RentalAgent create(RentalAgent rentalAgent){
         return rentalAgentAgentRepository.save(rentalAgent);
     }
     @Override

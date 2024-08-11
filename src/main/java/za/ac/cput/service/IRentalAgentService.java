@@ -8,6 +8,8 @@ import java.util.List;
     23 May 2024
  */
 public interface IRentalAgentService extends IService<RentalAgent,String> {
+    RentalAgent create(RentalAgent rentalAgent);
+
     RentalAgent update(RentalAgent rentalAgent);
     List<RentalAgent> getAll();
 }

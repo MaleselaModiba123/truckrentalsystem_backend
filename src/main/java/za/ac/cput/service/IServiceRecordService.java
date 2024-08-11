@@ -9,6 +9,8 @@ import java.util.List;
     23 May 2024
  */
 public interface IServiceRecordService extends IService<ServiceRecord,Integer>{
+    ServiceRecord create(ServiceRecord serviceRecord);
+
     ServiceRecord update(ServiceRecord serviceRecord);
     List<ServiceRecord> getAll();
 }

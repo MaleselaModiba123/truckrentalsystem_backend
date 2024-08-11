@@ -4,11 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Manager;
 import za.ac.cput.repository.ManagerRepository;
-import za.ac.cput.service.IManagerService;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public  class ManagerService implements IManagerService {
@@ -19,7 +16,7 @@ public  class ManagerService implements IManagerService {
         this.managerRepository = managerRepository;
     }
     @Override
-    public Manager create (Manager manager){
+    public Manager create(Manager manager){
         return managerRepository.save( manager);
     }
     @Override

@@ -13,6 +13,8 @@ import java.util.List;
  */
 
 public interface IRentTruckService extends IService<RentTruck, Integer>{
+    RentTruck create(RentTruck rentTruck);
+
     RentTruck update(RentTruck rentTruck);
     List<RentTruck> getAll();
 }
