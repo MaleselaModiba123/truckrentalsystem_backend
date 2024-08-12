@@ -59,7 +59,7 @@ class InsuranceServiceTest {
                 .build();
 
         // Save the updated insurance record
-        Insurance updated = insuranceService.update(updatedInsurance);
+        Insurance updated = insuranceService.update(generatedInsuranceId,updatedInsurance);
         assertNotNull(updated);
         assertEquals("Budget", updated.getProvider());
         System.out.println("Updated Insurance: " + updated);

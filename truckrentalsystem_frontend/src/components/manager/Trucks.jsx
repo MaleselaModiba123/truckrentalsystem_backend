@@ -1,37 +1,40 @@
-// components/Trucks.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { createTruck, deleteTruckById, getAllTrucks, updateTruck } from '../../services/TruckService.js';
 import { getAllTruckTypes } from '../../services/TruckTypeService.js';
+import { getAllInsurance } from '../../services/InsuranceService.js';
+
 
 function Trucks() {
     const [trucks, setTrucks] = useState([]);
     const [truckTypes, setTruckTypes] = useState([]);
+    const [insuranceOptions, setInsuranceOptions] = useState([]);
     const [newTruck, setNewTruck] = useState({
-        vin: '', // This field will be auto-generated
+        vin: '',
         model: '',
-        photo: null,
-        availability: true, // Always set to true
+        photo: '',
+        availability: true,
         licensePlate: '',
         currentMileage: 0,
-        truckTypeId: '', // ID of the selected truck type
-        insurance: ''
+        truckTypeId: '',
+        insuranceID: ''
     });
     const [editing, setEditing] = useState(false);
+    const [photoFile, setPhotoFile] = useState(null);
     const [photoPreview, setPhotoPreview] = useState(null);
-    const navigate = useNavigate(); // Updated hook for navigation
+    const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
         fetchTrucks();
         fetchTruckTypes();
+        fetchInsuranceOptions();
 
-        // Get newTruckTypeId from location state if available
         if (location.state && location.state.newTruckTypeId) {
-            setNewTruck({
-                ...newTruck,
+            setNewTruck(prevState => ({
+                ...prevState,
                 truckTypeId: location.state.newTruckTypeId
-            });
+            }));
         }
     }, [location.state]);
 
@@ -53,51 +56,101 @@ function Trucks() {
         }
     };
 
+    const fetchInsuranceOptions = async () => {
+        try {
+            const response = await getAllInsurance();
+            setInsuranceOptions(response.data);
+        } catch (error) {
+            console.error('Error fetching insurance options:', error);
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setNewTruck({
-            ...newTruck,
+        setNewTruck(prevState => ({
+            ...prevState,
             [name]: type === 'checkbox' ? checked : value
-        });
+        }));
     };
 
     const handlePhotoChange = (e) => {
-        const file = e.target.files[0];
-        setNewTruck({ ...newTruck, photo: file });
-        setPhotoPreview(URL.createObjectURL(file));
+        const selectedFile = e.target.files[0];
+
+        if (selectedFile) {
+            // Check if the selected file type is PNG, JPEG, or JPG
+            const fileType = selectedFile.type;
+            if (fileType === 'image/png' || fileType === 'image/jpeg') {
+                setPhotoFile(selectedFile);
+                setNewTruck(prevState => ({
+                    ...prevState,
+                    photo: selectedFile.name
+                }));
+
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setPhotoPreview(reader.result);
+                };
+                reader.readAsDataURL(selectedFile);
+            } else {
+                alert('Please select a PNG, JPEG, or JPG image file.');
+                e.target.value = ''; // Clear the input
+            }
+        } else {
+            setPhotoFile(null);
+            setPhotoPreview(null);
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        for (const key in newTruck) {
-            if (key !== 'vin') { // VIN is auto-generated and should not be included
-                formData.append(key, newTruck[key]);
-            }
-        }
+
         try {
+            const formData = new FormData();
+
+            formData.append('truck', JSON.stringify({
+                vin: newTruck.vin,
+                model: newTruck.model,
+                availability: newTruck.availability,
+                licensePlate: newTruck.licensePlate,
+                currentMileage: newTruck.currentMileage,
+                truckTypeId: newTruck.truckTypeId,
+                insuranceID: newTruck.insuranceID
+            }));
+
+            if (photoFile) {
+                formData.append('photo', photoFile);
+            }
+
+            // Do not set Content-Type header manually
             if (editing) {
-                await updateTruck(newTruck.vin, formData);
+                await updateTruck(formData);
             } else {
                 await createTruck(formData);
             }
+
             setEditing(false);
             setPhotoPreview(null);
             setNewTruck({
-                vin: '', // Reset VIN
+                vin: '',
                 model: '',
-                photo: null,
-                availability: true, // Always true
+                photo: '',
+                availability: true,
                 licensePlate: '',
                 currentMileage: 0,
                 truckTypeId: '',
-                insurance: ''
+                insuranceID: ''
             });
+            setPhotoFile(null);
             fetchTrucks();
         } catch (error) {
-            console.error('Error submitting truck:', error);
+            console.error('Error submitting truck:', error.response ? error.response.data : error.message);
         }
     };
+
+
+
+
+
 
     const handleEdit = (truck) => {
         setNewTruck({
@@ -108,9 +161,9 @@ function Trucks() {
             licensePlate: truck.licensePlate,
             currentMileage: truck.currentMileage,
             truckTypeId: truck.truckType?.truckTypeId || '',
-            insurance: truck.insurance
+            insuranceID: truck.insurance?.insuranceID || ''
         });
-        setPhotoPreview(`data:image/jpeg;base64,${truck.photo}`);
+        setPhotoPreview(`http://localhost:8080/truckrentalsystem/imageData/${truck.photo}`);
         setEditing(true);
     };
 
@@ -124,19 +177,24 @@ function Trucks() {
     };
 
     const handleAddTruckType = () => {
-        navigate('/truck-types'); // Updated navigation method
+        navigate('/manager/truck-types');
     };
 
-    const selectedTruckType = truckTypes.find(type => type.truckTypeId === parseInt(newTruck.truckTypeId));
+    useEffect(() => {
+        return () => {
+            if (photoPreview) {
+                URL.revokeObjectURL(photoPreview);
+            }
+        };
+    }, [photoPreview]);
 
     return (
-        <div className="container mt-6" style={{ maxWidth: '400px' }}>
+        <div className="container mt-6" style={{ maxWidth: '1000px' }}>
             <h2 className="text-center mb-4">Trucks</h2>
             <button className="btn btn-secondary mb-4" onClick={handleAddTruckType}>
                 Add Truck Type
             </button>
             <form onSubmit={handleSubmit} className="mb-4">
-                {/* Form Fields */}
                 <div className="form-group">
                     <label>Model</label>
                     <input
@@ -151,12 +209,12 @@ function Trucks() {
                 <div className="form-group">
                     <label>Photo</label>
                     <input
+                        accept={".png, .jpeg, .jpg"}
                         type="file"
                         className="form-control"
-                        name="photo"
                         onChange={handlePhotoChange}
                     />
-                    {photoPreview && <img src={photoPreview} alt="Preview" style={{ width: '100px', height: '100px' }} />}
+                    {photoPreview && <img src={photoPreview} alt="Preview" style={{ width: '100px', height: '100px', marginTop: '10px' }} />}
                 </div>
                 <div className="form-row mb-3">
                     <div className="col">
@@ -165,9 +223,9 @@ function Trucks() {
                             type="checkbox"
                             className="form-check-input"
                             name="availability"
-                            checked={newTruck.availability} // Always true
-                            onChange={handleChange} // This will not actually change the state
-                            disabled // Disable the checkbox
+                            checked={newTruck.availability}
+                            onChange={handleChange}
+                            disabled
                         />
                     </div>
                 </div>
@@ -206,37 +264,77 @@ function Trucks() {
                         <option value="">Select Truck Type</option>
                         {truckTypes.map(type => (
                             <option key={type.truckTypeId} value={type.truckTypeId}>
-                                {type.typeName}
+                                {type.typeName} - {type.dimensions}
                             </option>
                         ))}
                     </select>
                 </div>
                 <div className="form-group">
                     <label>Insurance</label>
-                    <input
-                        type="text"
+                    <select
                         className="form-control"
-                        name="insurance"
-                        value={newTruck.insurance}
+                        name="insuranceID"
+                        value={newTruck.insuranceID}
                         onChange={handleChange}
                         required
-                    />
+                    >
+                        <option value="">Select Insurance</option>
+                        {insuranceOptions.map(option => (
+                            <option key={option.insuranceID} value={option.insuranceID}>
+                                {option.provider} - {option.coverage}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <button type="submit" className="btn btn-primary">
-                    {editing ? 'Update' : 'Add'} Truck
+                    {editing ? 'Update Truck' : 'Create Truck'}
                 </button>
             </form>
-            <ul className="list-group">
-                {trucks.map((truck) => (
-                    <li key={truck.vin} className="list-group-item d-flex justify-content-between align-items-center">
-                        <span>{truck.model} - {truck.licensePlate} - {truck.availability ? 'Available' : 'Not Available'}</span>
-                        <div>
-                            <button className="btn btn-secondary btn-sm mr-2" onClick={() => handleEdit(truck)}>Edit</button>
-                            <button className="btn btn-danger btn-sm" onClick={() => handleDelete(truck.vin)}>Delete</button>
-                        </div>
-                    </li>
+            <table className="table table-bordered">
+                <thead>
+                <tr>
+                    <th>VIN</th>
+                    <th>Model</th>
+                    <th>Photo</th>
+                    <th>Availability</th>
+                    <th>License Plate</th>
+                    <th>Current Mileage</th>
+                    <th>Truck Type</th>
+                    <th>Insurance</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {trucks.map(truck => (
+                    <tr key={truck.vin}>
+                        <td>{truck.vin}</td>
+                        <td>{truck.model}</td>
+                        <td>
+                            {truck.photo && (
+                                <img
+                                    src={`http://localhost:8080/truckrentalsystem/imageData/${truck.photo}`}
+                                    alt="Truck"
+                                    style={{ width: '100px', height: '100px' }}
+                                />
+                            )}
+                        </td>
+                        <td>{truck.availability ? 'Yes' : 'No'}</td>
+                        <td>{truck.licensePlate}</td>
+                        <td>{truck.currentMileage}</td>
+                        <td>{truck.truckType?.typeName || ''}</td>
+                        <td>{truck.insurance?.provider || ''}</td>
+                        <td>
+                            <button className="btn btn-warning btn-sm mr-2" onClick={() => handleEdit(truck)}>
+                                Edit
+                            </button>
+                            <button className="btn btn-danger btn-sm" onClick={() => handleDelete(truck.vin)}>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
                 ))}
-            </ul>
+                </tbody>
+            </table>
         </div>
     );
 }

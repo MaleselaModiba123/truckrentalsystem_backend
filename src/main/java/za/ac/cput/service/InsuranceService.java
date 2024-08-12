@@ -43,7 +43,6 @@ public class InsuranceService implements IInsuranceService {
         if (existingInsurance != null) {
             Insurance updatedInsurance = new Insurance.Builder()
                     .copy(existingInsurance)
-                    .setInsuranceID(insurance.getInsuranceID())
                     .setInsuranceType(insurance.getInsuranceType())
                     .setProvider(insurance.getProvider())
                     .setPolicyNumber(insurance.getPolicyNumber())
