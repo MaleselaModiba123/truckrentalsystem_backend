@@ -1,6 +1,7 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
+import za.ac.cput.util.Helper;
 
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
 @MappedSuperclass
 public class Employee {
     @Id
-    protected String employeeNumber;
+    protected String employeeNumber = Helper.generateEmployeeNumber();
     protected String firstName;
     protected String lastName;
     @Column(unique = true)

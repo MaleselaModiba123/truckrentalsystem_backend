@@ -1,5 +1,6 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import { getAllTrucks } from '../services/TruckService';
 //import './Renttrucks.css';
 
 export const truckData = [
@@ -80,10 +81,31 @@ export const truckData = [
 
 const Renttrucks = () => {
     const navigate = useNavigate(); // Updated from useHistory to useNavigate
+    const [trucks, setTrucks] = useState([]);
+
+    useEffect(() => {
+        fetchTrucks();
+    }, []);
 
     const handleGetQuote = (truckId) => {
         navigate(`/get-quote/${truckId}`);
     };
+
+    const fetchTrucks = async () => {
+        const response = await getAllTrucks();
+        setTrucks(response.data);
+    };
+
+    function byteArrayToBase64(byteArray) {
+        return btoa(String.fromCharCode.apply(null, byteArray));
+    }
+
+    function setImage (imageBytesString) {
+        let utf8Encode = new TextEncoder();
+        let imageBytes = utf8Encode.encode(imageBytesString);
+        return "data:image/jpg;base64," + byteArrayToBase64(imageBytes);
+    }
+
 
     return (
         <div className="rent-trucks">
@@ -99,17 +121,19 @@ const Renttrucks = () => {
                     Rental Trucks provide an extensive range of quality trucks for hire across South Africa. Browse our selection of truck rentals.
                 </p>
             </div>
-            <div className="truck-grid">
-                {truckData.map((truck) => (
+            <div key={1} className="truck-grid">
+                {trucks.map((truck) => (
                     <div key={truck.id} className="truck-item">
-                        <img src={truck.image} alt={`Truck ${truck.model}`} />
+                        <img src={setImage(truck.photo)} id="truckImage" alt={`Truck ${truck.model}`} />
                         <div className="truck-details">
                             <p><strong>Model:</strong> {truck.model}</p>
-                            <p><strong>Type:</strong> {truck.type}</p>
-                            <p><strong>Payload:</strong> {truck.payload}</p>
-                            <p><strong>Dimension:</strong> {truck.dimension}</p>
-                            <p><strong>License:</strong> {truck.license}</p>
-                            <button className="get-quote-button" onClick={() => handleGetQuote(truck.id)}>Get Quote</button>
+                            <p><strong>Type:</strong> {truck.truckType.typeName}</p>
+                            <p><strong>Transmission:</strong> {truck.truckType.transmission}</p>
+                            <p><strong>Fuel Consuption:</strong> {truck.truckType.fuelConsumption}</p>
+                            <p><strong>Fuel Type:</strong> {truck.truckType.fuelType}</p>
+                            <p><strong>Dimension:</strong> {truck.truckType.dimensions}</p>
+                            <p><strong>License:</strong> {truck.licensePlate}</p>
+                            <button className="get-quote-button" onClick={() => handleGetQuote(truck.vin)}>Get Quote</button>
                         </div>
                     </div>
                 ))}

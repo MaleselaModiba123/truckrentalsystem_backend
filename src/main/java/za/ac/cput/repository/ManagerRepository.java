@@ -8,7 +8,7 @@ import za.ac.cput.domain.Truck;
  * Date: 07 May 2024
  * */
 
-public  interface ManagerRepository extends JpaRepository<Manager, Integer> {
+public  interface ManagerRepository extends JpaRepository<Manager, String> {
     Manager findByEmailAndPassword(String email, String password);
 }
 
