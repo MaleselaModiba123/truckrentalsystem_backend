@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Home from './components/Home';
 import Renttrucks from './components/Renttrucks';
 import AboutUs from './components/AboutUs';
@@ -9,20 +9,16 @@ import GetQuote from './components/GetQuote';
 import CustomerProfile from './components/CustomerProfile.jsx';
 import CustomerComponent from './components/CustomerComponent.jsx';
 import CustomerSignUp from "./components/CustomerSignUp.jsx";
-import FooterComponent from './components/FooterComponent.jsx';
 import HeaderComponent from './components/HeaderComponent.jsx';
 import SignUpComponent from "./components/SignUpComponent.jsx";
 import SignInComponent from "./components/SignInComponent.jsx";
 import './App.css';
-import ManagerPortal from "./components/ManagerPortal.jsx";
-import ManagerPortall from "./components/ManagerPortall.jsx";
+import ManagerPortal from "./components/manager/ManagerPortal.jsx";
 import Trucks from "./components/manager/Trucks.jsx";
 import Branchez from "./components/manager/Branchez.jsx";
 import Employees from "./components/Employees.jsx";
 import TruckTypes from "./components/manager/TruckTypes.jsx";
-// import TruckComponent from "./components/manager/TruckComponent.jsx";
 import ImagesComponent from "./components/manager/ImagesComponent.jsx";
-// import TruckManagement from "./components/manager/TruckManagement.jsx";
 import InsuranceList from "./components/manager/InsuranceList.jsx";
 
 function App() {
@@ -49,19 +45,20 @@ function App() {
                         <Route exact path="/" element={<Home />} />
                         <Route path="/home" element={<Home />} />
                         <Route path="/rent-trucks" element={<Renttrucks />} />
-                        <Route path="/manager-portal/dashboard" element={<ManagerPortal />} />
+                        {/*<Route path="/manager-portal/dashboard" element={<ManagerPortal />} />*/}
                         <Route path="/about-us" element={<AboutUs />} />
                         <Route path="/branches" element={<Branches />} />
-                        {/* <Route path="/truck-management" element={<TruckManagement />} /> */}
 
                         {/*---------MANAGER FUNCTIONALITY STARTS-----------*/}
-                        <Route path="/manager-portall" element={<ManagerPortall />} />
-                        <Route path="/manager/branchez" element={<Branchez />} />
-                        <Route path="/manager/employees" element={<Employees />} />
-                        <Route path="/manager/trucks" element={<Trucks />} />
-                        <Route path="/manager/images" element={<ImagesComponent />} />
-                        <Route path="/manager/truck-types" element={<TruckTypes />} />
-                        <Route path="/manager/insurances" element={<InsuranceList />} />
+                        <Route path="/manager-portal/*" element={<ManagerPortal/>}>
+                            <Route path="dashboard" element={<div>Dashboard Content</div>}/>
+                            <Route path="trucks" element={<Trucks/>}/>
+                            <Route path="branchez" element={<Branchez/>}/>
+                            <Route path="employees" element={<Employees/>}/>
+                            <Route path="truck-types" element={<TruckTypes/>}/>
+                            <Route path="images" element={<ImagesComponent/>}/>
+                            <Route path="insurances" element={<InsuranceList/>}/>
+                        </Route>
                         {/*---------MANAGER FUNCTIONALITY ENDS-----------*/}
 
                         <Route path="/contact-us" element={<ContactUs />} />

@@ -2,6 +2,7 @@ package za.ac.cput.service;
 import org.springframework.web.multipart.MultipartFile;
 import za.ac.cput.domain.Truck;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -11,9 +12,9 @@ import java.util.List;
 
 public interface ITruckService extends IService<Truck,String>{
 
-    Truck create(Truck truck);
+    Truck create(Truck truck, MultipartFile photo) throws IOException;
 
-    Truck update(Truck truck);
+    Truck update(String truckId, Truck updatedTruck, MultipartFile photo) throws IOException;;
 
     List<Truck> getAll();
 }

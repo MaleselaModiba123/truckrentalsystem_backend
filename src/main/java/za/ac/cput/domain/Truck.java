@@ -31,21 +31,11 @@ public class Truck {
     @JoinColumn(name = "insuranceID")
     private Insurance insurance;
 
-    protected Truck(Truck truck) {
+
+    protected Truck() {
 
     }
-    // Auto-generate VIN before saving
-    @PrePersist
-    protected void onCreate() {
-        if (this.vin == null) {
-            this.vin = generateVin();
-        }
-    }
 
-    private String generateVin() {
-        // Example: Generate a VIN with 18 characters (alphanumeric)
-        return UUID.randomUUID().toString().substring(0, 18).toUpperCase();
-    }
     private Truck(Builder builder) {
         this.vin = builder.vin;
         this.model = builder.model;
@@ -57,9 +47,16 @@ public class Truck {
         this.insurance = builder.insurance;
 
     }
-
-    protected Truck() {
-
+    // Auto-generate VIN before saving
+    @PrePersist
+    protected void onCreate() {
+        if (this.vin == null) {
+            this.vin = generateVin();
+        }
+    }
+    private String generateVin() {
+        // Example: Generate a VIN with 18 characters (alphanumeric)
+        return UUID.randomUUID().toString().substring(0, 18).toUpperCase();
     }
 
     public String getVin() {
