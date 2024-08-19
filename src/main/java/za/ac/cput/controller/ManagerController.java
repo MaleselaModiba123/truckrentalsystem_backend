@@ -10,7 +10,7 @@ import java.util.List;
  * */
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/Manager")
+@RequestMapping("/manager")
 public class ManagerController {
     @Autowired
     private ManagerService ManagerService;
@@ -18,7 +18,7 @@ public class ManagerController {
     public Manager create(@RequestBody Manager Manager){
         return ManagerService.create(Manager);
     }
-    @GetMapping("/read/{Manager}")
+    @GetMapping("/read/{empNum}")
     public Manager read(@PathVariable String empNum){
         return ManagerService.read(empNum);
     }

@@ -16,7 +16,7 @@ import java.util.Objects;
 public class RentTruck {
     @Id
     private int rentId;
-    private LocalDate rentDate;
+    private LocalDate rentDate = LocalDate.now();
     private LocalDate returnDate;
     private double totalCost;
     private boolean isPaymentMade;

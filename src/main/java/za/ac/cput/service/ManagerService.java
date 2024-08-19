@@ -21,7 +21,7 @@ public  class ManagerService implements IManagerService {
     }
     @Override
     public Manager read(String EmployeeNumber){
-        return this.managerRepository.findById(Integer.valueOf(EmployeeNumber)).orElse(null);
+        return this.managerRepository.findById(EmployeeNumber).orElse(null);
 
     }
     @Override
@@ -30,7 +30,7 @@ public  class ManagerService implements IManagerService {
     }
     @Override
     public void delete(String EmplyoeeNumber){
-        managerRepository.deleteById(Integer.valueOf(EmplyoeeNumber));
+        managerRepository.deleteById(EmplyoeeNumber);
     }
     @Override
     public List<Manager> getAll(){
