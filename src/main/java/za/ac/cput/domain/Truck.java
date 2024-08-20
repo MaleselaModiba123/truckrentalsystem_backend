@@ -1,5 +1,6 @@
 package za.ac.cput.domain;
 import jakarta.persistence.*;
+import za.ac.cput.util.Helper;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -51,14 +52,9 @@ public class Truck {
     @PrePersist
     protected void onCreate() {
         if (this.vin == null) {
-            this.vin = generateVin();
+            this.vin = Helper.generateVin();
         }
     }
-    private String generateVin() {
-        // Example: Generate a VIN with 18 characters (alphanumeric)
-        return UUID.randomUUID().toString().substring(0, 18).toUpperCase();
-    }
-
     public String getVin() {
         return vin;
     }

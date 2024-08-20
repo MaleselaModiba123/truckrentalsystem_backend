@@ -49,33 +49,9 @@ public class Helper {
         return UUID.randomUUID().toString();
     }
 
-    // Inner class for date validation using LocalDate
-    public static class DateValidatorUsingLocalDate {
-        private DateTimeFormatter dateFormatter;
-
-        public DateValidatorUsingLocalDate(DateTimeFormatter dateFormatter) {
-            this.dateFormatter = dateFormatter;
-        }
-
-        public boolean isValid(String dateStr) {
-            try {
-                LocalDate.parse(dateStr, this.dateFormatter);
-                return true;
-            } catch (DateTimeParseException e) {
-                return false;
-            }
-        }
-
-        // Additional method for validating date with custom format
-        public static boolean isValidWithFormat(String dateStr, String format) {
-            try {
-                DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern(format);
-                LocalDate.parse(dateStr, customFormatter);
-                return true;
-            } catch (DateTimeParseException e) {
-                return false;
-            }
-        }
+    public static String generateVin() {
+        // Generate a VIN with 18 characters (alphanumeric)
+        return UUID.randomUUID().toString().substring(0, 18).toUpperCase();
     }
     public static String generateEmployeeNumber() {
         return String.format("%010d", random.nextInt(1000000000)); // Generates a 10-digit number

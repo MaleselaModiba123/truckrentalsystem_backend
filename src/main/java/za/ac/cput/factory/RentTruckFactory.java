@@ -4,7 +4,6 @@ import za.ac.cput.domain.*;
 import za.ac.cput.util.Helper;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  * RentTruckFactory.java
@@ -21,12 +20,14 @@ public class RentTruckFactory {
                                            RentalAgent salesPerson,
                                            Branch pickUp, Branch dropOff) {
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        Helper.DateValidatorUsingLocalDate dateValidator = new Helper.DateValidatorUsingLocalDate(dateFormatter);
 
-        if (Helper.isIntNotValid(rentId) || !dateValidator.isValid(rentDate.toString()) ||
-                returnDate == null || !dateValidator.isValid(returnDate.toString()) || Helper.isDoubleNotValid(totalCost)||
-                customer == null || truck == null || salesPerson == null || pickUp == null || dropOff == null) {
+        if (Helper.isIntNotValid(rentId)
+                || returnDate == null
+                || customer == null
+                || truck == null
+                || salesPerson == null
+                || pickUp == null
+                || dropOff == null) {
             return null;
         }
 

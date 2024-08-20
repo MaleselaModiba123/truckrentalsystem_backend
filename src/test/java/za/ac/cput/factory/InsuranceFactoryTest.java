@@ -33,7 +33,7 @@ class InsuranceFactoryTest {
         Insurance insurance = InsuranceFactory.buildInsurance( "Truck Insurance", "Out Surance"
                 , "POL-12345", LocalDate.of(2024, 13, 24), "Truck damage or theft,Natural disasters", 1500);
         assertNull(insurance);
-        System.out.println(insurance.toString());
+        System.out.println(insurance);
     }
 
     @Test
@@ -41,6 +41,6 @@ class InsuranceFactoryTest {
         Insurance insurance = InsuranceFactory.buildInsurance( "Truck Insurance", "Out Surance"
                 , "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", -1);
         assertNull(insurance);
-        System.out.println(insurance.toString());
+        System.out.println(insurance);
     }
 }

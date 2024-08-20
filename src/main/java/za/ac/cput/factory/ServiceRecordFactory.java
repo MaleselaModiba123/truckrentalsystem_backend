@@ -13,15 +13,12 @@ import java.time.format.DateTimeFormatter;
 public class ServiceRecordFactory {
     public static ServiceRecord buildServiceRecord(int serviceID, String serviceType
             , double cost, LocalDate serviceDate, LocalDate nextServiceDate, Mechanic mechanic, Truck truck) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        Helper.DateValidatorUsingLocalDate dateValidator = new Helper.DateValidatorUsingLocalDate(dateFormatter);
 
         if (Helper.isIntNotValid(serviceID)
                 || Helper.isNullOrEmpty(serviceType)
                 || Helper.isDoubleNotValid(cost)
-                || serviceDate == null || !dateValidator.isValid(serviceDate.toString())
+                || serviceDate == null
                 || nextServiceDate == null
-                || !dateValidator.isValid(nextServiceDate.toString())
                 || mechanic == null
                 || truck == null)
         {
