@@ -227,7 +227,7 @@ const GetQuote = () => {
                     {price !== null && (
                         <div className="get-quote-result">
                             <h2>Total Price: R{price}</h2>
-                            <button className="back-button" onClick={() => navigate('/rent-trucks')}>Back to Rent Trucks</button>
+                            <button className="back-button" onClick={() => navigate('/sign-in')}>Sign-in</button>
                         </div>
                     )}
                 </div>
