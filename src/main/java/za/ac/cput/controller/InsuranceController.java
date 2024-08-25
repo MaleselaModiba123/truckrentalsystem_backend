@@ -10,9 +10,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/insurance")
 public class InsuranceController {
-    @Autowired
-    private InsuranceService insuranceService;
 
+    private final InsuranceService insuranceService;
+    @Autowired
+    public InsuranceController(InsuranceService insuranceService) {
+        this.insuranceService = insuranceService;
+    }
     @PostMapping("/create")
     public Insurance create(@RequestBody Insurance insurance){
         return insuranceService.create(insurance);

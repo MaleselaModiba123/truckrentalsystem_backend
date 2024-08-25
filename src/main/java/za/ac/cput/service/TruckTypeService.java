@@ -16,8 +16,12 @@ import java.util.List;
  */
 @Service
 public class TruckTypeService implements ITruckTypeService {
+
+    private final TruckTypeRepository truckTypeRepository;
     @Autowired
-    private TruckTypeRepository truckTypeRepository;
+    public TruckTypeService(TruckTypeRepository truckTypeRepository) {
+        this.truckTypeRepository = truckTypeRepository;
+    }
 
     @Override
     public TruckType create(TruckType truckType) {

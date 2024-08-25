@@ -10,8 +10,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/truckType")
 public class TruckTypeController {
+
+    private final TruckTypeService truckTypeService;
     @Autowired
-    private TruckTypeService truckTypeService;
+    public TruckTypeController(TruckTypeService truckTypeService) {
+        this.truckTypeService = truckTypeService;
+    }
     @PostMapping("/create")
     public TruckType create(@RequestBody TruckType truckType){
         return truckTypeService.create(truckType);

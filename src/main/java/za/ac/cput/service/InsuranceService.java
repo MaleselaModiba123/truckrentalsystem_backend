@@ -17,10 +17,10 @@ import java.util.List;
  */
 @Service
 public class InsuranceService implements IInsuranceService {
-    private InsuranceRepository insuranceRepository;
+    private final InsuranceRepository insuranceRepository;
 
     @Autowired
-    InsuranceService(InsuranceRepository insuranceRepository) {
+   public InsuranceService(InsuranceRepository insuranceRepository) {
         this.insuranceRepository = insuranceRepository;
     }
 

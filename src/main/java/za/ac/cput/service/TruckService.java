@@ -3,8 +3,12 @@ package za.ac.cput.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import za.ac.cput.domain.Insurance;
 import za.ac.cput.domain.Truck;
+import za.ac.cput.domain.TruckType;
+import za.ac.cput.repository.InsuranceRepository;
 import za.ac.cput.repository.TruckRepository;
+import za.ac.cput.repository.TruckTypeRepository;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,62 +21,96 @@ import java.util.Optional;
  * */
 
 @Service
-public class TruckService implements ITruckService {
-    private TruckRepository truckRepository;
+public class TruckService {
+    private final TruckRepository truckRepository;
+    private final TruckTypeRepository truckTypeRepository;
+    private final InsuranceRepository insuranceRepository;
 
     @Autowired
-    TruckService(TruckRepository truckRepository) {
+    TruckService(TruckRepository truckRepository, TruckTypeRepository truckTypeRepository,
+                 InsuranceRepository insuranceRepository) {
         this.truckRepository = truckRepository;
+        this.truckTypeRepository = truckTypeRepository;
+        this.insuranceRepository = insuranceRepository;
     }
 
-    @Override
-    public Truck create(Truck truck, MultipartFile photo) throws IOException {
-        // Handle photo if provided
-        if (photo != null && !photo.isEmpty()) {
-            truck = new Truck.Builder()
-                    .copy(truck)
-                    .setPhoto(photo.getBytes())
-                    .build();
-        }
+    public List<Truck> getAllTrucks() {
+        return truckRepository.findAll();
+    }
+
+    public Optional<Truck> getTruckByVin(String vin) {
+        return truckRepository.findById(vin);
+    }
+
+    public Truck saveOrUpdateTruck(Truck truck) {
         return truckRepository.save(truck);
     }
 
-    @Override
-    public Truck read(String truckID) {
-        return this.truckRepository.findById(truckID).orElse(null);
+    public boolean deleteTruck(String vin) {
+        if (truckRepository.existsById(vin)) {
+            truckRepository.deleteById(vin);
+            return true;
+        }
+        return false;
     }
 
-    @Override
-    public Truck update(String truckId, Truck updatedTruck, MultipartFile photo) throws IOException {
-        Optional<Truck> optionalExistingTruck = truckRepository.findById(truckId);
-        if (optionalExistingTruck.isEmpty()) {
-            return null; // Truck not found
+    public Optional<TruckType> getTruckTypeById(int id) {
+        return truckTypeRepository.findById(id);
+    }
+
+    public Optional<Insurance> getInsuranceById(int id) {
+        return insuranceRepository.findById(id);
+    }
+
+    public Truck createTruck(String model, MultipartFile truckImage, boolean availability, String licensePlate, double currentMileage, int truckTypeId, int insuranceId) throws IOException {
+        Optional<TruckType> truckType = getTruckTypeById(truckTypeId);
+        Optional<Insurance> insurance = getInsuranceById(insuranceId);
+
+        if (truckType.isEmpty() || insurance.isEmpty()) {
+            return null;
         }
 
-        Truck existingTruck = optionalExistingTruck.get();
-        Truck.Builder builder = new Truck.Builder()
-                .copy(existingTruck)
-                .setModel(updatedTruck.getModel())
-                .setAvailability(updatedTruck.isAvailability())
-                .setLicensePlate(updatedTruck.getLicensePlate())
-                .setCurrentMileage(updatedTruck.getCurrentMileage())
-                .setTruckType(updatedTruck.getTruckType())
-                .setInsurance(updatedTruck.getInsurance());
+        Truck truck = new Truck.Builder()
+                .setModel(model)
+                .setTruckImage(truckImage.getBytes())
+                .setAvailability(availability)
+                .setLicensePlate(licensePlate)
+                .setCurrentMileage(currentMileage)
+                .setTruckType(truckType.get())
+                .setInsurance(insurance.get())
+                .build();
 
-        // Handle photo if provided
-        if (photo != null && !photo.isEmpty()) {
-            builder.setPhoto(photo.getBytes());
+        return saveOrUpdateTruck(truck);
+    }
+
+    public Truck updateTruck(String vin, String model, MultipartFile truckImage, boolean availability, String licensePlate, double currentMileage, int truckTypeId, int insuranceId) throws IOException {
+        Optional<TruckType> truckType = getTruckTypeById(truckTypeId);
+        Optional<Insurance> insurance = getInsuranceById(insuranceId);
+
+        if (truckType.isEmpty() || insurance.isEmpty()) {
+            return null;
         }
 
-        return truckRepository.save(builder.build());
-    }
-    @Override
-    public void delete(String truckID) {
-        truckRepository.deleteById(truckID);
+        Truck truck = getTruckByVin(vin).orElse(null);
+        if (truck == null) {
+            return null;
+        }
+
+        truck = new Truck.Builder()
+                .setVin(vin)
+                .setModel(model)
+                .setTruckImage(truckImage != null ? truckImage.getBytes() : truck.getTruckImage())
+                .setAvailability(availability)
+                .setLicensePlate(licensePlate)
+                .setCurrentMileage(currentMileage)
+                .setTruckType(truckType.get())
+                .setInsurance(insurance.get())
+                .build();
+
+        return saveOrUpdateTruck(truck);
     }
 
-    @Override
-    public List<Truck> getAll() {
-        return truckRepository.findAll();
+    public Optional<byte[]> getTruckImageByVin(String vin) {
+        return getTruckByVin(vin).map(Truck::getTruckImage);
     }
 }

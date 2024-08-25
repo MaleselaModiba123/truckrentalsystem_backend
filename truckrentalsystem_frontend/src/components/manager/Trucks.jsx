@@ -1,49 +1,71 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { createTruck, deleteTruckById, getAllTrucks, updateTruck } from '../../services/TruckService.js';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+    createTruck,
+    deleteTruck,
+    getAllTrucks,
+    getTruckByVin,
+    getTruckImageUrl,
+    updateTruck
+} from '../../services/TruckService.js';
 import { getAllTruckTypes } from '../../services/TruckTypeService.js';
 import { getAllInsurance } from '../../services/InsuranceService.js';
 
-
-function Trucks() {
+const Trucks = () => {
     const [trucks, setTrucks] = useState([]);
+    const [filteredTrucks, setFilteredTrucks] = useState([]);
     const [truckTypes, setTruckTypes] = useState([]);
-    const [insuranceOptions, setInsuranceOptions] = useState([]);
-    const [newTruck, setNewTruck] = useState({
-        vin: '',
+    const [insurances, setInsurances] = useState([]);
+    const [formState, setFormState] = useState({
         model: '',
-        photo: '',
-        availability: true,
+        truckImage: null,
+        availability: false,
         licensePlate: '',
-        currentMileage: 0,
+        currentMileage: '',
         truckTypeId: '',
-        insuranceID: ''
+        insuranceId: ''
     });
-    const [editing, setEditing] = useState(false);
-    const [photoFile, setPhotoFile] = useState(null);
-    const [photoPreview, setPhotoPreview] = useState(null);
-    const navigate = useNavigate();
-    const location = useLocation();
+    const [selectedTruck, setSelectedTruck] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [truckToDelete, setTruckToDelete] = useState(null);
+    const [showUpdateConfirm, setShowUpdateConfirm] = useState(false);
+    const [confirmationMessage, setConfirmationMessage] = useState('');
+    const [messageType, setMessageType] = useState(''); // 'success' or 'error'
+    const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const trucksPerPage = 6;
 
     useEffect(() => {
         fetchTrucks();
         fetchTruckTypes();
-        fetchInsuranceOptions();
+        fetchInsurances();
+    }, []);
 
-        if (location.state && location.state.newTruckTypeId) {
-            setNewTruck(prevState => ({
-                ...prevState,
-                truckTypeId: location.state.newTruckTypeId
-            }));
+    const filterTrucks = useCallback(() => {
+        if (searchTerm) {
+            const filtered = trucks.filter(truck =>
+                truck.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                truck.licensePlate.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                truck.vin.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredTrucks(filtered);
+        } else {
+            setFilteredTrucks(trucks);
         }
-    }, [location.state]);
+    }, [searchTerm, trucks]);
+
+    useEffect(() => {
+        filterTrucks();
+    }, [filterTrucks]);
 
     const fetchTrucks = async () => {
         try {
             const response = await getAllTrucks();
             setTrucks(response.data);
         } catch (error) {
-            console.error('Error fetching trucks:', error);
+            console.error("Error fetching trucks:", error);
         }
     };
 
@@ -52,291 +74,366 @@ function Trucks() {
             const response = await getAllTruckTypes();
             setTruckTypes(response.data);
         } catch (error) {
-            console.error('Error fetching truck types:', error);
+            console.error("Error fetching truck types:", error);
         }
     };
 
-    const fetchInsuranceOptions = async () => {
+    const fetchInsurances = async () => {
         try {
             const response = await getAllInsurance();
-            setInsuranceOptions(response.data);
+            setInsurances(response.data);
         } catch (error) {
-            console.error('Error fetching insurance options:', error);
+            console.error("Error fetching insurances:", error);
         }
     };
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setNewTruck(prevState => ({
+        setFormState(prevState => ({
             ...prevState,
             [name]: type === 'checkbox' ? checked : value
         }));
     };
 
-    const handlePhotoChange = (e) => {
-        const selectedFile = e.target.files[0];
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setFormState(prevState => ({
+            ...prevState,
+            truckImage: file
+        }));
 
-        if (selectedFile) {
-            // Check if the selected file type is PNG, JPEG, or JPG
-            const fileType = selectedFile.type;
-            if (fileType === 'image/png' || fileType === 'image/jpeg') {
-                setPhotoFile(selectedFile);
-                setNewTruck(prevState => ({
-                    ...prevState,
-                    photo: selectedFile.name
-                }));
-
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    setPhotoPreview(reader.result);
-                };
-                reader.readAsDataURL(selectedFile);
-            } else {
-                alert('Please select a PNG, JPEG, or JPG image file.');
-                e.target.value = ''; // Clear the input
-            }
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImagePreview(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
         } else {
-            setPhotoFile(null);
-            setPhotoPreview(null);
+            setImagePreview(null);
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
-            const formData = new FormData();
-
-            formData.append('truck', JSON.stringify({
-                vin: newTruck.vin,
-                model: newTruck.model,
-                availability: newTruck.availability,
-                licensePlate: newTruck.licensePlate,
-                currentMileage: newTruck.currentMileage,
-                truckTypeId: newTruck.truckTypeId,
-                insuranceID: newTruck.insuranceID
-            }));
-
-            if (photoFile) {
-                formData.append('photo', photoFile);
-            }
-
-            // Do not set Content-Type header manually
-            if (editing) {
-                await updateTruck(formData);
+            if (selectedTruck) {
+                setShowUpdateConfirm(true);
             } else {
-                await createTruck(formData);
+                await createTruck(formState);
+                setConfirmationMessage('Truck created successfully!');
+                setMessageType('success');
+                fetchTrucks();
+                clearForm();
             }
-
-            setEditing(false);
-            setPhotoPreview(null);
-            setNewTruck({
-                vin: '',
-                model: '',
-                photo: '',
-                availability: true,
-                licensePlate: '',
-                currentMileage: 0,
-                truckTypeId: '',
-                insuranceID: ''
-            });
-            setPhotoFile(null);
-            fetchTrucks();
         } catch (error) {
-            console.error('Error submitting truck:', error.response ? error.response.data : error.message);
+            console.error("Error saving truck:", error);
+            setConfirmationMessage('Error saving truck.');
+            setMessageType('error');
         }
+        setTimeout(() => setConfirmationMessage(''), 3000);
     };
 
-
-
-
-
-
-    const handleEdit = (truck) => {
-        setNewTruck({
-            vin: truck.vin,
-            model: truck.model,
-            photo: truck.photo,
-            availability: truck.availability,
-            licensePlate: truck.licensePlate,
-            currentMileage: truck.currentMileage,
-            truckTypeId: truck.truckType?.truckTypeId || '',
-            insuranceID: truck.insurance?.insuranceID || ''
-        });
-        setPhotoPreview(`http://localhost:8080/truckrentalsystem/imageData/${truck.photo}`);
-        setEditing(true);
-    };
-
-    const handleDelete = async (vin) => {
+    const confirmUpdate = async () => {
         try {
-            await deleteTruckById(vin);
+            await updateTruck({...formState, vin: selectedTruck.vin});
+            setConfirmationMessage('Truck updated successfully!');
+            setMessageType('success');
+            setShowUpdateConfirm(false);
+            fetchTrucks();
+            clearForm();
+        } catch (error) {
+            console.error("Error updating truck:", error);
+            setConfirmationMessage('Error updating truck.');
+            setMessageType('error');
+        }
+        setTimeout(() => setConfirmationMessage(''), 3000);
+    };
+
+    const clearForm = () => {
+        setFormState({
+            model: '',
+            truckImage: null,
+            availability: false,
+            licensePlate: '',
+            currentMileage: '',
+            truckTypeId: '',
+            insuranceId: ''
+        });
+        setSelectedTruck(null);
+        setImagePreview(null);
+        document.getElementById('truckImage').value = '';
+    };
+
+    const handleDelete = (vin) => {
+        setTruckToDelete(vin);
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = async () => {
+        try {
+            await deleteTruck(truckToDelete);
+            setConfirmationMessage('Truck deleted successfully!');
+            setMessageType('success');
             fetchTrucks();
         } catch (error) {
-            console.error('Error deleting truck:', error);
+            console.error("Error deleting truck:", error);
+            setConfirmationMessage('Error deleting truck.');
+            setMessageType('error');
+        }
+        setShowDeleteModal(false);
+        setTimeout(() => setConfirmationMessage(''), 3000);
+    };
+
+    const handleSelectTruck = async (vin) => {
+        try {
+            const response = await getTruckByVin(vin);
+            setFormState({
+                model: response.data.model,
+                truckImage: null,
+                availability: response.data.availability,
+                licensePlate: response.data.licensePlate,
+                currentMileage: response.data.currentMileage,
+                truckTypeId: response.data.truckType.truckTypeId,
+                insuranceId: response.data.insurance.insuranceID
+            });
+            setImagePreview(getTruckImageUrl(vin));
+            setSelectedTruck(response.data);
+        } catch (error) {
+            console.error("Error selecting truck:", error);
         }
     };
 
-    const handleAddTruckType = () => {
-        navigate('/manager/truck-types');
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+        setCurrentPage(1); // Reset to the first page on search
     };
 
-    useEffect(() => {
-        return () => {
-            if (photoPreview) {
-                URL.revokeObjectURL(photoPreview);
-            }
-        };
-    }, [photoPreview]);
+    // Pagination
+    const indexOfLastTruck = currentPage * trucksPerPage;
+    const indexOfFirstTruck = indexOfLastTruck - trucksPerPage;
+    const currentTrucks = filteredTrucks.slice(indexOfFirstTruck, indexOfLastTruck);
+    const totalPages = Math.ceil(filteredTrucks.length / trucksPerPage);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     return (
-        <div className="container mt-6" style={{ maxWidth: '1000px' }}>
-            <h2 className="text-center mb-4">Trucks</h2>
-            <button className="btn btn-secondary mb-4" onClick={handleAddTruckType}>
-                Add Truck Type
-            </button>
-            <form onSubmit={handleSubmit} className="mb-4">
-                <div className="form-group">
-                    <label>Model</label>
+        <div className="container mt-5">
+            <h1 className="mb-4">Truck Management</h1>
+            <div className="row">
+                <div className="col-md-6">
+                    <form onSubmit={handleSubmit} style={{ backgroundColor: '#f8f9fa', padding: '20px', borderRadius: '5px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+                        <div className="form-group">
+                            <label htmlFor="model">Model</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="model"
+                                name="model"
+                                value={formState.model}
+                                onChange={handleChange}
+                                placeholder="Model"
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="truckImage">Truck Image</label>
+                            <input
+                                type="file"
+                                className="form-control-file"
+                                id="truckImage"
+                                name="truckImage"
+                                onChange={handleFileChange}
+                            />
+                            {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: '100px', height: '100px', marginTop: '10px', borderRadius: '5px' }} />}
+                        </div>
+                        <div className="form-group">
+                            <div className="form-check">
+                                <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    id="availability"
+                                    name="availability"
+                                    checked={formState.availability}
+                                    onChange={handleChange}
+                                />
+                                <label className="form-check-label" htmlFor="availability">Available</label>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="licensePlate">License Plate</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="licensePlate"
+                                name="licensePlate"
+                                value={formState.licensePlate}
+                                onChange={handleChange}
+                                placeholder="License Plate"
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="currentMileage">Current Mileage</label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                id="currentMileage"
+                                name="currentMileage"
+                                value={formState.currentMileage}
+                                onChange={handleChange}
+                                placeholder="Current Mileage"
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="truckTypeId">Truck Type</label>
+                            <select
+                                className="form-control"
+                                id="truckTypeId"
+                                name="truckTypeId"
+                                value={formState.truckTypeId}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="">Select Truck Type</option>
+                                {truckTypes.map(type => (
+                                    <option key={type.truckTypeId} value={type.truckTypeId}>
+                                        {type.typeName}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="insuranceId">Insurance</label>
+                            <select
+                                className="form-control"
+                                id="insuranceId"
+                                name="insuranceId"
+                                value={formState.insuranceId}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="">Select Insurance</option>
+                                {insurances.map(ins => (
+                                    <option key={ins.insuranceID} value={ins.insuranceID}>
+                                        {ins.provider} - {ins.policyNumber}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <button type="submit" className="btn btn-primary">
+                            {selectedTruck ? 'Update Truck' : 'Save Truck'}
+                        </button>
+                    </form>
+                    {confirmationMessage && (
+                        <div className={`alert ${messageType === 'success' ? 'alert-success' : 'alert-danger'} mt-3`}>
+                            {confirmationMessage}
+                        </div>
+                    )}
+                </div>
+                <div className="col-md-6">
+                    <h2>Existing Trucks</h2>
                     <input
                         type="text"
-                        className="form-control"
-                        name="model"
-                        value={newTruck.model}
-                        onChange={handleChange}
-                        required
+                        className="form-control mb-3"
+                        placeholder="Search trucks..."
+                        value={searchTerm}
+                        onChange={handleSearchChange}
                     />
+                    <div className="overflow-auto" style={{ maxHeight: '500px' }}>
+                        <ul className="list-group">
+                            {currentTrucks.map(truck => (
+                                <li key={truck.vin} className="list-group-item d-flex justify-content-between align-items-center">
+                                    {truck.truckImage && (
+                                        <img
+                                            src={getTruckImageUrl(truck.vin)}
+                                            alt={truck.model}
+                                            style={{ width: '50px', height: '50px', marginRight: '10px', borderRadius: '5px' }}
+                                        />
+                                    )}
+                                    {truck.vin} - {truck.model} - {truck.licensePlate}
+                                    <div className="d-flex align-items-center">
+                                        <button
+                                            className="btn btn-warning btn-sm"
+                                            onClick={() => handleSelectTruck(truck.vin)}
+                                        >
+                                            <FontAwesomeIcon icon={faEdit}/>
+                                        </button>
+                                        <button
+                                            className="btn btn-danger btn-sm ml-2"
+                                            onClick={() => handleDelete(truck.vin)}
+                                        >
+                                            <FontAwesomeIcon icon={faTrashAlt}/>
+                                        </button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    {/* Pagination Controls */}
+                    <nav aria-label="Page navigation">
+                        <ul className="pagination mt-3">
+                            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
+                                    Previous
+                                </button>
+                            </li>
+                            {[...Array(totalPages).keys()].map(num => (
+                                <li key={num} className={`page-item ${currentPage === num + 1 ? 'active' : ''}`}>
+                                    <button className="page-link" onClick={() => handlePageChange(num + 1)}>
+                                        {num + 1}
+                                    </button>
+                                </li>
+                            ))}
+                            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
+                                    Next
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-                <div className="form-group">
-                    <label>Photo</label>
-                    <input
-                        accept={".png, .jpeg, .jpg"}
-                        type="file"
-                        className="form-control"
-                        onChange={handlePhotoChange}
-                    />
-                    {photoPreview && <img src={photoPreview} alt="Preview" style={{ width: '100px', height: '100px', marginTop: '10px' }} />}
-                </div>
-                <div className="form-row mb-3">
-                    <div className="col">
-                        <label htmlFor="availability" style={{ marginRight: '10px' }}>Available</label>
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            name="availability"
-                            checked={newTruck.availability}
-                            onChange={handleChange}
-                            disabled
-                        />
+            </div>
+
+            {/* Delete Confirmation Modal */}
+            <div className={`modal fade ${showDeleteModal ? 'show d-block' : ''}`} tabIndex="-1" role="dialog">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Confirm Delete</h5>
+                        </div>
+                        <div className="modal-body">
+                            <p>Are you sure you want to delete this truck?</p>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                            <button type="button" className="btn btn-danger" onClick={confirmDelete}>Confirm</button>
+                        </div>
                     </div>
                 </div>
-                <div className="form-group">
-                    <label>License Plate</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        name="licensePlate"
-                        value={newTruck.licensePlate}
-                        onChange={handleChange}
-                        required
-                    />
+            </div>
+
+            {/* Update Confirmation Modal */}
+            <div className={`modal fade ${showUpdateConfirm ? 'show d-block' : ''}`} tabIndex="-1" role="dialog">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Confirm Update</h5>
+                        </div>
+                        <div className="modal-body">
+                            <p>Are you sure you want to update this truck?</p>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" onClick={() => setShowUpdateConfirm(false)}>Cancel</button>
+                            <button type="button" className="btn btn-primary" onClick={confirmUpdate}>Confirm</button>
+                        </div>
+                    </div>
                 </div>
-                <div className="form-group">
-                    <label>Current Mileage</label>
-                    <input
-                        type="number"
-                        step="0.01"
-                        className="form-control"
-                        name="currentMileage"
-                        value={newTruck.currentMileage}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Truck Type</label>
-                    <select
-                        className="form-control"
-                        name="truckTypeId"
-                        value={newTruck.truckTypeId}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">Select Truck Type</option>
-                        {truckTypes.map(type => (
-                            <option key={type.truckTypeId} value={type.truckTypeId}>
-                                {type.typeName} - {type.dimensions}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="form-group">
-                    <label>Insurance</label>
-                    <select
-                        className="form-control"
-                        name="insuranceID"
-                        value={newTruck.insuranceID}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">Select Insurance</option>
-                        {insuranceOptions.map(option => (
-                            <option key={option.insuranceID} value={option.insuranceID}>
-                                {option.provider} - {option.coverage}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <button type="submit" className="btn btn-primary">
-                    {editing ? 'Update Truck' : 'Create Truck'}
-                </button>
-            </form>
-            <table className="table table-bordered">
-                <thead>
-                <tr>
-                    <th>VIN</th>
-                    <th>Model</th>
-                    <th>Photo</th>
-                    <th>Availability</th>
-                    <th>License Plate</th>
-                    <th>Current Mileage</th>
-                    <th>Truck Type</th>
-                    <th>Insurance</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {trucks.map(truck => (
-                    <tr key={truck.vin}>
-                        <td>{truck.vin}</td>
-                        <td>{truck.model}</td>
-                        <td>
-                            {truck.photo && (
-                                <img
-                                    src={`http://localhost:8080/truckrentalsystem/imageData/${truck.photo}`}
-                                    alt="Truck"
-                                    style={{ width: '100px', height: '100px' }}
-                                />
-                            )}
-                        </td>
-                        <td>{truck.availability ? 'Yes' : 'No'}</td>
-                        <td>{truck.licensePlate}</td>
-                        <td>{truck.currentMileage}</td>
-                        <td>{truck.truckType?.typeName || ''}</td>
-                        <td>{truck.insurance?.provider || ''}</td>
-                        <td>
-                            <button className="btn btn-warning btn-sm mr-2" onClick={() => handleEdit(truck)}>
-                                Edit
-                            </button>
-                            <button className="btn btn-danger btn-sm" onClick={() => handleDelete(truck.vin)}>
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            </div>
         </div>
     );
-}
+};
 
 export default Trucks;

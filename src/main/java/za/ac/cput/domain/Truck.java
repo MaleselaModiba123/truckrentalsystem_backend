@@ -19,7 +19,7 @@ public class Truck {
     private String model;
     @Lob
     @Column(length = 10485760)
-    private byte[] photo;
+    private byte[] truckImage;
     private boolean availability;
     private String licensePlate;
     private double currentMileage;
@@ -40,7 +40,7 @@ public class Truck {
     private Truck(Builder builder) {
         this.vin = builder.vin;
         this.model = builder.model;
-        this.photo=builder.photo;
+        this.truckImage=builder.truckImage;
         this.availability = builder.availability;
         this.licensePlate =builder.licensePlate;
         this.currentMileage = builder.currentMileage;
@@ -62,8 +62,8 @@ public class Truck {
     public String getModel() {
         return model;
     }
-    public byte[] getPhoto() {
-        return photo;
+    public byte[] getTruckImage() {
+        return truckImage;
     }
 
     public boolean isAvailability() {
@@ -93,13 +93,13 @@ public class Truck {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Truck truck = (Truck) o;
-        return availability == truck.availability && Double.compare(currentMileage, truck.currentMileage) == 0 && Objects.equals(vin, truck.vin) && Objects.equals(model, truck.model) && Arrays.equals(photo, truck.photo) && Objects.equals(licensePlate, truck.licensePlate) && Objects.equals(truckType, truck.truckType) && Objects.equals(insurance, truck.insurance);
+        return availability == truck.availability && Double.compare(currentMileage, truck.currentMileage) == 0 && Objects.equals(vin, truck.vin) && Objects.equals(model, truck.model) && Arrays.equals(truckImage, truck.truckImage) && Objects.equals(licensePlate, truck.licensePlate) && Objects.equals(truckType, truck.truckType) && Objects.equals(insurance, truck.insurance);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(vin, model, availability, licensePlate, currentMileage, truckType, insurance);
-        result = 31 * result + Arrays.hashCode(photo);
+        result = 31 * result + Arrays.hashCode(truckImage);
         return result;
     }
 
@@ -108,7 +108,7 @@ public class Truck {
         return "Truck{" +
                 "vin='" + vin + '\'' +
                 ", model='" + model + '\'' +
-                ", photo=" + Arrays.toString(photo) +
+                ", truckImage=" + Arrays.toString(truckImage) +
                 ", availability=" + availability +
                 ", licensePlate='" + licensePlate + '\'' +
                 ", currentMileage=" + currentMileage +
@@ -121,7 +121,7 @@ public class Truck {
     public static class Builder {
         private String vin;
         private String model;
-        private byte[] photo;
+        private byte[] truckImage;
         private boolean availability;
         private String licensePlate;
         private double currentMileage;
@@ -136,8 +136,8 @@ public class Truck {
             this.model = model;
             return this;
         }
-        public Builder setPhoto(byte[] photo) {
-            this.photo = photo;
+        public Builder setTruckImage(byte[] truckImage) {
+            this.truckImage = truckImage;
             return this;
         }
         public Builder setAvailability(boolean availability) {
@@ -170,7 +170,7 @@ public class Truck {
         public Builder copy(Truck truck) {
             this.vin = truck.vin;
             this.model = truck.model;
-            this.photo=truck.photo;
+            this.truckImage=truck.truckImage;
             this.availability = truck.availability;
             this.licensePlate = truck.licensePlate;
             this.truckType = truck.truckType;

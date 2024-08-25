@@ -1,6 +1,7 @@
 package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,59 +22,74 @@ import java.util.List;
 @RequestMapping("/truck")
 public class TruckController {
 
+
+    private final TruckService truckService;
     @Autowired
-    private TruckService truckService;
-
-    @PostMapping("/create")
-    public ResponseEntity<Truck> createTruck(
-            @RequestPart("truck") Truck truck,
-            @RequestPart(value = "photo", required = false) MultipartFile photo) {
-        try {
-            Truck createdTruck = truckService.create(truck, photo);
-            return ResponseEntity.ok(createdTruck);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
-    @GetMapping("/read/{truckId}")
-    public ResponseEntity<Truck> getTruckById(@PathVariable String truckId) {
-        try {
-            Truck truck = truckService.read(truckId);
-            return ResponseEntity.ok(truck);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
-
-    @PutMapping("/update/{truckId}")
-    public ResponseEntity<Truck> updateTruck(
-            @PathVariable String truckId,
-            @RequestPart("truck") Truck updatedTruck,
-            @RequestPart(value = "photo", required = false) MultipartFile photo) {
-        try {
-            Truck updated = truckService.update(truckId, updatedTruck, photo);
-            return ResponseEntity.ok(updated);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
-
-    @DeleteMapping("/delete/{truckId}")
-    public ResponseEntity<String> deleteTruck(@PathVariable String truckId) {
-        try {
-            truckService.delete(truckId);
-            return ResponseEntity.ok("Truck deleted successfully");
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public TruckController(TruckService truckService) {
+        this.truckService = truckService;
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Truck>> getAllTrucks() {
-        List<Truck> trucks = truckService.getAll();
-        return ResponseEntity.ok(trucks);
+        return ResponseEntity.ok(truckService.getAllTrucks());
+    }
+
+    @GetMapping("/{vin}")
+    public ResponseEntity<Truck> getTruckByVin(@PathVariable String vin) {
+        return truckService.getTruckByVin(vin)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<Truck> createTruck(
+            @RequestParam("model") String model,
+            @RequestParam("truckImage") MultipartFile truckImage,
+            @RequestParam("availability") boolean availability,
+            @RequestParam("licensePlate") String licensePlate,
+            @RequestParam("currentMileage") double currentMileage,
+            @RequestParam("truckTypeId") int truckTypeId,
+            @RequestParam("insuranceId") int insuranceId) throws IOException {
+
+        Truck truck = truckService.createTruck(model, truckImage, availability, licensePlate, currentMileage, truckTypeId, insuranceId);
+        if (truck == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(truck);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Truck> updateTruck(
+            @RequestParam("vin") String vin,
+            @RequestParam("model") String model,
+            @RequestParam(value = "truckImage", required = false) MultipartFile truckImage,
+            @RequestParam("availability") boolean availability,
+            @RequestParam("licensePlate") String licensePlate,
+            @RequestParam("currentMileage") double currentMileage,
+            @RequestParam("truckTypeId") int truckTypeId,
+            @RequestParam("insuranceId") int insuranceId) throws IOException {
+
+        Truck truck = truckService.updateTruck(vin, model, truckImage, availability, licensePlate, currentMileage, truckTypeId, insuranceId);
+        if (truck == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(truck);
+    }
+
+    @DeleteMapping("/{vin}")
+    public ResponseEntity<Void> deleteTruck(@PathVariable String vin) {
+        if (truckService.deleteTruck(vin)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/image/{vin}")
+    public ResponseEntity<byte[]> getTruckImage(@PathVariable String vin) {
+        return truckService.getTruckImageByVin(vin)
+                .map(imageBytes -> ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // Adjust MIME type as needed
+                        .body(imageBytes))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

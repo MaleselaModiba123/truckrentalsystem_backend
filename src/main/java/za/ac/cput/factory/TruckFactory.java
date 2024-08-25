@@ -32,7 +32,7 @@ public class TruckFactory {
         return new Truck.Builder()
                 .setVin(vin)
                 .setModel(model)
-                .setPhoto(photo)
+                .setTruckImage(photo)
                 .setAvailability(availability)
                 .setLicensePlate(licensePlate)
                 .setCurrentMileage(currentMileage)

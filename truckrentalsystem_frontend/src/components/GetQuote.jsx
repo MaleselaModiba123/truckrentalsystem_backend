@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Branches from './Branches';
-import { getTruckById } from '../services/TruckService';
+import { getTruckByVin } from '../services/TruckService';
 import { getAllBranches } from '../services/BranchService';
 import { createRentTruck } from '../services/RentTructService';
 import { getEmployeeById } from '../services/EmployeesService';
@@ -64,7 +64,7 @@ const GetQuote = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const truckResponse = await getTruckById(truckId);
+                const truckResponse = await getTruckByVin(truckId);
                 if (truckResponse && truckResponse.data) {
                     setTruck(truckResponse.data);
                 } else {
