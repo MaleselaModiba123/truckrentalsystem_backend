@@ -32,7 +32,27 @@ public class TruckTypeService implements ITruckTypeService {
     public TruckType read(Integer truckTypeId) {
         return this.truckTypeRepository.findById(truckTypeId).orElse(null);
     }
-
+    @Override
+//    public Insurance update(Insurance insurance) {
+//        return insuranceRepository.save(insurance);
+//    }
+    public TruckType update(Integer truckTypeId, TruckType truckType) {
+        TruckType existingTruckType= read(truckTypeId);
+        if (existingTruckType != null) {
+            TruckType updatedTrucktype= new TruckType.Builder()
+                    .copy(existingTruckType)
+                    .setTypeName(truckType.getTypeName())
+                    .setDescription(truckType.getDescription())
+                    .setDimensions(truckType.getDimensions())
+                    .setCapacity(truckType.getCapacity())
+                    .setTransmission(truckType.getTransmission())
+                    .setFuelConsumption(truckType.getFuelConsumption())
+                    .setFuelType(truckType.getFuelType())
+                    .build();
+            return truckTypeRepository.save(updatedTrucktype);
+        }
+        return null;
+    }
     @Override
     public void delete(Integer truckTypeId) {
         truckTypeRepository.deleteById(truckTypeId);

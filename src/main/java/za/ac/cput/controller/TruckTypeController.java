@@ -2,6 +2,7 @@ package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import za.ac.cput.domain.Insurance;
 import za.ac.cput.domain.TruckType;
 import za.ac.cput.service.TruckTypeService;
 
@@ -28,7 +29,10 @@ public class TruckTypeController {
     public void delete(@PathVariable int truckTypeId){
         truckTypeService.delete(truckTypeId);
     }
-
+    @PutMapping("/update/{truckTypeId}")
+    public TruckType update(@PathVariable int truckTypeId , @RequestBody TruckType truckType){
+        return truckTypeService.update(truckTypeId, truckType);
+    }
     @GetMapping("/getAll")
     public List<TruckType> getAll(){
         return truckTypeService.getAll();
