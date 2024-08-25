@@ -1,29 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import Branches from './Branches';
-import { getTruckByVin } from '../services/TruckService';
-import { getAllBranches } from '../services/BranchService';
-import { createRentTruck } from '../services/RentTructService';
-import { getEmployeeById } from '../services/EmployeesService';
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import {getTruckByVin, getTruckImageUrl} from '../services/TruckService';
+import {getAllBranches} from '../services/BranchService';
+import {createRentTruck} from '../services/RentTructService';
 
 const GetQuote = () => {
     const { truckId } = useParams();
-    const [truck, setTruck] = useState({});
     const navigate = useNavigate();
 
+    const [truck, setTruck] = useState({});
+    const [truckImageUrl, setTruckImageUrl] = useState('');
     const [branches, setBranches] = useState([]);  // Store branches data here
     const [formData, setFormData] = useState({
         rentalDuration: 1,
         pickUp: '',
         dropOff: '',
+        rentalDate: '',
         returnDate: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        license: '',
-        cellNo: '',
     });
-    const [employee, setEmployee] = useState({});
     const [price, setPrice] = useState(null);
     const [rentData, setRentData] = useState({
         rentId: 0,
@@ -31,58 +25,30 @@ const GetQuote = () => {
         returnDate: new Date(),
         totalCost: price,
         isPaymentMade: false,
-        vin: {},
-        customerID: {
-            customerID: 100,
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            license: '',
-            cellNo: '',
-            rentedTruck: []
-        },
-        salesAgent: {
-            wages: 0.0,
-            hours: 0,
-            customerID: []
-        },
-        pickUp: {
-            branchId: 0,
-            branchName: '',
-            address: '',
-            rentTrucks: []
-        },
-        dropOff: {
-            branchId: 0,
-            branchName: '',
-            address: '',
-            rentTrucks: []
-        }
+        vin: null,
+        pickUp: {},
+        dropOff: {},
     });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const truckResponse = await getTruckByVin(truckId);
-                if (truckResponse && truckResponse.data) {
+                const [truckResponse, branchesResponse] = await Promise.all([
+                    getTruckByVin(truckId),
+                    getAllBranches(),
+                ]);
+
+                if (truckResponse.data) {
                     setTruck(truckResponse.data);
+                    setTruckImageUrl(getTruckImageUrl(truckId));
                 } else {
-                    console.error('Unexpected response format:', truckResponse);
+                    console.error('Truck data not found.');
                 }
 
-                const branchesResponse = await getAllBranches();
-                if (branchesResponse && branchesResponse.data) {
+                if (branchesResponse.data) {
                     setBranches(branchesResponse.data);
                 } else {
-                    console.error('Unexpected response format:', branchesResponse);
-                }
-
-                const employeeResponse = await getEmployeeById(1005);
-                if (employeeResponse && employeeResponse.data) {
-                    setEmployee(employeeResponse.data);
-                } else {
-                    console.error('Unexpected response format:', employeeResponse);
+                    console.error('Branches data not found.');
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -95,75 +61,67 @@ const GetQuote = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "rentalDuration") {
-            // Ensure rental duration is at least 1
-            const duration = Math.max(1, parseInt(value, 10));
-            setFormData({
-                ...formData,
-                rentalDuration: duration,
-            });
-        } else {
-            setFormData({
-                ...formData,
-                [name]: value,
-            });
-        }
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: name === 'rentalDuration' ? Math.max(1, parseInt(value, 10)) : value,
+        }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const calculatedPrice = calculatePrice(formData.rentalDuration, formData.pickupLocation, formData.dropoffLocation, truck);
+        const calculatedPrice = calculatePrice(formData.rentalDuration, formData.pickUp, formData.dropOff, truck);
         setPrice(calculatedPrice);
-        rentData.totalCost = calculatedPrice;
-        rentData.customerID.cellNo = formData.cellNo;
-        rentData.customerID.email = formData.email;
-        rentData.customerID.firstName = formData.firstName;
-        rentData.customerID.lastName = formData.lastName;
-        rentData.customerID.license = formData.license;
-        rentData.customerID.rentedTruck = rentData.customerID.rentedTruck.push(truck);
-        rentData.pickUp = branches.find((branch) => branch.branchName === formData.pickUp)
-        rentData.dropOff = branches.find((branch) => branch.branchName === formData.dropOff)
-        rentData.salesAgent.hours = employee.hours
-        rentData.salesAgent.wages = employee.wages
-        rentData.salesAgent.customerID.push(rentData.customerID);
-        rentData.vin = truck;
-        rentData.returnDate = formData.returnDate
-        try{
-            createRentTruck(rentData);
+
+        const selectedPickUp = branches.find((branch) => branch.branchName === formData.pickUp) || {};
+        const selectedDropOff = branches.find((branch) => branch.branchName === formData.dropOff) || {};
+
+        const updatedRentData = {
+            ...rentData,
+            totalCost: calculatedPrice,
+            returnDate: formData.returnDate,
+            vin: truck,
+            pickUp: selectedPickUp,
+            dropOff: selectedDropOff,
+        };
+
+        try {
+            await createRentTruck(updatedRentData);
         } catch (error) {
-            console.error(error);
+            console.error('Error creating rental:', error);
         }
     };
 
     const calculatePrice = (duration, pickupLocation, dropoffLocation, truck) => {
         if (!truck) return 0;
-        const basePrice = truck.typeName === 'Flatbed' ? 100 : 500;  // Example base pricing logic
-        const distanceFactor = pickupLocation !== dropoffLocation ? 1.5 : 1.0;  // Example factor for different locations
-        console.info(`The rental duration is: ${duration}`);
+        const basePrice = truck.typeName === 'Flatbed' ? 100 : 500;
+        const distanceFactor = pickupLocation !== dropoffLocation ? 1.5 : 1.0;
         return basePrice * duration * distanceFactor;
     };
 
+    if (!truck) return <p>Loading...</p>;
     return (
         <div className="get-quote-container">
             <div className="get-quote-box">
-                {/* <Branches setBranchesData={branches} />  Fetch branches data */}
                 <div key={truck.id} className="truck-info">
-                <div>
-                    <p><strong>Model:</strong> {truck.model}</p>
-                    {truck.truckType ? (
-                        <>
-                            <p><strong>Type:</strong> {truck.truckType.typeName}</p>
-                            <p><strong>Transmission:</strong> {truck.truckType.transmission}</p>
-                            <p><strong>Fuel Consumption:</strong> {truck.truckType.fuelConsumption}</p>
-                            <p><strong>Fuel Type:</strong> {truck.truckType.fuelType}</p>
-                            <p><strong>Dimension:</strong> {truck.truckType.dimensions}</p>
-                        </>
-                    ) : (
-                        <p>Truck details are not available yet.</p>
-                    )}
-                    <p><strong>License:</strong> {truck.licensePlate}</p>
+                    <div>
+                        {truckImageUrl && <img src={truckImageUrl} alt="Truck"/>}
+                        {truck.truckType ? (
+                            <>
+                                <p><strong>Model:</strong> {truck.model}</p>
+                                <p><strong>Type:</strong> {truck.truckType.typeName}</p>
+                                <strong>Capacity:</strong> {truck.truckType.capacity} tons <br/>
+                                <p><strong>Transmission:</strong> {truck.truckType.transmission}</p>
+                                <p><strong>Fuel Consumption:</strong> {truck.truckType.fuelConsumption}</p>
+                                <p><strong>Fuel Type:</strong> {truck.truckType.fuelType}</p>
+                                <strong>Mileage:</strong> {truck.currentMileage} km <br/>
+                                <p><strong>Dimension:</strong> {truck.truckType.dimensions}</p>
+                                <strong>License Plate:</strong> {truck.licensePlate}
+                            </>
+                        ) : (
+                            <p>Truck details are not available yet.</p>
+                        )}
+                    </div>
                 </div>
-            </div>
                 <div className="quote-form">
                     <h1>Truck Rental Form</h1>
                     <form onSubmit={handleSubmit}>
@@ -193,34 +151,14 @@ const GetQuote = () => {
                                 ))}
                             </select>
                         </label>
+                        <label htmlFor="rentalDate">
+                            Rental Date:
+                            <input type="date" name="rentalDate" value={formData.rentalDate} onChange={handleChange} id="rentalDate" />
+                        </label>
+
                         <label htmlFor="returnDate">
                             Return Date:
                             <input type="date" name="returnDate" value={formData.returnDate} onChange={handleChange} id="returnDate" />
-                        </label>
-
-                        <label htmlFor="firstName">
-                            First Name:
-                            <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} id="firstName" />
-                        </label>
-
-                        <label htmlFor="lastName">
-                            Last Name:
-                            <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} id="lastName" />
-                        </label>
-
-                        <label htmlFor="email">
-                            Email:
-                            <input type="text" name="email" value={formData.email} onChange={handleChange} id="email" />
-                        </label>
-
-                        <label htmlFor="license">
-                            License:
-                            <input type="text" name="license" value={formData.license} onChange={handleChange} id="license" />
-                        </label>
-
-                        <label htmlFor="cellNo">
-                            Cellphone:
-                            <input type="text" name="cellNo" value={formData.cellNo} onChange={handleChange} id="cellNo" />
                         </label>
                         <button type="submit">Calculate Price</button>
                     </form>
