@@ -1,30 +1,35 @@
 // components/TruckTypes.jsx
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {
-    Container,
-    Grid,
-    TextField,
     Button,
-    Typography,
-    List,
-    ListItem,
-    ListItemText,
-    InputAdornment,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    Select,
-    IconButton,
+    Container,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle
+    DialogTitle,
+    FormControl,
+    Grid,
+    IconButton,
+    InputAdornment,
+    InputLabel,
+    List,
+    ListItem,
+    ListItemText,
+    MenuItem,
+    Select,
+    TextField,
+    Typography
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { createTruckType, getAllTruckTypes, updateTruckType, deleteTruckTypeById } from '../../services/TruckTypeService.js';
+import {
+    createTruckType,
+    deleteTruckTypeById,
+    getAllTruckTypes,
+    updateTruckType
+} from '../../services/TruckTypeService.js';
 
 function TruckTypes() {
     const [truckTypes, setTruckTypes] = useState([]);
@@ -42,21 +47,14 @@ function TruckTypes() {
     const [searchTerm, setSearchTerm] = useState('');
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
-    const [actionType, setActionType] = useState(''); // 'add', 'update', or 'delete'
+    const [actionType, setActionType] = useState('add'); // 'add' or 'update'
     const [truckTypeToDelete, setTruckTypeToDelete] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
         fetchTruckTypes();
-
-        if (location.state && location.state.newTruckTypeId) {
-            setFormState({
-                ...formState,
-                truckTypeId: location.state.newTruckTypeId
-            });
-        }
-    }, [location.state]);
+    }, []);
 
     const fetchTruckTypes = async () => {
         try {
@@ -76,26 +74,34 @@ function TruckTypes() {
         });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
+        if (actionType === 'update') {
+            setIsSubmitDialogOpen(true);
+        } else {
+            performSubmit();
+        }
+    };
+
+    const performSubmit = async () => {
         try {
             let updatedTruckTypes = [...truckTypes];
             if (actionType === 'add') {
                 const response = await createTruckType(formState);
                 updatedTruckTypes.push(response.data);
-                navigate('/trucks', { state: { newTruckTypeId: response.data.truckTypeId } });
             } else if (actionType === 'update') {
-                const updatedTruckType = await updateTruckType(selectedTruckType.truckTypeId, formState);
-                updatedTruckTypes = updatedTruckTypes.map(tt => tt.truckTypeId === updatedTruckType.data.truckTypeId ? updatedTruckType.data : tt);
-                navigate('/truck-types');
+                const response = await updateTruckType(selectedTruckType.truckTypeId, formState);
+                updatedTruckTypes = updatedTruckTypes.map(tt =>
+                    tt.truckTypeId === response.data.truckTypeId ? response.data : tt
+                );
             }
             setTruckTypes(updatedTruckTypes);
             setFilteredTruckTypes(updatedTruckTypes);
             resetFormState();
         } catch (error) {
             console.error('Error submitting truck type:', error);
-            alert('Failed to submit truck type. Please try again.');
         }
+        setIsSubmitDialogOpen(false);
     };
 
     const handleSearchChange = (e) => {
@@ -125,7 +131,6 @@ function TruckTypes() {
                 const updatedTruckTypes = truckTypes.filter(tt => tt.truckTypeId !== truckTypeToDelete.truckTypeId);
                 setTruckTypes(updatedTruckTypes);
                 setFilteredTruckTypes(updatedTruckTypes);
-
             }
         } catch (error) {
             console.error('Error deleting truck type:', error);
@@ -139,20 +144,19 @@ function TruckTypes() {
         setTruckTypeToDelete(null);
     };
 
-    const openSubmitDialog = (type) => {
-        setActionType(type);
-        setIsSubmitDialogOpen(true);
+    const resetFormState = () => {
+        setFormState({
+            typeName: '',
+            description: '',
+            dimensions: '',
+            capacity: 0,
+            transmission: 'Automatic',
+            fuelConsumption: 0,
+            fuelType: 'Diesel'
+        });
+        setSelectedTruckType(null);
+        setActionType('add');
     };
-
-    const handleSubmitDialogClose = () => {
-        setIsSubmitDialogOpen(false);
-    };
-
-    const handleSubmitDialogConfirm = () => {
-        handleSubmit();
-        handleSubmitDialogClose();
-    };
-
 
     return (
         <Container maxWidth="md" sx={{ mt: 4 }}>
@@ -181,7 +185,7 @@ function TruckTypes() {
 
             <Grid container spacing={2} mb={4}>
                 <Grid item xs={12} md={6}>
-                    <form onSubmit={(e) => openSubmitDialog(selectedTruckType ? 'update' : 'add')}>
+                    <form onSubmit={handleSubmit}>
                         <TextField
                             label="Type Name"
                             name="typeName"
@@ -284,24 +288,15 @@ function TruckTypes() {
                                     }
                                 >
                                     <ListItemText
-                                        primary={`${truckType.typeName} - ${truckType.capacity} tons`}
+                                        primary={truckType.typeName}
                                         secondary={
                                             <>
-                                                <Typography variant="body2">
-                                                    {truckType.description}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    Dimensions: {truckType.dimensions}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    Fuel Type: {truckType.fuelType}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    Transmission: {truckType.transmission}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    Fuel Consumption: {truckType.fuelConsumption} km/l
-                                                </Typography>
+                                                <span>Description: {truckType.description}</span><br/>
+                                                <span>Dimensions: {truckType.dimensions}</span><br/>
+                                                <span>Capacity: {truckType.capacity} tons</span><br/>
+                                                <span>Fuel Type: {truckType.fuelType}</span><br/>
+                                                <span>Transmission: {truckType.transmission}</span><br/>
+                                                <span>Fuel Consumption: {truckType.fuelConsumption} km/liter</span>
                                             </>
                                         }
                                     />
@@ -315,20 +310,18 @@ function TruckTypes() {
             {/* Delete Confirmation Dialog */}
             <Dialog
                 open={isDeleteDialogOpen}
-                onClose={() => setIsDeleteDialogOpen(false)}
+                onClose={cancelDelete}
             >
                 <DialogTitle>Confirm Deletion</DialogTitle>
                 <DialogContent>
-                    <Typography>
-                        Are you sure you want to delete this truck type?
-                    </Typography>
+                    <Typography>Are you sure you want to delete this truck type?</Typography>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={cancelDelete} color="primary">
                         Cancel
                     </Button>
                     <Button onClick={confirmDelete} color="secondary">
-                        Delete
+                        Confirm
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -336,19 +329,17 @@ function TruckTypes() {
             {/* Submit Confirmation Dialog */}
             <Dialog
                 open={isSubmitDialogOpen}
-                onClose={handleSubmitDialogClose}
+                onClose={() => setIsSubmitDialogOpen(false)}
             >
-                <DialogTitle>{actionType === 'add' ? 'Add Truck Type' : 'Update Truck Type'}</DialogTitle>
+                <DialogTitle>Confirm Submission</DialogTitle>
                 <DialogContent>
-                    <Typography>
-                        Are you sure you want to {actionType === 'add' ? 'add' : 'update'} this truck type?
-                    </Typography>
+                    <Typography>Are you sure you want to {actionType} this truck type?</Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleSubmitDialogClose} color="primary">
+                    <Button onClick={() => setIsSubmitDialogOpen(false)} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleSubmitDialogConfirm} color="secondary">
+                    <Button onClick={performSubmit} color="secondary">
                         Confirm
                     </Button>
                 </DialogActions>
