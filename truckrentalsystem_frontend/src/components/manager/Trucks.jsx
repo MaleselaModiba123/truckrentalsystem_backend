@@ -373,6 +373,7 @@ const Trucks = () => {
                                         <button
                                             className="btn btn-danger btn-sm ml-2"
                                             onClick={() => handleDelete(truck.vin)}
+                                            style={{ marginLeft: '8px' }}
                                         >
                                             <FontAwesomeIcon icon={faTrashAlt}/>
                                         </button>
