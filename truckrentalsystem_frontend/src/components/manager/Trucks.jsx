@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import React, {useCallback, useEffect, useState} from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {
     createTruck,
     deleteTruck,
@@ -9,8 +9,8 @@ import {
     getTruckImageUrl,
     updateTruck
 } from '../../services/TruckService.js';
-import { getAllTruckTypes } from '../../services/TruckTypeService.js';
-import { getAllInsurance } from '../../services/InsuranceService.js';
+import {getAllTruckTypes} from '../../services/TruckTypeService.js';
+import {getAllInsurance} from '../../services/InsuranceService.js';
 
 const Trucks = () => {
     const [trucks, setTrucks] = useState([]);
@@ -353,7 +353,16 @@ const Trucks = () => {
                                             style={{ width: '50px', height: '50px', marginRight: '10px', borderRadius: '5px' }}
                                         />
                                     )}
-                                    {truck.vin} - {truck.model} - {truck.licensePlate}
+                                    <div className="d-flex flex-column">
+                                        <span><strong>Model:</strong> {truck.model}</span>
+                                        <span><strong>Type:</strong> {truck.truckType.typeName}</span>
+                                        <span><strong>VIN:</strong> {truck.vin}</span>
+                                        <span><strong>License Plate:</strong> {truck.licensePlate}</span>
+                                        <span><strong>Mileage:</strong> {truck.currentMileage} km</span>
+                                        <span><strong>Availability:</strong> {truck.availability ? 'Available' : 'Not Available'}</span>
+                                        <span><strong>Insurance:</strong> {truck.insurance.provider} - {truck.insurance.policyNumber}</span>
+
+                                    </div>
                                     <div className="d-flex align-items-center">
                                         <button
                                             className="btn btn-warning btn-sm"
