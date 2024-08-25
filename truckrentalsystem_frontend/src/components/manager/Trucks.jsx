@@ -246,7 +246,7 @@ const Trucks = () => {
                                 name="truckImage"
                                 onChange={handleFileChange}
                             />
-                            {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: '100px', height: '100px', marginTop: '10px', borderRadius: '5px' }} />}
+                            {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: '50px', height: '50px', marginTop: '10px', borderRadius: '5px' }} />}
                         </div>
                         <div className="form-group">
                             <div className="form-check">
@@ -350,7 +350,7 @@ const Trucks = () => {
                                         <img
                                             src={getTruckImageUrl(truck.vin)}
                                             alt={truck.model}
-                                            style={{ width: '50px', height: '50px', marginRight: '10px', borderRadius: '5px' }}
+                                            style={{ width: '100px', height: '100px', marginRight: '10px', borderRadius: '5px' }}
                                         />
                                     )}
                                     <div className="d-flex flex-column">
