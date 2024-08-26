@@ -35,7 +35,7 @@ const HeaderComponent = () => {
                     <div className="collapse navbar-collapse d-flex justify-content-end">
                         <ul className="navbar-nav">
                             <li className="nav-item me-lg-5">
-                                <Link to="/rent-trucks" className="nav-link">Rent Trucks</Link>
+                                <Link to="/rent-trucks" className="nav-link">Home</Link>
                             </li>
                             <li className={`nav-item dropdown ${showDropdown ? 'show' : ''}`} ref={dropdownRef}>
                                 <Link

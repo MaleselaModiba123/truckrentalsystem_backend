@@ -1,82 +1,95 @@
-import React, { useState, useEffect } from 'react';
-import { getAllBranches } from '../services/BranchService';
-
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getAllTrucks, getTruckImageUrl } from "../services/TruckService.js";
+import { Button, Card, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
 
 const Home = () => {
-    const [branches, setBranches] = useState([]); // State to store branches data
-    const [loading, setLoading] = useState(true); // State to manage loading state
-    const [error, setError] = useState(null); // State to manage error state
+    const [trucks, setTrucks] = useState([]);
+    const [filteredTrucks, setFilteredTrucks] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchBranches = async () => {
-            try {
-                const response = await getAllBranches();
-                setBranches(response.data);
-                setLoading(false);
-            } catch (err) {
-                setError(err);
-                setLoading(false);
-            }
-        };
-
-        fetchBranches();
+        getAllTrucks()
+            .then(response => {
+                const trucksWithImages = response.data.map(truck => ({
+                    ...truck,
+                    image: getTruckImageUrl(truck.vin)
+                }));
+                setTrucks(trucksWithImages);
+                setFilteredTrucks(trucksWithImages);
+            })
+            .catch(error => {
+                console.error('There was an error fetching the trucks!', error);
+            });
     }, []);
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
+    const handleSearchChange = (event) => {
+        const query = event.target.value.toLowerCase();
+        setSearchQuery(query);
+        filterTrucks(query);
+    };
 
-    if (error) {
-        return <p>Error loading branches: {error.message}</p>;
-    }
+    const filterTrucks = (query) => {
+        const filtered = trucks.filter(truck =>
+            truck.model.toLowerCase().includes(query) ||
+            truck.licensePlate.toLowerCase().includes(query)
+        );
+        setFilteredTrucks(filtered);
+    };
+
+    const handleGetQuote = (truckId) => {
+        navigate(`/get-quote/${truckId}`);
+    };
 
     return (
         <div className="home">
-            <div className="header-section1">
+            {/* Keep the header section */}
+            <div className="header-section1 text-center mb-4">
                 <h1>UNBEATABLE TRUCK HIRE, EASY BOOKINGS</h1>
                 <p>Rent a Truck Simply. No Stress Meet & Greet Truck Hire in South Africa</p>
             </div>
-            <div className="form-section">
-                <div className="form-item">
-                    <label htmlFor="pickup-location">Pick-up Location:</label>
-                    <select id="pickup-location">
-                        <option value="">Select pick-up location</option>
-                        {branches.map((branch) => (
-                            <option key={branch.branchId} value={branch.branchId}>
-                                {branch.branchName} - {branch.address}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="form-item">
-                    <label htmlFor="dropoff-location">Drop-off Location:</label>
-                    <select id="dropoff-location">
-                        <option value="">Select drop-off location</option>
-                        {branches.map((branch) => (
-                            <option key={branch.branchId} value={branch.branchId}>
-                                {branch.branchName} - {branch.address}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="form-item">
-                    <label htmlFor="pickup-date">Pick up Date & Time:</label>
-                    <input type="datetime-local" id="pickup-date" />
-                </div>
-                <div className="form-item">
-                    <label htmlFor="dropoff-date">Drop-off Date & Time:</label>
-                    <input type="datetime-local" id="dropoff-date" />
-                </div>
-                <div className="form-item">
-                    <label htmlFor="driver-age">Driver's Age:</label>
-                    <input type="number" id="driver-age" placeholder="Enter driver's age" />
-                </div>
-            </div>
-            <div className="button-section">
-                <button className="get-quote-button">Get Quote</button>
-            </div>
+
+            {/* Truck listing and search functionality without the "Our Trucks" text and picture */}
+            <Container className="rent-trucks mt-4">
+                <Form.Group className="mb-4">
+                    <InputGroup>
+                        <Form.Control
+                            type="text"
+                            placeholder="Search by model or license plate"
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                        />
+                        <Button variant="outline-secondary">Search</Button>
+                    </InputGroup>
+                </Form.Group>
+                <Row className="g-4">
+                    {filteredTrucks.map((truck) => (
+                        <Col md={4} lg={3} key={truck.vin}>
+                            <Card className="d-flex flex-column h-100">
+                                <Card.Img variant="top" src={truck.image} alt={`Truck ${truck.model}`} />
+                                <Card.Body className="d-flex flex-column">
+                                    <Card.Title>{truck.model}</Card.Title>
+                                    <Card.Text className="flex-grow-1">
+                                        <strong>Type:</strong> {truck.truckType.typeName} <br/>
+                                        <strong>Capacity:</strong> {truck.truckType.capacity} tons <br/>
+                                        <strong>Transmission:</strong> {truck.truckType.transmission} <br/>
+                                        <strong>Fuel Consumption:</strong> {truck.truckType.fuelConsumption} km/l <br/>
+                                        <strong>Fuel Type:</strong> {truck.truckType.fuelType} <br/>
+                                        <strong>Mileage:</strong> {truck.currentMileage} km <br/>
+                                        <strong>Dimensions (l*w*h):</strong> {truck.truckType.dimensions}m <br/>
+                                        <strong>License Plate:</strong> {truck.licensePlate}
+                                    </Card.Text>
+                                    <Button variant="primary" onClick={() => handleGetQuote(truck.vin)}>Get Quote</Button>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    ))}
+                </Row>
+            </Container>
         </div>
     );
 };
 
 export default Home;
+
