@@ -1,141 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import {
-    createInsurance,
-    deleteInsuranceById,
-    getAllInsurance,
-    updateInsurance
-} from "../../services/InsuranceService.js";
+import { Card, CardContent, CardActions, Button, Grid, Typography, Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { getAllInsurance, deleteInsuranceById, updateInsurance, createInsurance } from "../../services/InsuranceService.js";
 
-const styles = {
-    container: {
-        marginTop: '50px',
-        padding: '0 20px',
-    },
-    searchField: {
-        marginBottom: '20px',
-        padding: '10px',
-        width: '100%',
-        borderRadius: '4px',
-        border: '1px solid #ccc',
-        fontSize: '16px',
-    },
-    table: {
-        width: '100%',
-        marginBottom: '20px',
-        borderCollapse: 'collapse',
-    },
-    thTd: {
-        border: '1px solid #dee2e6',
-        padding: '12px',
-        textAlign: 'center',
-        verticalAlign: 'middle',
-    },
-    th: {
-        backgroundColor: '#f8f9fa',
-        fontWeight: 'bold',
-    },
-    stripedRow: {
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    },
-    hoveredRow: {
-        backgroundColor: '#f1f1f1',
-    },
-    btn: {
-        padding: '8px 16px',
-        fontSize: '14px',
-        cursor: 'pointer',
-        border: 'none',
-        borderRadius: '4px',
-        transition: 'background-color 0.3s',
-    },
-    btnEdit: {
-        backgroundColor: '#007bff',
-        color: 'white',
-        marginRight: '5px',
-    },
-    btnDelete: {
-        backgroundColor: '#dc3545',
-        color: 'white',
-    },
-    btnAdd: {
-        backgroundColor: '#28a745',
-        color: 'white',
-        padding: '12px 24px',
-        marginTop: '20px',
-    },
-    modal: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 1000,
-    },
-    modalContent: {
-        backgroundColor: 'white',
-        padding: '10px',
-        borderRadius: '5px',
-        width: '400px',
-        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
-        maxHeight: '80vh',
-        overflowY: 'auto',
-    },
-    close: {
-        position: 'absolute',
-        top: '10px',
-        right: '10px',
-        fontSize: '24px',
-        cursor: 'pointer',
-    },
-    formLabel: {
-        display: 'block',
-        marginBottom: '5px',
-        fontSize: '14px',
-    },
-    formInput: {
-        width: '100%',
-        padding: '6px',
-        marginBottom: '8px',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-        fontSize: '14px',
-    },
-    formButton: {
-        padding: '8px 16px',
-        fontSize: '14px',
-        cursor: 'pointer',
-        border: 'none',
-        borderRadius: '4px',
-        marginRight: '10px',
-    },
-    btnSave: {
-        backgroundColor: '#28a745',
-        color: 'white',
-    },
-    btnCancel: {
-        backgroundColor: '#dc3545',
-        color: 'white',
-    },
-};
-
-function InsuranceList() {
+const InsuranceList = () => {
     const [insurances, setInsurances] = useState([]);
-    const [formData, setFormData] = useState({
-        insuranceType: '',
-        provider: '',
-        policyNumber: '',
-        effectiveDate: '',
-        coverage: '',
-        premium: '',
-    });
+    const [filter, setFilter] = useState('');
     const [editing, setEditing] = useState(false);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [formData, setFormData] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+    const [isSaveConfirmDialogOpen, setIsSaveConfirmDialogOpen] = useState(false);
+    const [insuranceToDelete, setInsuranceToDelete] = useState(null);
 
     useEffect(() => {
         fetchInsurances();
@@ -150,20 +25,43 @@ function InsuranceList() {
         }
     };
 
+    const handleFilterChange = (e) => {
+        setFilter(e.target.value);
+    };
+
+    const filteredInsurances = insurances.filter((insurance) =>
+        insurance.insuranceType.toLowerCase().includes(filter.toLowerCase()) ||
+        insurance.policyNumber.toLowerCase().includes(filter.toLowerCase())
+    );
+
     const handleEdit = (insurance) => {
         setFormData(insurance);
         setEditing(true);
-        setIsEditModalOpen(true);
+        setIsModalOpen(true);
     };
 
-    const handleDelete = async (insuranceID) => {
+    const handleDelete = (insurance) => {
+        setInsuranceToDelete(insurance);
+        setIsConfirmDialogOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        if (insuranceToDelete) {
             try {
-                await deleteInsuranceById(insuranceID);
-                await fetchInsurances();
+                await deleteInsuranceById(insuranceToDelete.insuranceID);
+                fetchInsurances();
+                setInsuranceToDelete(null);
             } catch (error) {
                 console.error('Error deleting insurance:', error);
             }
+        }
+        setIsConfirmDialogOpen(false);
+    };
 
+    const handleAdd = () => {
+        setFormData({});
+        setEditing(false);
+        setIsModalOpen(true);
     };
 
     const handleChange = (e) => {
@@ -173,201 +71,217 @@ function InsuranceList() {
 
     const handleSave = async (e) => {
         e.preventDefault();
-            try {
-                if (editing) {
-                    await updateInsurance(formData.insuranceID, formData);
-                } else {
-                    const {insuranceID, ...newInsurance} = formData;
-                    await createInsurance(newInsurance);
-                }
-                setEditing(false);
-                setIsEditModalOpen(false);
-                setIsAddModalOpen(false);
-                await fetchInsurances();
-            } catch (error) {
-                console.error('Error saving insurance:', error);
-            }
+        setIsSaveConfirmDialogOpen(true);  // Open save confirmation dialog
     };
 
-    const handleAdd = () => {
-        setFormData({
-            insuranceType: '',
-            provider: '',
-            policyNumber: '',
-            effectiveDate: '',
-            coverage: '',
-            premium: '',
-        });
-        setEditing(false);
-        setIsAddModalOpen(true);
+    const confirmSave = async () => {
+        try {
+            if (editing) {
+                await updateInsurance(formData.insuranceID, formData);
+            } else {
+                await createInsurance(formData);
+            }
+            setIsModalOpen(false);
+            fetchInsurances();
+        } catch (error) {
+            console.error('Error saving insurance:', error);
+        }
+        setIsSaveConfirmDialogOpen(false);
     };
-    const handleSearch = (e) => {
-        setSearchQuery(e.target.value.toLowerCase());
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
     };
-    const filteredInsurances = insurances.filter(
-        (insurance) =>
-            insurance.insuranceType.toLowerCase().includes(searchQuery) ||
-            insurance.provider.toLowerCase().includes(searchQuery) ||
-            insurance.policyNumber.toLowerCase().includes(searchQuery)
-    );
+
+    const handleCancelDelete = () => {
+        setInsuranceToDelete(null);
+        setIsConfirmDialogOpen(false);
+    };
+
+    const handleCancelSave = () => {
+        setIsSaveConfirmDialogOpen(false);
+    };
+
     return (
-        <div style={styles.container}>
-            <div style={{ color: 'green', marginBottom: '20px' }}></div>
+        <Box padding={2}>
             <input
                 type="text"
-                placeholder="Search by Insurance Type, Provider, or Policy Number..."
-                value={searchQuery}
-                onChange={handleSearch}
-                style={styles.searchField}
+                placeholder="Filter by Insurance Type or Policy Number"
+                value={filter}
+                onChange={handleFilterChange}
+                style={{ marginBottom: '20px', padding: '10px', width: '100%' }}
             />
-            <table style={styles.table} className="table-striped table-hover">
-                <thead>
-                <tr>
-                    <th style={{...styles.thTd, ...styles.th}}>Insurance ID</th>
-                    <th style={{...styles.thTd, ...styles.th}}>Insurance Type</th>
-                    <th style={{...styles.thTd, ...styles.th}}>Provider</th>
-                    <th style={{...styles.thTd, ...styles.th}}>Policy Number</th>
-                    <th style={{...styles.thTd, ...styles.th}}>Effective Date</th>
-                    <th style={{...styles.thTd, ...styles.th}}>Coverage</th>
-                    <th style={{...styles.thTd, ...styles.th}}>Premium</th>
-                    <th style={{...styles.thTd, ...styles.th}}>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {filteredInsurances.map((insurance, index) => (
-                    <tr
-                        key={insurance.insuranceID}
-                        style={index % 2 === 0 ? styles.stripedRow : {}}
-                        className="hoveredRow"
-                    >
-                        <td style={styles.thTd}>{insurance.insuranceID}</td>
-                        <td style={styles.thTd}>{insurance.insuranceType}</td>
-                        <td style={styles.thTd}>{insurance.provider}</td>
-                        <td style={styles.thTd}>{insurance.policyNumber}</td>
-                        <td style={styles.thTd}>{insurance.effectiveDate}</td>
-                        <td style={styles.thTd}>{insurance.coverage}</td>
-                        <td style={styles.thTd}>{insurance.premium}</td>
-                        <td style={styles.thTd}>
-                            <button
-                                style={{...styles.btn, ...styles.btnEdit}}
-                                onClick={() => handleEdit(insurance)}
-                            >
-                                Edit
-                            </button>
-                            <button
-                                style={{...styles.btn, ...styles.btnDelete}}
-                                onClick={() => handleDelete(insurance.insuranceID)}
-                            >
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-            <button style={styles.btnAdd} onClick={handleAdd}>
+            <Button variant="contained" color="primary" onClick={handleAdd}>
                 Add Insurance
-            </button>
+            </Button>
+            <Grid container spacing={2} marginTop={2}>
+                {filteredInsurances.map((insurance) => (
+                    <Grid item xs={12} sm={6} md={4} key={insurance.insuranceID}>
+                        <Card>
+                            <CardContent>
+                                <Typography variant="h6">{insurance.insuranceType}</Typography>
+                                <Typography color="textSecondary">Provider: {insurance.provider}</Typography>
+                                <Typography color="textSecondary">Policy Number: {insurance.policyNumber}</Typography>
+                                <Typography color="textSecondary">Effective Date: {insurance.effectiveDate}</Typography>
+                                <Typography color="textSecondary">Coverage: {insurance.coverage}</Typography>
+                                <Typography color="textSecondary">Premium: {insurance.premium}</Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small" onClick={() => handleEdit(insurance)}>Edit</Button>
+                                <Button size="small" onClick={() => handleDelete(insurance)}>Delete</Button>
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
 
-            {(isEditModalOpen || isAddModalOpen) && (
-                <div style={styles.modal}>
-                    <div style={styles.modalContent}>
-                        <span
-                            style={styles.close}
-                            onClick={() => {
-                                setIsEditModalOpen(false);
-                                setIsAddModalOpen(false);
-                            }}
-                        >
-                            &times;
-                        </span>
-                        <h2>{editing ? 'Edit' : 'Add'} Insurance</h2>
+            {/* Modal for adding/editing insurance */}
+            {isModalOpen && (
+                <Box
+                    sx={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 1000,
+                    }}
+                >
+                    <Box
+                        sx={{
+                            backgroundColor: 'white',
+                            padding: '20px',
+                            borderRadius: '8px',
+                            width: '400px',
+                            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+                        }}
+                    >
+                        <Typography variant="h6" gutterBottom>
+                            {editing ? 'Edit Insurance' : 'Add Insurance'}
+                        </Typography>
                         <form onSubmit={handleSave}>
-                            <label style={styles.formLabel}>
+                            <label>
                                 Insurance Type:
                                 <input
                                     type="text"
                                     name="insuranceType"
-                                    value={formData.insuranceType}
+                                    value={formData.insuranceType || ''}
                                     onChange={handleChange}
                                     required
-                                    style={styles.formInput}
+                                    style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
                                 />
                             </label>
-                            <label style={styles.formLabel}>
+                            <label>
                                 Provider:
                                 <input
                                     type="text"
                                     name="provider"
-                                    value={formData.provider}
+                                    value={formData.provider || ''}
                                     onChange={handleChange}
                                     required
-                                    style={styles.formInput}
+                                    style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
                                 />
                             </label>
-                            <label style={styles.formLabel}>
+                            <label>
                                 Policy Number:
                                 <input
                                     type="text"
                                     name="policyNumber"
-                                    value={formData.policyNumber}
+                                    value={formData.policyNumber || ''}
                                     onChange={handleChange}
                                     required
-                                    style={styles.formInput}
+                                    style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
                                 />
                             </label>
-                            <label style={styles.formLabel}>
+                            <label>
                                 Effective Date:
                                 <input
                                     type="date"
                                     name="effectiveDate"
-                                    value={formData.effectiveDate}
+                                    value={formData.effectiveDate || ''}
                                     onChange={handleChange}
                                     required
-                                    style={styles.formInput}
+                                    style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
                                 />
                             </label>
-                            <label style={styles.formLabel}>
+                            <label>
                                 Coverage:
                                 <input
                                     type="text"
                                     name="coverage"
-                                    value={formData.coverage}
+                                    value={formData.coverage || ''}
                                     onChange={handleChange}
                                     required
-                                    style={styles.formInput}
+                                    style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
                                 />
                             </label>
-                            <label style={styles.formLabel}>
+                            <label>
                                 Premium:
                                 <input
                                     type="text"
                                     name="premium"
-                                    value={formData.premium}
+                                    value={formData.premium || ''}
                                     onChange={handleChange}
                                     required
-                                    style={styles.formInput}
+                                    style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
                                 />
                             </label>
-                            <button type="submit" style={{...styles.formButton, ...styles.btnSave}}>
-                                Save
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setIsEditModalOpen(false);
-                                    setIsAddModalOpen(false);
-                                }}
-                                style={{...styles.formButton, ...styles.btnCancel}}
-                            >
-                                Cancel
-                            </button>
+                            <Box>
+                                <Button type="submit" variant="contained" color="primary">
+                                    Save
+                                </Button>
+                                <Button type="button" variant="outlined" color="secondary" onClick={handleCloseModal} sx={{ marginLeft: '10px' }}>
+                                    Cancel
+                                </Button>
+                            </Box>
                         </form>
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             )}
-        </div>
+
+            {/* Confirmation Dialog for Deletion */}
+            <Dialog
+                open={isConfirmDialogOpen}
+                onClose={handleCancelDelete}
+            >
+                <DialogTitle>Confirm Deletion</DialogTitle>
+                <DialogContent>
+                    <Typography>Are you sure you want to delete this insurance?</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={confirmDelete} color="primary">
+                        Yes
+                    </Button>
+                    <Button onClick={handleCancelDelete} color="secondary">
+                        No
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Confirmation Dialog for Save */}
+            <Dialog
+                open={isSaveConfirmDialogOpen}
+                onClose={handleCancelSave}
+            >
+                <DialogTitle>Confirm Save</DialogTitle>
+                <DialogContent>
+                    <Typography>Are you sure you want to save these changes?</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={confirmSave} color="primary">
+                        Yes
+                    </Button>
+                    <Button onClick={handleCancelSave} color="secondary">
+                        No
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </Box>
     );
-}
+};
 
 export default InsuranceList;
