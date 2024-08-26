@@ -30,14 +30,13 @@ class RentTruckFactoryTest {
         Customer customer = CustomerFactory.buildCustomer( "John", "Doe", "john.doe@example.com", "12345","Code10", "123456789");
         byte[] photo = new byte[0];
         Truck truck = TruckFactory.buildTruck("VIN123", "Model X", photo,true, "NVM11263", 70.50,truckType,insurance);
-        RentalAgent salesPerson = RentalAgentFactory.buildRentalAgent("EMP001", "Jane", "Doe", "jane.doe@example.com", "Rental Agent",50.0, 40);
         Branch pickUp = BranchFactory.buildBranch(1, "WiggleCPT", "123 Main Street, Woodstock, South Africa, 7980");
         Branch dropOff = BranchFactory.buildBranch(3, "WiggleKZN", "10 Main Street, Durban, South Africa, 7000");
 
 
         RentTruck rentTruck = RentTruckFactory.buildRentTruck(
                 rentId, rentDate, returnDate, totalCost, isPaymentMade,
-                customer, truck, salesPerson, pickUp, dropOff);
+                customer, truck, pickUp, dropOff);
 
         Assertions.assertNotNull(rentTruck);
         Assertions.assertEquals(rentId, rentTruck.getRentId());
@@ -47,7 +46,6 @@ class RentTruckFactoryTest {
         Assertions.assertTrue(rentTruck.isPaymentMade());
         Assertions.assertEquals(customer, rentTruck.getCustomerID());
         Assertions.assertEquals(truck, rentTruck.getVin());
-        Assertions.assertEquals(salesPerson, rentTruck.getSalesAgent());
         Assertions.assertEquals(pickUp, rentTruck.getPickUp());
         Assertions.assertEquals(dropOff, rentTruck.getDropOff());
         System.out.println(rentTruck.toString());

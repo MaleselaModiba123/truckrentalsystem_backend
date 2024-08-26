@@ -1,6 +1,6 @@
 package za.ac.cput.domain;
 
-public enum EmployeeType {
+public enum Role {
     MANAGER("Manager"),
     RENTAL_AGENT("Rental Agent"),
     MECHANIC("Mechanic"),
@@ -8,7 +8,7 @@ public enum EmployeeType {
 
     private final String displayName;
 
-    EmployeeType(String displayName) {
+    Role(String displayName) {
         this.displayName = displayName;
     }
 

@@ -7,7 +7,6 @@ import za.ac.cput.domain.*;
 import za.ac.cput.factory.RentTruckFactory;
 import za.ac.cput.repository.BranchRepository;
 import za.ac.cput.repository.CustomerRepository;
-import za.ac.cput.repository.RentalAgentRepository;
 import za.ac.cput.repository.TruckRepository;
 
 import java.time.LocalDate;
@@ -31,14 +30,10 @@ class RentTruckServiceTest {
     private CustomerRepository customerRepository;
     @Autowired
     private TruckRepository truckRepository;
-    @Autowired
-    private RentalAgentRepository rentalAgentRepository;
     private Customer customer1;
     private Customer customer2;
     private Truck truck1;
     private Truck truck2;
-    private RentalAgent rentalAgent1;
-    private RentalAgent rentalAgent2;
     private Branch branch1;
     private Branch branch2;
     private RentTruck rentTruck1;
@@ -50,7 +45,6 @@ class RentTruckServiceTest {
      //   customer2 = customerRepository.findById(1).orElseThrow();
         truck1 = truckRepository.findById("1FUJGBDV7PLCW12").orElseThrow();
         truck2 = truckRepository.findById("7774444").orElseThrow();
-        rentalAgent1 = rentalAgentRepository.findById("10").orElseThrow();
      //   rentalAgent2 = rentalAgentRepository.findById("10").orElseThrow();
         branch1 = branchRepository.findById(371).orElseThrow();
         branch2 = branchRepository.findById(372).orElseThrow();
@@ -59,7 +53,7 @@ class RentTruckServiceTest {
                 LocalDate.of(2024, 5, 14),
                 LocalDate.of(2024, 5, 19),
                 8006.0, true, customer1,
-                truck1, rentalAgent1,
+                truck1,
                 branch1, branch2);
 
 //        rentTruck2 = RentTruckFactory.buildRentTruck(1452,

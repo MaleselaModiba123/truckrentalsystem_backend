@@ -4,7 +4,6 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.Customer;
-import za.ac.cput.domain.RentalAgent;
 import za.ac.cput.factory.CustomerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -23,9 +22,6 @@ class CustomerServiceTest {
 
     @Autowired
     private CustomerService  customerService ;
-    @Autowired
-    private RentalAgentService rentalAgentService;
-    private RentalAgent rentalAgent;
     private Customer customer;
 @BeforeEach
 void setUp(){

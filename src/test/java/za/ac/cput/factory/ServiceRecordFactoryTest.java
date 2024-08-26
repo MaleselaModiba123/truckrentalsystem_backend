@@ -15,7 +15,6 @@ class ServiceRecordFactoryTest {
     private TruckType truckType;
     private Insurance insurance;
     private Truck truck;
-    private Mechanic mechanic;
     @BeforeEach
     void setUp() {
         truckType = TruckTypeFactory.buildTruckType("Enclosed", "Large box truck suitable for moving large items.With its higher payload capacity, you can transport a wide range of items, including large packages, bulky equipment, furniture, appliances, and more", "7.4m * 2.48m*2.7m",
@@ -24,7 +23,6 @@ class ServiceRecordFactoryTest {
                 "POL-12345", LocalDate.of(2024, 4, 24), "Truck damage or theft,Natural disasters", 1500);
         byte[] photo = new byte[0];
         truck = TruckFactory.buildTruck("1FUJGBDV7PLCW1234", "Volvo VNL 760",photo, true, "CA 652-589", 478920.50, truckType, insurance);
-        mechanic = MechanicFactory.buildMechanic("001", "Zukhanye", "Mene", "bennie@gmail.com", "Mechanic", "Engine", true);
     }
     @Test
     void BuildServiceRecord(){
@@ -33,7 +31,7 @@ class ServiceRecordFactoryTest {
                 3500.99,
                 LocalDate.of(2024,3,25),
                 LocalDate.of(2024,6,25)
-                ,mechanic,truck);
+                ,truck);
         assertNotNull(serviceRecord);
         System.out.println(serviceRecord);
     }
@@ -44,7 +42,7 @@ class ServiceRecordFactoryTest {
                 3500.99,
                 LocalDate.of(2024,3,32),
                 LocalDate.of(2024,6,25)
-                ,mechanic,truck);
+                ,truck);
         assertNotNull(serviceRecord);
         System.out.println(serviceRecord);
     }

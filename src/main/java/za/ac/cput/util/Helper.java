@@ -1,11 +1,8 @@
 package za.ac.cput.util;
 
-import java.security.SecureRandom;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.UUID;
 import java.io.ByteArrayOutputStream;
+import java.security.SecureRandom;
+import java.util.UUID;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
@@ -56,35 +53,29 @@ public class Helper {
     public static String generateEmployeeNumber() {
         return String.format("%010d", random.nextInt(1000000000)); // Generates a 10-digit number
     }
-    public static boolean isValidAddress(String address){
-        String streetPattern = "^[a-zA-Z0-9\\s,.-]{1,50}$";
-        String cityPattern = "^[a-zA-Z]{1,50}$";
-        String statePattern = "^[a-zA-Z]{2}$";
-        String zipPattern = "^[0-9]{5}(?:-[0-9]{4})?$";
 
+    public static boolean isValidAddress(String address) {
+        // Define regex patterns for validation
+        String streetPattern = "^[a-zA-Z0-9\\s,.-]{1,50}$";  // Allowing a variety of street names
+        String cityPattern = "^[a-zA-Z\\s]{1,50}$";         // Allowing city names with spaces
+        String provincePattern = "^(Western Cape|WC|KwaZulu-Natal|KZN|Gauteng|GP|Mpumalanga|MP|Limpopo|LP|Free State|FS|North West|NW|Northern Cape|NC)$";
+        String postalCodePattern = "^\\d{4}$";               // Exactly 4 digits for postal code
+        String countryPattern = "^[a-zA-Z\\s]{1,50}$";       // Allowing country names with spaces
+
+        // Split the address into components
         String[] addressComponents = address.split(",");
-        if (addressComponents.length < 1 || addressComponents.length > 4) {
-            return false;
-        }
-        if (addressComponents.length == 1) {
-            return addressComponents[0].matches("^[a-zA-Z0-9\\s,.-]{1,50}$");
+        if (addressComponents.length != 5) {
+            return false;  // Must have exactly 5 components
         }
 
-        if (!addressComponents[0].matches(streetPattern)) {
-            return false;
-        }
-        if (!addressComponents[1].matches(cityPattern)) {
-            return false;
-        }
-        if (!addressComponents[2].matches(statePattern)) {
-            return false;
-        }
-        if (!addressComponents[3].matches(zipPattern)) {
-            return false;
-        }
-
-        return true;
+        // Validate each component
+        return addressComponents[0].trim().matches(streetPattern) &&
+                addressComponents[1].trim().matches(cityPattern) &&
+                addressComponents[2].trim().matches(provincePattern) &&
+                addressComponents[3].trim().matches(postalCodePattern) &&
+                addressComponents[4].trim().matches(countryPattern);
     }
+
 
     public static byte[] compressImage(byte[] data) {
         Deflater deflater = new Deflater();

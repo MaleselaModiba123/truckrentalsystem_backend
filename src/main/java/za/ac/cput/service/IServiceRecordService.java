@@ -1,7 +1,5 @@
 package za.ac.cput.service;
 
-import za.ac.cput.domain.Insurance;
-import za.ac.cput.domain.RentalAgent;
 import za.ac.cput.domain.ServiceRecord;
 
 import java.util.List;

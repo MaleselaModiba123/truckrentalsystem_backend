@@ -1,11 +1,13 @@
 package za.ac.cput.domain.auth;
 
 public class UserDetails {
-    private String email;
-    private String role;
+    private final String email;
+    private final String password;
+    private final String role;
 
-    public UserDetails(String email, String role) {
+    public UserDetails(String email, String password, String role) {
         this.email = email;
+        this.password = password;
         this.role = role;
     }
 
@@ -13,8 +15,17 @@ public class UserDetails {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public String getRole() {
         return role;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Email: %s, Role: %s", email, role);
     }
 }
 

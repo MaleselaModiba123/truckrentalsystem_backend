@@ -21,10 +21,6 @@ public class ServiceRecord {
     @JoinColumn(name = "Truck_Vin",referencedColumnName = "vin")
     private Truck truck;
 
-    @ManyToOne
-    @JoinColumn(name = "Mechanic_Employee_Num", referencedColumnName = "employeeNumber")
-    private Mechanic mechanic;
-
     protected ServiceRecord(){
 
     }
@@ -34,7 +30,6 @@ public class ServiceRecord {
         this.cost = builder.cost;
         this.serviceDate = builder.serviceDate;
         this.nextServiceDate = builder.nextServiceDate;
-        this.mechanic = builder.mechanic;
         this.truck = builder.truck;
 
 
@@ -60,9 +55,6 @@ public class ServiceRecord {
         return nextServiceDate;
     }
 
-    public Mechanic getMechanic() {
-        return mechanic;
-    }
 
     public Truck getTruck() {
         return truck;
@@ -73,12 +65,12 @@ public class ServiceRecord {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ServiceRecord that = (ServiceRecord) o;
-        return serviceID == that.serviceID && Double.compare(cost, that.cost) == 0 && Objects.equals(serviceDate, that.serviceDate) && Objects.equals(serviceType, that.serviceType) && Objects.equals(nextServiceDate, that.nextServiceDate) && Objects.equals(truck, that.truck) && Objects.equals(mechanic, that.mechanic);
+        return serviceID == that.serviceID && Double.compare(cost, that.cost) == 0 && Objects.equals(serviceDate, that.serviceDate) && Objects.equals(serviceType, that.serviceType) && Objects.equals(nextServiceDate, that.nextServiceDate) && Objects.equals(truck, that.truck);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(serviceID, serviceDate, serviceType, cost, nextServiceDate, truck, mechanic);
+        return Objects.hash(serviceID, serviceDate, serviceType, cost, nextServiceDate, truck);
     }
 
     @Override
@@ -90,7 +82,6 @@ public class ServiceRecord {
                 ", cost=" + cost +
                 ", nextServiceDate=" + nextServiceDate +
                 ", truck=" + truck+
-                ", mechanic=" + mechanic +
                 '}';
     }
 
@@ -100,7 +91,6 @@ public class ServiceRecord {
         private String serviceType;
         private double cost;
         private LocalDate nextServiceDate;
-        private Mechanic mechanic;
         private Truck truck;
 
 
@@ -129,10 +119,6 @@ public class ServiceRecord {
         return this;
     }
 
-        public Builder setMechanic(Mechanic mechanic) {
-            this.mechanic = mechanic;
-            return this;
-        }
 
         public Builder setTruck(Truck truck) {
             this.truck = truck;
@@ -145,7 +131,6 @@ public class ServiceRecord {
             this.serviceDate = serviceRecord.serviceDate;
             this.serviceType = serviceRecord.serviceType;
             this.nextServiceDate = serviceRecord.nextServiceDate;
-            this.mechanic = serviceRecord.mechanic;
             this.truck = serviceRecord.truck;
             return this;
     }

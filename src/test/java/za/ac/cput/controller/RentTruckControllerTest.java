@@ -12,7 +12,6 @@ import za.ac.cput.domain.*;
 import za.ac.cput.factory.RentTruckFactory;
 import za.ac.cput.repository.BranchRepository;
 import za.ac.cput.repository.CustomerRepository;
-import za.ac.cput.repository.RentalAgentRepository;
 import za.ac.cput.repository.TruckRepository;
 
 import java.time.LocalDate;
@@ -40,25 +39,21 @@ public class RentTruckControllerTest {
     private static CustomerRepository customerRepository;
     @Autowired
     private static TruckRepository truckRepository;
-    @Autowired
-    private static RentalAgentRepository rentalAgentRepository;
     private static Customer customer1;
     private static Truck truck1;
-    private static RentalAgent rentalAgent1;
     private static Branch branch1;
 
     @BeforeAll
     public static void setUp() {
         customer1 = customerRepository.findById(3245).orElseThrow();
         truck1 = truckRepository.findById("1245").orElseThrow();
-        rentalAgent1 = rentalAgentRepository.findById("1234").orElseThrow();
         branch1 = branchRepository.findById(3701).orElseThrow();
 
         rentTruck = RentTruckFactory.buildRentTruck(1432,
                 LocalDate.of(2024, 5, 14),
                 LocalDate.of(2024, 5, 19),
                 8006.0, true, customer1,
-                truck1, rentalAgent1,
+                truck1,
                 branch1, branch1);
     }
         @Test

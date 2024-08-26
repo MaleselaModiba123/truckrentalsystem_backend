@@ -17,7 +17,6 @@ public class RentTruckFactory {
                                            double totalCost, boolean isPaymentMade,
                                            Customer customer,
                                            Truck truck,
-                                           RentalAgent salesPerson,
                                            Branch pickUp, Branch dropOff) {
 
 
@@ -25,7 +24,6 @@ public class RentTruckFactory {
                 || returnDate == null
                 || customer == null
                 || truck == null
-                || salesPerson == null
                 || pickUp == null
                 || dropOff == null) {
             return null;
@@ -39,7 +37,6 @@ public class RentTruckFactory {
                 .setPaymentMade(isPaymentMade)
                 .setCustomerID(customer)
                 .setVin(truck)
-                .setSalesAgent(salesPerson)
                 .setPickUp(pickUp)
                 .setDropOff(dropOff)
                 .build();

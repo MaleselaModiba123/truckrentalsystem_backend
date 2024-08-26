@@ -72,23 +72,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         assertNotNull(savedTruck);
         assertNotNull(savedTruck.getVin()); // Ensure the ID is generated
 
-
-        // Create Mechanic (assuming this one is pre-existing and retrieved)
-        Mechanic mechanic = MechanicFactory.buildMechanic(
-                "001",
-                "Zukhanye",
-                "Mene",
-                "bennie@gmail.com",
-                "Mechanic",
-                "Engine",
-                true
-        );
-        ResponseEntity<Mechanic> mechanicResponse = restTemplate.postForEntity(BASE_URL + "/mechanic/create", mechanic, Mechanic.class);
-        Mechanic savedMechanic = mechanicResponse.getBody();
-        assertNotNull(savedMechanic);
-        assertNotNull(savedMechanic.getEmployeeNumber()); // Ensure the ID is generated
-
-
         // Create ServiceRecord using the saved entities
         serviceRecord = ServiceRecordFactory.buildServiceRecord(
                 1,
@@ -96,7 +79,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
                 3500.99,
                 LocalDate.of(2024, 3, 25),
                 LocalDate.of(2024, 6, 25),
-                savedMechanic,
                 savedTruck
         );
 

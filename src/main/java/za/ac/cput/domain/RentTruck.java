@@ -29,9 +29,6 @@ public class RentTruck {
     @JoinColumn(name = "Vin")
     private Truck vin;
 
-    @OneToOne
-    @JoinColumn(name ="RentalId", nullable = false)
-    private RentalAgent salesAgent;
 
     @ManyToOne
     @JoinColumn(name = "branch_IdP")
@@ -51,7 +48,6 @@ public class RentTruck {
         this.isPaymentMade = builder.isPaymentMade;
         this.customerID = builder.customerID;
         this.vin = builder.vin;
-        this.salesAgent = builder.salesAgent;
         this.pickUp = builder.pickUp;
         this.dropOff = builder.dropOff;
     }
@@ -84,10 +80,6 @@ public class RentTruck {
         return vin;
     }
 
-    public RentalAgent getSalesAgent() {
-        return salesAgent;
-    }
-
     public Branch getPickUp() {
         return pickUp;
     }
@@ -101,12 +93,12 @@ public class RentTruck {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RentTruck rentTruck = (RentTruck) o;
-        return rentId == rentTruck.rentId && Double.compare(totalCost, rentTruck.totalCost) == 0 && isPaymentMade == rentTruck.isPaymentMade && Objects.equals(rentDate, rentTruck.rentDate) && Objects.equals(returnDate, rentTruck.returnDate) && Objects.equals(customerID, rentTruck.customerID) && Objects.equals(vin, rentTruck.vin) && Objects.equals(salesAgent, rentTruck.salesAgent) && Objects.equals(pickUp, rentTruck.pickUp) && Objects.equals(dropOff, rentTruck.dropOff);
+        return rentId == rentTruck.rentId && Double.compare(totalCost, rentTruck.totalCost) == 0 && isPaymentMade == rentTruck.isPaymentMade && Objects.equals(rentDate, rentTruck.rentDate) && Objects.equals(returnDate, rentTruck.returnDate) && Objects.equals(customerID, rentTruck.customerID) && Objects.equals(vin, rentTruck.vin)  && Objects.equals(pickUp, rentTruck.pickUp) && Objects.equals(dropOff, rentTruck.dropOff);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rentId, rentDate, returnDate, totalCost, isPaymentMade, customerID, vin, salesAgent, pickUp, dropOff);
+        return Objects.hash(rentId, rentDate, returnDate, totalCost, isPaymentMade, customerID, vin, pickUp, dropOff);
     }
 
     @Override
@@ -119,7 +111,6 @@ public class RentTruck {
                 ", isPaymentMade=" + isPaymentMade +
                 ", customerID=" + customerID.getCustomerID() +
                 ", vin=" + vin.getVin() +
-                ", salesAgent=" + salesAgent.getEmployeeNumber() +
                 ", pickUp=" + pickUp.getBranchId() +
                 ", dropOff=" + dropOff.getBranchId() +
                 '}';
@@ -133,7 +124,6 @@ public class RentTruck {
         private boolean isPaymentMade;
         private Customer customerID;
         private Truck vin;
-        private RentalAgent salesAgent;
         private Branch pickUp;
         private Branch dropOff;
 
@@ -176,11 +166,6 @@ public class RentTruck {
             return this;
         }
 
-        public Builder setSalesAgent(RentalAgent salesAgent) {
-            this.salesAgent = salesAgent;
-            return this;
-        }
-
         public Builder setPickUp(Branch pickUp) {
             this.pickUp = pickUp;
             return this;
@@ -199,7 +184,6 @@ public class RentTruck {
             this.isPaymentMade = builder.isPaymentMade;
             this.customerID = builder.customerID;
             this.vin = builder.vin;
-            this.salesAgent = builder.salesAgent;
             this.pickUp = builder.pickUp;
             this.dropOff = builder.dropOff;
             return this;
