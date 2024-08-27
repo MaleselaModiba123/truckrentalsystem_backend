@@ -1,16 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { getContactUs } from '../services/ContactUsService';
 
 const ContactUs = () => {
+    const [contactUs, setContactUs] = useState({
+        email: '',
+        phone: '',
+        address: '',
+        businessHours: '',
+    });
+
+    useEffect(() => {
+        const fetchContactUsData = async () => {
+            try {
+                const response = await getContactUs();  // Fetching data using the service function
+                setContactUs(response);  // Update the state with the fetched data
+            } catch (error) {
+                console.error('Error fetching contact info:', error);
+            }
+        };
+
+        fetchContactUsData();  // Call the function to fetch data on component mount
+    }, []);
+
     return (
         <div className="contact-us">
             <div className="contact-us-content">
                 <div className="contact-header">
-                    <img src="/ContactUs.jpeg" alt="Contact Us" className="contact-image" /> {/* Replace with the actual image filename */}
+                    <img src="/ContactUs.jpeg" alt="Contact Us" className="contact-image" />
                     <div className="contact-details">
-                        <p>Email: info@truckrental.com</p>
-                        <p>Phone: +27 217 897 656</p>
-                        <p>Address: 05 Truck Rental Street, Johannesburg, South Africa</p>
-                        <p>Business Hours: Mon - Fri: 07:00 - 18:00</p>
+                        <p>Email: {contactUs.email}</p>
+                        <p>Phone: {contactUs.phone}</p>
+                        <p>Address: {contactUs.address}</p>
+                        <p>Business Hours: {contactUs.businessHours}</p>
                     </div>
                 </div>
                 <div className="contact-message">
@@ -28,7 +49,7 @@ const ContactUs = () => {
                             </label>
                             <label>
                                 <input type="radio" name="contactType" value="feedback" />
-                                <span>Feedback</span>
+                                <span>Complains</span>
                             </label>
                         </div>
                         <div className="input-group">
