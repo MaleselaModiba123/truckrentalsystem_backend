@@ -144,6 +144,30 @@ const ManagerPortal = () => {
                                 Insurances
                             </Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link d-flex align-items-center" to="/manager-portal/contact-us"
+                                  style={{
+                                      fontSize: '23px',
+                                      transition: 'all 0.3s ease'
+                                  }}
+                                  onMouseEnter={(e) => {
+                                      e.currentTarget.style.fontSize = '25px';
+                                      e.currentTarget.style.fontWeight = 'bold';
+                                      e.currentTarget.style.backgroundColor = '#f8f9fa';
+                                      e.currentTarget.style.color = '#0056b3';
+                                      e.currentTarget.style.borderRadius = '4px';
+                                      e.currentTarget.style.textDecoration = 'none';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                      e.currentTarget.style.fontSize = '23px';
+                                      e.currentTarget.style.fontWeight = 'normal';
+                                      e.currentTarget.style.backgroundColor = 'transparent';
+                                      e.currentTarget.style.color = '#000'; // Default color
+                                  }}>
+                                <i className="bi bi-file-earmark-text me-2"></i>
+                                Contact-us
+                            </Link>
+                        </li>
                     </ul>
                 </nav>
 
