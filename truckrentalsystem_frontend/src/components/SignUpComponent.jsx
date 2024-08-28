@@ -23,7 +23,7 @@ const SignUpComponent = () => {
             createCustomer(customer)
                 .then((response) => {
                     console.log(response.data);
-                    navigate("/sign-in"); // Navigate to sign-in page after successful sign-up
+                    navigate("/sign-in");
                 })
                 .catch((error) => {
                     console.error(error);
