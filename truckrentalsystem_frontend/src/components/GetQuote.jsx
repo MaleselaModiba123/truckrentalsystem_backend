@@ -32,7 +32,6 @@ const GetQuote = () => {
     const [price, setPrice] = useState(null);
     const [rentalDuration, setRentalDuration] = useState(null);
     const [error, setError] = useState('');
-    const [showSummary, setShowSummary] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -124,7 +123,7 @@ const GetQuote = () => {
         const updatedRentData = {
             rentDate: formData.rentalDate,
             returnDate: formData.returnDate,
-            totalCost: price,
+            totalCost: calculatedPrice,
             isPaymentMade: false,
             vin: truck,
             pickUp: selectedPickUp,
@@ -268,8 +267,8 @@ const GetQuote = () => {
     if (!truck) return <p style={robotoStyle}>Loading...</p>;
 
     return (
-        <div style={containerStyle}>
-            <div className="get-quote-box" style={formStyle}>
+        <div className="get-quote-container">
+            <div className="get-quote-box">
                 <div key={truck.id} className="truck-info">
                     <div>
                         {truckImageUrl &&
@@ -414,12 +413,12 @@ const GetQuote = () => {
                         </div>
                     </div>
                 )}
+
             </div>
         </div>
     );
 };
 
 export default GetQuote;
-
 
 
