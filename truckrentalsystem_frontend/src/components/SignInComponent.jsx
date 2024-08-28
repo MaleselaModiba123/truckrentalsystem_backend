@@ -38,12 +38,12 @@ const SignInComponent = () => {
             console.error("Employee authentication error:", error);
         }
 
-        // Attempt to authenticate as a customer if employee authentication fails
+
         try {
             const customerResponse = await customerSignIn(email, password);
 
             if (customerResponse.status === 200 && customerResponse.data) {
-                setAuth(customerResponse.data); // Update auth context
+                setAuth(customerResponse.data);
                 navigate("/customer-profile");
             } else {
                 setError('Invalid email or password');
