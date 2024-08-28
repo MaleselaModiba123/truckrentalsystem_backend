@@ -37,7 +37,7 @@ class BranchServiceTest {
     @BeforeAll
     static void a_setUp() {
         branch1 = BranchFactory.buildBranch(371,
-                "WiggleTrucksWC", "10 Main St, Cape Town, South Africa, 7971");
+                "WiggleTrucksWC", "10 SwiftWheelz St, Cape Town, South Africa, 7971");
         System.out.println(branch1);
 
         branch2 = BranchFactory.buildBranch(372,
@@ -57,7 +57,7 @@ class BranchServiceTest {
         System.out.println(branch5);
 
         branch6 = BranchFactory.buildBranch(376,
-                "WiggleTrucksNW", "10 Main St, Bloem, South Africa, 7976");
+                "WiggleTrucksNW", "10 SwiftWheelz St, Bloem, South Africa, 7976");
         System.out.println(branch6);
 
         branch7 = BranchFactory.buildBranch(377,

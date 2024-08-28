@@ -1,6 +1,7 @@
 package za.ac.cput.factory;
 
 import za.ac.cput.domain.Customer;
+import za.ac.cput.domain.Role;
 import za.ac.cput.util.Helper;
 
 /**
@@ -30,7 +31,6 @@ public class CustomerFactory {
                 .setPassword(password)
                 .setLicense(license)
                 .setCellNo(cellNo)
-//                .setRentalAgent(rentalAgent)
                 .build();
     }
 

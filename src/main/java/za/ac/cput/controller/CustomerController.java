@@ -7,6 +7,7 @@ import za.ac.cput.domain.Customer;
 import za.ac.cput.service.CustomerService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * CustomerController.java
@@ -47,8 +48,11 @@ public class CustomerController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(@RequestBody Customer customer) {
-        Customer authenticatedCustomer = customerService.authenticate(customer.getEmail(), customer.getPassword());
+    public ResponseEntity<?> authenticate(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
+
+        Customer authenticatedCustomer = customerService.authenticate(email, password);
         if (authenticatedCustomer != null) {
             return ResponseEntity.ok(authenticatedCustomer);
         } else {

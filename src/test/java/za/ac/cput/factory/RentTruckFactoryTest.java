@@ -30,8 +30,8 @@ class RentTruckFactoryTest {
         Customer customer = CustomerFactory.buildCustomer( "John", "Doe", "john.doe@example.com", "12345","Code10", "123456789");
         byte[] photo = new byte[0];
         Truck truck = TruckFactory.buildTruck("VIN123", "Model X", photo,true, "NVM11263", 70.50,truckType,insurance);
-        Branch pickUp = BranchFactory.buildBranch(1, "WiggleCPT", "123 Main Street, Woodstock, South Africa, 7980");
-        Branch dropOff = BranchFactory.buildBranch(3, "WiggleKZN", "10 Main Street, Durban, South Africa, 7000");
+        Branch pickUp = BranchFactory.buildBranch(1, "WiggleCPT", "123 SwiftWheelz Street, Woodstock, South Africa, 7980");
+        Branch dropOff = BranchFactory.buildBranch(3, "WiggleKZN", "10 SwiftWheelz Street, Durban, South Africa, 7000");
 
 
         RentTruck rentTruck = RentTruckFactory.buildRentTruck(

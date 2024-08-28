@@ -28,4 +28,3 @@ public class UserDetails {
         return String.format("Email: %s, Role: %s", email, role);
     }
 }
-

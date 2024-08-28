@@ -1,5 +1,6 @@
 package za.ac.cput.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
@@ -7,7 +8,9 @@ import java.util.Objects;
 
 @Embeddable
 public class Contact implements Serializable {
+    @Column(unique = true)
     private String email;
+    @Column(unique = true)
     private String cellNumber;
 
     protected Contact() {}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllTrucks, getTruckImageUrl } from "../services/TruckService.js";
 import { Button, Card, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
+import { FaTruck, FaCogs, FaTachometerAlt, FaOilCan, FaGasPump, FaWeight } from 'react-icons/fa';
 
 const Home = () => {
     const [trucks, setTrucks] = useState([]);
@@ -32,8 +33,7 @@ const Home = () => {
 
     const filterTrucks = (query) => {
         const filtered = trucks.filter(truck =>
-            truck.model.toLowerCase().includes(query) ||
-            truck.licensePlate.toLowerCase().includes(query)
+            truck.model.toLowerCase().includes(query)
         );
         setFilteredTrucks(filtered);
     };
@@ -43,53 +43,95 @@ const Home = () => {
     };
 
     return (
-        <div className="home">
-            {/* Keep the header section */}
-            <div className="header-section1 text-center mb-4">
-                <h1>UNBEATABLE TRUCK HIRE, EASY BOOKINGS</h1>
-                <p>Rent a Truck Simply. No Stress Meet & Greet Truck Hire in South Africa</p>
+        <Container className="rent-trucks mt-4">
+            <div className="header-section text-center mb-4">
+                <h1>Our Trucks</h1>
+                <p>Discover amazing trucks at affordable rates</p>
             </div>
-
-            {/* Truck listing and search functionality without the "Our Trucks" text and picture */}
-            <Container className="rent-trucks mt-4">
-                <Form.Group className="mb-4">
-                    <InputGroup>
-                        <Form.Control
-                            type="text"
-                            placeholder="Search by model or license plate"
-                            value={searchQuery}
-                            onChange={handleSearchChange}
-                        />
-                        <Button variant="outline-secondary">Search</Button>
-                    </InputGroup>
-                </Form.Group>
-                <Row className="g-4">
-                    {filteredTrucks.map((truck) => (
-                        <Col md={4} lg={3} key={truck.vin}>
-                            <Card className="d-flex flex-column h-100">
-                                <Card.Img variant="top" src={truck.image} alt={`Truck ${truck.model}`} />
-                                <Card.Body className="d-flex flex-column">
-                                    <Card.Title>{truck.model}</Card.Title>
-                                    <Card.Text className="flex-grow-1">
-                                        <strong>Type:</strong> {truck.truckType.typeName} <br/>
-                                        <strong>Capacity:</strong> {truck.truckType.capacity} tons <br/>
-                                        <strong>Transmission:</strong> {truck.truckType.transmission} <br/>
-                                        <strong>Fuel Consumption:</strong> {truck.truckType.fuelConsumption} km/l <br/>
-                                        <strong>Fuel Type:</strong> {truck.truckType.fuelType} <br/>
-                                        <strong>Mileage:</strong> {truck.currentMileage} km <br/>
-                                        <strong>Dimensions (l*w*h):</strong> {truck.truckType.dimensions}m <br/>
-                                        <strong>License Plate:</strong> {truck.licensePlate}
+            <div className="intro-section text-center mb-4">
+                <h2>Our trucks for hire across South Africa</h2>
+                <p>Rental Trucks provide an extensive range of quality trucks for hire across South Africa. Browse our
+                    selection of truck rentals.</p>
+            </div>
+            <Form.Group className="mb-4">
+                <InputGroup>
+                    <Form.Control
+                        type="text"
+                        placeholder="Search by model"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                    />
+                    <Button variant="outline-secondary">Search</Button>
+                </InputGroup>
+            </Form.Group>
+            <Row className="g-4">
+                {filteredTrucks.map((truck) => (
+                    <Col md={4} lg={4} key={truck.vin}> {/* Set Col to 4 for both md and lg */}
+                        <Card style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: '100%',
+                            border: '1px solid #ddd',
+                            padding: '24px',
+                            borderRadius: '12px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+                        }}>
+                            <Card.Img variant="top" src={truck.image} alt={`Truck ${truck.model}`} style={{ marginBottom: '16px' }}/>
+                            <Card.Body style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1 }}>
+                                <div>
+                                    <Card.Title style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#002e7a' }}>{truck.model}</Card.Title>
+                                    <Card.Text style={{ marginBottom: '16px', lineHeight: '1.5' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                                            <FaTruck style={{ marginRight: '8px', color: '#002e7a' }} />
+                                            <span><strong>Type:</strong> {truck.truckType.typeName}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                                            <FaWeight style={{ marginRight: '8px', color: '#002e7a' }} />
+                                            <span><strong>Capacity:</strong> {truck.truckType.capacity} tons</span>
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                                            <FaCogs style={{ marginRight: '8px', color: '#002e7a' }} />
+                                            <span><strong>Transmission:</strong> {truck.truckType.transmission}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                                            <FaTachometerAlt style={{ marginRight: '8px', color: '#002e7a' }} />
+                                            <span><strong>Fuel Consumption:</strong> {truck.truckType.fuelConsumption} km/l</span>
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                                            <FaGasPump style={{ marginRight: '8px', color: '#002e7a' }} />
+                                            <span><strong>Fuel Type:</strong> {truck.truckType.fuelType}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                                            <FaOilCan style={{ marginRight: '8px', color: '#002e7a' }} />
+                                            <span><strong>Mileage:</strong> {truck.currentMileage} km</span>
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                                            <FaTruck style={{ marginRight: '8px', color: '#002e7a' }} />
+                                            <span><strong>Dimensions:</strong> {truck.truckType.dimensions}m</span>
+                                        </div>
                                     </Card.Text>
-                                    <Button variant="primary" onClick={() => handleGetQuote(truck.vin)}>Get Quote</Button>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    ))}
-                </Row>
-            </Container>
-        </div>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'auto' }}>
+                                    <Button
+                                        variant="primary"
+                                        onClick={() => handleGetQuote(truck.vin)}
+                                        style={{
+                                            backgroundColor: '#002e7a',
+                                            borderColor: '#002e7a',
+                                            borderRadius: '4px',
+                                            padding: '10px 20px'
+                                        }}
+                                    >
+                                        Get Quote
+                                    </Button>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                ))}
+            </Row>
+        </Container>
     );
 };
 
 export default Home;
-

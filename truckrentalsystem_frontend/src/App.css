@@ -1,4 +1,7 @@
 /* Reset default margin and padding for entire page */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 body, html {
   margin: 0;
   padding: 0;
@@ -92,7 +95,7 @@ body, html {
   top: -80px;
 }
 
-/* Main content section */
+/* SwiftWheelz content section */
 .main-content {
   flex: 1;
   padding-top: 60px; /* Adjust for fixed navbar */
@@ -180,7 +183,7 @@ body, html {
   background-color: #e65c00;
 }
 
-/* Renttrucks.css */
+/* Home.css */
 .rent-trucks {
   padding-top: 60px;
   padding: 20px;

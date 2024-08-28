@@ -25,7 +25,6 @@ public class Customer {
     private String license;
     @Column(unique = true)
     private String cellNo;
-
     @OneToMany(mappedBy = "rentId",cascade = CascadeType.ALL)
     private List<RentTruck> rentedTruck;
 
@@ -94,12 +93,12 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(customerID, customer.customerID) && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(password, customer.password)  && Objects.equals(license, customer.license) && Objects.equals(cellNo, customer.cellNo);
+        return customerID == customer.customerID && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(password, customer.password) && Objects.equals(license, customer.license) && Objects.equals(cellNo, customer.cellNo) && Objects.equals(rentedTruck, customer.rentedTruck);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerID, firstName, lastName, email,password, license, cellNo);
+        return Objects.hash(customerID, firstName, lastName, email, password, license, cellNo, rentedTruck);
     }
 
     @Override
@@ -124,7 +123,6 @@ public class Customer {
         private String email;
         private String password;
         private String license;
-
         private String cellNo;
 
        // private List<RentTruck> rentedTruck;

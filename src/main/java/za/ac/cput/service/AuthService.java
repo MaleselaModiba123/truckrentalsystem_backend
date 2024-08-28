@@ -11,15 +11,17 @@ import za.ac.cput.repository.EmployeeRepository;
 
 import javax.naming.AuthenticationException;
 import java.util.Optional;
-
 @Service
 public class AuthService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    public AuthService(EmployeeRepository employeeRepository, CustomerRepository customerRepository) {
+        this.employeeRepository = employeeRepository;
+        this.customerRepository = customerRepository;
+    }
 
     public UserDetails authenticate(String email, String password) throws AuthenticationException {
         // Authenticate Employee
@@ -27,7 +29,6 @@ public class AuthService {
         if (employeeOpt.isPresent()) {
             Employee employee = employeeOpt.get();
             Role role = employee.getRole();
-            // Check if the role is allowed
             if (role == Role.MANAGER || role == Role.HELP_DESK) {
                 return new UserDetails(employee.getContact().getEmail(), employee.getPassword(), role.name());
             } else {
@@ -35,11 +36,13 @@ public class AuthService {
             }
         }
 
-        Customer customer = customerRepository.findByEmailAndPassword(email, password);
-        if (customer != null) {
-            return new UserDetails(customer.getEmail(), customer.getPassword(), "CUSTOMER");
-        }
+//        // Check Customer
+//        Customer customer = customerRepository.findByEmailAndPassword(email, password);
+//        if (customer != null) {
+//            return new UserDetails(customer.getEmail(), customer.getPassword(), "CUSTOMER");
+//        }
 
         throw new AuthenticationException("Invalid email or password");
     }
 }
+

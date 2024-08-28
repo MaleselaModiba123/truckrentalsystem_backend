@@ -1,14 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import Home from './components/Home';
-import Renttrucks from './components/Renttrucks';
+import Home from './components/Home.jsx';
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
 import Branches from './components/Branches';
 import GetQuote from './components/GetQuote';
 import CustomerProfile from './components/CustomerProfile.jsx';
 import CustomerComponent from './components/CustomerComponent.jsx';
-import CustomerSignUp from "./components/CustomerSignUp.jsx";
 import HeaderComponent from './components/HeaderComponent.jsx';
 import SignUpComponent from "./components/SignUpComponent.jsx";
 import SignInComponent from "./components/SignInComponent.jsx";
@@ -44,8 +42,6 @@ function App() {
                     <Routes>
                         <Route exact path="/" element={<Home />} />
                         <Route path="/home" element={<Home />} />
-                        <Route path="/rent-trucks" element={<Renttrucks />} />
-                        {/*<Route path="/manager-portal/dashboard" element={<ManagerPortal />} />*/}
                         <Route path="/about-us" element={<AboutUs />} />
                         <Route path="/branches" element={<Branches />} />
 
@@ -65,7 +61,6 @@ function App() {
                         <Route path="/sign-in" element={<SignInComponent />} />
                         <Route path="/sign-up" element={<SignUpComponent />} />
                         <Route path="/update-customer/:customerID" element={<CustomerComponent />} />
-                        <Route path="/customer-sign-up" element={<CustomerSignUp />} />
                         <Route path="/customer-profile" element={<CustomerProfile />} />
                         <Route path="/get-quote/:truckId" element={<GetQuote />} />
                     </Routes>
