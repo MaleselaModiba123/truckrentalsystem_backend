@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import {getTruckByVin, getTruckImageUrl} from '../services/TruckService';
 import {getAllBranches} from '../services/BranchService';
-import {createRentTruck} from '../services/RentTructService';
+//import {createRentTruck} from '../services/RentTructService';
 import {
     FaCalendarAlt,
     FaClock,
@@ -32,6 +32,7 @@ const GetQuote = () => {
     const [price, setPrice] = useState(null);
     const [rentalDuration, setRentalDuration] = useState(null);
     const [error, setError] = useState('');
+    const [showSummary, setShowSummary] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,13 +42,17 @@ const GetQuote = () => {
                     getAllBranches(),
                 ]);
 
+                /*if (location.state?.redirectToConfirm) {
+                    navigate(`/confirm-details`, { state: { quoteDetails: fetchedQuoteDetails } });
+                }else {
+                    console.error('Truck data not found.');
+                }*/
                 if (truckResponse.data) {
                     setTruck(truckResponse.data);
                     setTruckImageUrl(getTruckImageUrl(truckId));
                 } else {
                     console.error('Truck data not found.');
                 }
-
                 if (branchesResponse.data) {
                     setBranches(branchesResponse.data);
                 } else {
@@ -116,27 +121,22 @@ const GetQuote = () => {
         return basePrice * duration * distanceFactor;
     };
 
-    const handleContinueToRent = async () => {
+    const handleContinueToRent = () => {
         const selectedPickUp = branches.find((branch) => branch.branchName === formData.pickUp) || {};
         const selectedDropOff = branches.find((branch) => branch.branchName === formData.dropOff) || {};
 
         const updatedRentData = {
             rentDate: formData.rentalDate,
             returnDate: formData.returnDate,
-            totalCost: calculatedPrice,
-            isPaymentMade: false,
+            totalCost: price,
             vin: truck,
             pickUp: selectedPickUp,
             dropOff: selectedDropOff,
         };
 
-        try {
-            await createRentTruck(updatedRentData);
-            navigate('/sign-in'); // Navigate to sign-in page
-        } catch (error) {
-            console.error('Error creating rental:', error);
-        }
+        navigate('/confirm-details', { state: { rentData: updatedRentData } });
     };
+
 
     const handleCancel = () => {
         setShowSummary(false);
@@ -261,14 +261,14 @@ const GetQuote = () => {
         marginRight: '12px',
         color: '#002e7a',
         fontSize: '20px',
-        verticalAlign: 'middle', // Aligns the icon vertically with the text
+        verticalAlign: 'middle',
     };
 
     if (!truck) return <p style={robotoStyle}>Loading...</p>;
 
     return (
-        <div className="get-quote-container">
-            <div className="get-quote-box">
+        <div style={containerStyle}>
+            <div className="get-quote-box" style={formStyle}>
                 <div key={truck.id} className="truck-info">
                     <div>
                         {truckImageUrl &&
@@ -413,12 +413,12 @@ const GetQuote = () => {
                         </div>
                     </div>
                 )}
-
             </div>
         </div>
     );
 };
 
 export default GetQuote;
+
 
 
