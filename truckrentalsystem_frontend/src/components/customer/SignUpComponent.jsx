@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {createCustomer} from "../services/CustomerProfileService";
+import {createCustomer} from "../../services/CustomerProfileService.js";
 import {FaEye, FaEyeSlash} from "react-icons/fa"; // Import icons for visibility toggle
 
 const SignUpComponent = () => {

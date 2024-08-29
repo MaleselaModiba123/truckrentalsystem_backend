@@ -5,16 +5,16 @@ import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
 import Branches from './components/Branches';
 import GetQuote from './components/GetQuote';
-import CustomerProfile from './components/CustomerProfile.jsx';
-import CustomerComponent from './components/CustomerComponent.jsx';
+import CustomerProfile from './components/customer/CustomerProfile.jsx';
+import CustomerComponent from './components/customer/CustomerComponent.jsx';
 import HeaderComponent from './components/HeaderComponent.jsx';
-import SignUpComponent from "./components/SignUpComponent.jsx";
-import SignInComponent from "./components/SignInComponent.jsx";
+import SignUpComponent from "./components/customer/SignUpComponent.jsx";
+import SignInComponent from "./components/customer/SignInComponent.jsx";
 import './App.css';
 import ManagerPortal from "./components/manager/ManagerPortal.jsx";
 import Trucks from "./components/manager/Trucks.jsx";
 import Branchez from "./components/manager/Branchez.jsx";
-import Employees from "./components/Employees.jsx";
+import Employees from "./components/manager/Employees.jsx";
 import TruckTypes from "./components/manager/TruckTypes.jsx";
 import ImagesComponent from "./components/manager/ImagesComponent.jsx";
 import InsuranceList from "./components/manager/InsuranceList.jsx";
@@ -48,7 +48,6 @@ function App() {
 
                         {/*---------MANAGER FUNCTIONALITY STARTS-----------*/}
                         <Route path="/manager-portal/*" element={<ManagerPortal/>}>
-                            <Route path="dashboard" element={<div>Dashboard Content</div>}/>
                             <Route path="trucks" element={<Trucks/>}/>
                             <Route path="branchez" element={<Branchez/>}/>
                             <Route path="employees" element={<Employees/>}/>

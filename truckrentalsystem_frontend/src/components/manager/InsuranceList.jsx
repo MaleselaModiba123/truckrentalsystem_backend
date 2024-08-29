@@ -104,12 +104,27 @@ const InsuranceList = () => {
 
     return (
         <Box padding={2}>
+            <style>
+                {`
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(-20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+
+                    h1, h2 {
+                        animation: fadeIn 1s ease-out;
+                        color: #007bff; /* Blue color */
+                        font-size: 2.5rem; /* Font size */
+                        font-weight: bold; /* Font weight */
+                    }
+                `}
+            </style>
             <input
                 type="text"
                 placeholder="Filter by Insurance Type or Policy Number"
                 value={filter}
                 onChange={handleFilterChange}
-                style={{ marginBottom: '20px', padding: '10px', width: '100%' }}
+                style={{marginBottom: '20px', padding: '10px', width: '100%'}}
             />
             <Button variant="contained" color="primary" onClick={handleAdd}>
                 Add Insurance
@@ -172,7 +187,7 @@ const InsuranceList = () => {
                                     value={formData.insuranceType || ''}
                                     onChange={handleChange}
                                     required
-                                    style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
+                                    style={{width: '100%', padding: '8px', marginBottom: '8px'}}
                                 />
                             </label>
                             <label>
@@ -183,7 +198,7 @@ const InsuranceList = () => {
                                     value={formData.provider || ''}
                                     onChange={handleChange}
                                     required
-                                    style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
+                                    style={{width: '100%', padding: '8px', marginBottom: '8px'}}
                                 />
                             </label>
                             <label>
@@ -194,7 +209,7 @@ const InsuranceList = () => {
                                     value={formData.policyNumber || ''}
                                     onChange={handleChange}
                                     required
-                                    style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
+                                    style={{width: '100%', padding: '8px', marginBottom: '8px'}}
                                 />
                             </label>
                             <label>
@@ -205,7 +220,7 @@ const InsuranceList = () => {
                                     value={formData.effectiveDate || ''}
                                     onChange={handleChange}
                                     required
-                                    style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
+                                    style={{width: '100%', padding: '8px', marginBottom: '8px'}}
                                 />
                             </label>
                             <label>
@@ -216,7 +231,7 @@ const InsuranceList = () => {
                                     value={formData.coverage || ''}
                                     onChange={handleChange}
                                     required
-                                    style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
+                                    style={{width: '100%', padding: '8px', marginBottom: '8px'}}
                                 />
                             </label>
                             <label>
@@ -227,14 +242,15 @@ const InsuranceList = () => {
                                     value={formData.premium || ''}
                                     onChange={handleChange}
                                     required
-                                    style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
+                                    style={{width: '100%', padding: '8px', marginBottom: '8px'}}
                                 />
                             </label>
                             <Box>
                                 <Button type="submit" variant="contained" color="primary">
                                     Save
                                 </Button>
-                                <Button type="button" variant="outlined" color="secondary" onClick={handleCloseModal} sx={{ marginLeft: '10px' }}>
+                                <Button type="button" variant="outlined" color="secondary" onClick={handleCloseModal}
+                                        sx={{marginLeft: '10px'}}>
                                     Cancel
                                 </Button>
                             </Box>

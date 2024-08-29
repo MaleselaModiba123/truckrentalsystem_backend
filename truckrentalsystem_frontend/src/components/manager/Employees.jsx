@@ -1,6 +1,6 @@
 // src/components/Employees.js
 import React, { useState, useEffect } from 'react';
-import {getEmployees,deleteEmployeeById,updateEmployee,createEmployee,getEmployeeById} from "../services/EmployeesService.js";
+import {getEmployees,deleteEmployeeById,updateEmployee,createEmployee,getEmployeeById} from "../../services/EmployeesService.js";
 
 function Employees() {
     const [employees, setEmployees] = useState([]);
@@ -115,10 +115,10 @@ function Employees() {
                             </div>
                         </form>
                     </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Save changes</button>
-                    </div>
+                    {/*<div className="modal-footer">*/}
+                    {/*    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>*/}
+                    {/*    <button type="button" className="btn btn-primary">Save changes</button>*/}
+                    {/*</div>*/}
                     </div>
                 </div>
                 </div>

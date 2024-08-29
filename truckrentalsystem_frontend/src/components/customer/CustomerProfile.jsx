@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { deleteCustomerById, getCustomerById } from "../services/CustomerProfileService";
+import { deleteCustomerById, getCustomerById } from "../../services/CustomerProfileService.js";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthContext.jsx";
+import { AuthContext } from "../AuthContext.jsx";
 
 const CustomerProfile = () => {
     const [customer, setCustomer] = useState(null);

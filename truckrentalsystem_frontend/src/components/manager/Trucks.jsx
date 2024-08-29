@@ -220,10 +220,30 @@ const Trucks = () => {
 
     return (
         <div className="container mt-5">
+            <style>
+                {`
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(-20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+
+                    h1, h2 {
+                        animation: fadeIn 1s ease-out;
+                        color: #007bff; /* Blue color */
+                        font-size: 2.5rem; /* Font size */
+                        font-weight: bold; /* Font weight */
+                    }
+                `}
+            </style>
             <h1 className="mb-4">Truck Management</h1>
             <div className="row">
                 <div className="col-md-6">
-                    <form onSubmit={handleSubmit} style={{ backgroundColor: '#f8f9fa', padding: '20px', borderRadius: '5px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+                    <form onSubmit={handleSubmit} style={{
+                        backgroundColor: '#f8f9fa',
+                        padding: '20px',
+                        borderRadius: '5px',
+                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'
+                    }}>
                         <div className="form-group">
                             <label htmlFor="model">Model</label>
                             <input
@@ -246,7 +266,12 @@ const Trucks = () => {
                                 name="truckImage"
                                 onChange={handleFileChange}
                             />
-                            {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: '50px', height: '50px', marginTop: '10px', borderRadius: '5px' }} />}
+                            {imagePreview && <img src={imagePreview} alt="Preview" style={{
+                                width: '50px',
+                                height: '50px',
+                                marginTop: '10px',
+                                borderRadius: '5px'
+                            }}/>}
                         </div>
                         <div className="form-group">
                             <div className="form-check">
@@ -342,15 +367,21 @@ const Trucks = () => {
                         value={searchTerm}
                         onChange={handleSearchChange}
                     />
-                    <div className="overflow-auto" style={{ maxHeight: '500px' }}>
+                    <div className="overflow-auto" style={{maxHeight: '500px'}}>
                         <ul className="list-group">
                             {currentTrucks.map(truck => (
-                                <li key={truck.vin} className="list-group-item d-flex justify-content-between align-items-center">
+                                <li key={truck.vin}
+                                    className="list-group-item d-flex justify-content-between align-items-center">
                                     {truck.truckImage && (
                                         <img
                                             src={getTruckImageUrl(truck.vin)}
                                             alt={truck.model}
-                                            style={{ width: '100px', height: '100px', marginRight: '10px', borderRadius: '5px' }}
+                                            style={{
+                                                width: '100px',
+                                                height: '100px',
+                                                marginRight: '10px',
+                                                borderRadius: '5px'
+                                            }}
                                         />
                                     )}
                                     <div className="d-flex flex-column">
@@ -373,7 +404,7 @@ const Trucks = () => {
                                         <button
                                             className="btn btn-danger btn-sm ml-2"
                                             onClick={() => handleDelete(truck.vin)}
-                                            style={{ marginLeft: '8px' }}
+                                            style={{marginLeft: '8px'}}
                                         >
                                             <FontAwesomeIcon icon={faTrashAlt}/>
                                         </button>
@@ -418,7 +449,9 @@ const Trucks = () => {
                             <p>Are you sure you want to delete this truck?</p>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                            <button type="button" className="btn btn-secondary"
+                                    onClick={() => setShowDeleteModal(false)}>Cancel
+                            </button>
                             <button type="button" className="btn btn-danger" onClick={confirmDelete}>Confirm</button>
                         </div>
                     </div>
@@ -436,7 +469,9 @@ const Trucks = () => {
                             <p>Are you sure you want to update this truck?</p>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" onClick={() => setShowUpdateConfirm(false)}>Cancel</button>
+                            <button type="button" className="btn btn-secondary"
+                                    onClick={() => setShowUpdateConfirm(false)}>Cancel
+                            </button>
                             <button type="button" className="btn btn-primary" onClick={confirmUpdate}>Confirm</button>
                         </div>
                     </div>

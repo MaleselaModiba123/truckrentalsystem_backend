@@ -159,11 +159,25 @@ function TruckTypes() {
     };
 
     return (
-        <Container maxWidth="md" sx={{ mt: 4 }}>
+        <Container maxWidth="md" sx={{mt: 4}}>
             <Typography variant="h4" gutterBottom align="center">
                 Truck Types
             </Typography>
+            <style>
+                {`
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(-20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
 
+                    h1, h2,h4 {
+                        animation: fadeIn 1s ease-out;
+                        color: #007bff; /* Blue color */
+                        font-size: 2.5rem; /* Font size */
+                        font-weight: bold; /* Font weight */
+                    }
+                `}
+            </style>
             <Grid container spacing={2} mb={2}>
                 <Grid item xs={12}>
                     <TextField
@@ -175,7 +189,7 @@ function TruckTypes() {
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    <SearchIcon />
+                                    <SearchIcon/>
                                 </InputAdornment>
                             ),
                         }}
@@ -224,7 +238,7 @@ function TruckTypes() {
                             fullWidth
                             required
                             margin="normal"
-                            inputProps={{ min: 0, step: '0.01' }}
+                            inputProps={{min: 0, step: '0.01'}}
                         />
                         <FormControl fullWidth margin="normal">
                             <InputLabel>Transmission</InputLabel>
@@ -247,7 +261,7 @@ function TruckTypes() {
                             fullWidth
                             required
                             margin="normal"
-                            inputProps={{ min: 0, step: '0.01' }}
+                            inputProps={{min: 0, step: '0.01'}}
                         />
                         <FormControl fullWidth margin="normal">
                             <InputLabel>Fuel Type</InputLabel>
@@ -261,17 +275,17 @@ function TruckTypes() {
                                 <MenuItem value="Petrol">Petrol</MenuItem>
                             </Select>
                         </FormControl>
-                        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                        <Button type="submit" variant="contained" color="primary" sx={{mt: 2}}>
                             {selectedTruckType ? 'Update' : 'Add'} Truck Type
                         </Button>
                     </form>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <Typography variant="h6" gutterBottom>
+                    <Typography variant="h4" gutterBottom>
                         Truck Types List
                     </Typography>
-                    <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
+                    <div style={{maxHeight: '600px', overflowY: 'auto'}}>
                         <List>
                             {filteredTruckTypes.map((truckType) => (
                                 <ListItem
@@ -279,10 +293,10 @@ function TruckTypes() {
                                     secondaryAction={
                                         <>
                                             <IconButton edge="end" onClick={() => handleEdit(truckType)}>
-                                                <EditIcon />
+                                                <EditIcon/>
                                             </IconButton>
                                             <IconButton edge="end" onClick={() => handleDelete(truckType)}>
-                                                <DeleteIcon />
+                                                <DeleteIcon/>
                                             </IconButton>
                                         </>
                                     }

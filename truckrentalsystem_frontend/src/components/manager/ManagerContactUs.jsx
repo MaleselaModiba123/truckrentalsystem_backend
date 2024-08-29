@@ -109,9 +109,24 @@ function ManagerContactUs() {
 
     return (
         <div className="container mt-4">
+            <style>
+                {`
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(-20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+
+                    h1, h2 {
+                        animation: fadeIn 1s ease-out;
+                        color: #007bff; /* Blue color */
+                        font-size: 2.5rem; /* Font size */
+                        font-weight: bold; /* Font weight */
+                    }
+                `}
+            </style>
             <h2 className="mb-4 d-flex justify-content-center">Manage Contact Us</h2>
 
-            <InputGroup className="mb-3" style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <InputGroup className="mb-3" style={{maxWidth: '800px', margin: '0 auto'}}>
                 <FormControl
                     placeholder="Search Contact Us Information"
                     value={searchTerm}
