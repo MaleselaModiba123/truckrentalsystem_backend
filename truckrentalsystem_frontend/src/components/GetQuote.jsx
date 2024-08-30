@@ -44,11 +44,11 @@ const GetQuote = () => {
                     getAllBranches(),
                 ]);
 
-                /*if (location.state?.redirectToConfirm) {
+                if (location.state?.redirectToConfirm) {
                     navigate(`/confirm-details`, { state: { quoteDetails: fetchedQuoteDetails } });
                 }else {
                     console.error('Truck data not found.');
-                }*/
+                }
                 if (truckResponse.data) {
                     setTruck(truckResponse.data);
                     setTruckImageUrl(getTruckImageUrl(truckId));
@@ -81,7 +81,7 @@ const GetQuote = () => {
         const rentalDate = new Date(formData.rentalDate);
         const returnDate = new Date(formData.returnDate);
 
-        // Strip off time components for accurate date comparison
+
         const currentDateOnly = new Date(currentDate.toDateString());
         const rentalDateOnly = new Date(rentalDate.toDateString());
         const returnDateOnly = new Date(returnDate.toDateString());

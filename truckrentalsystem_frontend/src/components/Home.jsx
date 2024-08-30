@@ -65,7 +65,7 @@ const Home = () => {
             </div>
             <div className="intro-section text-center mb-4">
                 <h2>Our trucks for hire across South Africa</h2>
-                <p>Rental Trucks provide an extensive range of quality trucks for hire across South Africa. Browse our
+                <p>SwiftWheelz Truck Rentals provides an extensive range of quality trucks for hire across South Africa. Browse our
                     selection of truck rentals.</p>
             </div>
             <Form.Group className="mb-4">
