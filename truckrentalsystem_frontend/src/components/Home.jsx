@@ -57,6 +57,33 @@ const Home = () => {
                         font-size: 2.5rem; /* Font size */
                         font-weight: bold; /* Font weight */
                     }
+
+                    .search-button {
+                        border-radius: 4px;
+                        border: 1px solid #007bff;
+                        color: #007bff;
+                        font-weight: bold;
+                        transition: background-color 0.3s, color 0.3s;
+                    }
+
+                    .search-button:hover {
+                        background-color: #007bff;
+                        color: white;
+                    }
+
+                    .quote-button {
+                        background-color: #002e7a;
+                        border-color: #002e7a;
+                        border-radius: 4px;
+                        padding: 10px 20px;
+                        font-weight: bold;
+                        transition: background-color 0.3s, border-color 0.3s;
+                    }
+
+                    .quote-button:hover {
+                        background-color: #001f5f;
+                        border-color: #001f5f;
+                    }
                 `}
             </style>
             <div className="header-section text-center mb-4">
@@ -75,13 +102,19 @@ const Home = () => {
                         placeholder="Search by model"
                         value={searchQuery}
                         onChange={handleSearchChange}
+                        style={{ borderRadius: '4px', borderColor: '#007bff' }}
                     />
-                    <Button variant="outline-secondary">Search</Button>
+                    <Button
+                        variant="outline-secondary"
+                        className="search-button"
+                    >
+                        Search
+                    </Button>
                 </InputGroup>
             </Form.Group>
             <Row className="g-4">
                 {filteredTrucks.map((truck) => (
-                    <Col md={4} lg={4} key={truck.vin}> {/* Set Col to 4 for both md and lg */}
+                    <Col md={4} lg={4} key={truck.vin}>
                         <Card style={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -138,14 +171,8 @@ const Home = () => {
                                 </div>
                                 <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: 'auto'}}>
                                     <Button
-                                        variant="primary"
+                                        className="quote-button"
                                         onClick={() => handleGetQuote(truck.vin)}
-                                        style={{
-                                            backgroundColor: '#002e7a',
-                                            borderColor: '#002e7a',
-                                            borderRadius: '4px',
-                                            padding: '10px 20px'
-                                        }}
                                     >
                                         Get Quote
                                     </Button>
