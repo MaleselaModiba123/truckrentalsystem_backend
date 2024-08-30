@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext.jsx";
 import CustomerSidebar from "./CustomerSidebar.jsx";
 
-
 const CustomerProfile = () => {
     const [customer, setCustomer] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -91,13 +90,16 @@ const CustomerProfile = () => {
             <CustomerSidebar handleSignOut={handleSignOut} /> {/* Use the Sidebar component */}
 
             {/* Main Content */}
-            <div style={{
-                marginLeft: '250px',
-                width: 'calc(100% - 250px)',
-                padding: '20px'
-            }}>
+            <div
+                style={{
+                    marginLeft: '250px',
+                    width: 'calc(100% - 250px)',
+                    padding: '20px',
+                    backgroundColor: '#e0f7fa' // Very light blue background
+                }}
+            >
                 <div className="w-75" style={{ maxWidth: '700px', marginTop: '20px', marginBottom: '50px' }}>
-                    <h2 className="text-center mb-4">Profile</h2>
+                    <h2 className="text-center mb-4" style={{ color: '#007bff' }}>Profile</h2> {/* Blue color */}
                     <div className="card mb-4">
                         <div className="card-body">
                             <h4>Customer Details</h4>
