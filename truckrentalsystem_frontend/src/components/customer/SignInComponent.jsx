@@ -10,7 +10,7 @@ const SignInComponent = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [passwordVisible, setPasswordVisible] = useState(false); // State to control password visibility
+    const [passwordVisible, setPasswordVisible] = useState(false);
     const navigate = useNavigate();
     const { setAuth } = useContext(AuthContext);
 
@@ -18,12 +18,11 @@ const SignInComponent = () => {
         e.preventDefault();
 
         try {
-            // Attempt to authenticate as an employee first
             const employeeResponse = await authenticateUser(email, password);
 
             if (employeeResponse.status === 200 && employeeResponse.data) {
                 const {role} = employeeResponse.data;
-                setAuth(employeeResponse.data); // Update auth context
+                setAuth(employeeResponse.data);
 
                 if (role === "MANAGER") {
                     navigate("/manager-portal");
@@ -32,19 +31,28 @@ const SignInComponent = () => {
                 } else {
                     setError('Unknown employee role');
                 }
-                return; // Exit if authentication as employee is successful
+                return;
             }
         } catch (error) {
             console.error("Employee authentication error:", error);
         }
-
 
         try {
             const customerResponse = await customerSignIn(email, password);
 
             if (customerResponse.status === 200 && customerResponse.data) {
                 setAuth(customerResponse.data);
-                navigate("/customer-profile");
+
+                // Check if there is payment data in localStorage
+                const paymentInfo = JSON.parse(localStorage.getItem('paymentInfo'));
+
+                if (paymentInfo) {
+                    // Redirect to the PendingPayments component
+                    navigate("/customer-sidebar");
+                    // navigate("/pending-payments");
+                } else {
+                    navigate("/customer-sidebar");
+                }
             } else {
                 setError('Invalid email or password');
             }
@@ -85,7 +93,7 @@ const SignInComponent = () => {
                                             onChange={(e) => setPassword(e.target.value)}
                                             placeholder="Enter your password"
                                             required
-                                            style={{paddingRight: '40px'}} // Add padding to accommodate the icon
+                                            style={{paddingRight: '40px'}}
                                         />
                                         <button
                                             type="button"
@@ -99,8 +107,8 @@ const SignInComponent = () => {
                                                 background: 'transparent',
                                                 cursor: 'pointer',
                                                 padding: '0',
-                                                fontSize: '16px', // Adjust font size if needed
-                                                color: '#6c757d' // Optional: Adjust icon color
+                                                fontSize: '16px',
+                                                color: '#6c757d'
                                             }}
                                         >
                                             <FontAwesomeIcon icon={passwordVisible ? faEyeSlash : faEye}/>

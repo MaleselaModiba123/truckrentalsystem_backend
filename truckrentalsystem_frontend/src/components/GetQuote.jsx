@@ -33,6 +33,8 @@ const GetQuote = () => {
     const [rentalDuration, setRentalDuration] = useState(null);
     const [error, setError] = useState('');
     const [showSummary, setShowSummary] = useState(false);
+    const [showPaymentForm, setShowPaymentForm] = useState(false);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -133,8 +135,8 @@ const GetQuote = () => {
             pickUp: selectedPickUp,
             dropOff: selectedDropOff,
         };
-
-        navigate('/confirm-details', { state: { rentData: updatedRentData } });
+        setShowPaymentForm(true);
+        navigate('/payment', { state: { rentData: updatedRentData } });
     };
 
 
@@ -402,7 +404,7 @@ const GetQuote = () => {
                                 onMouseOver={(e) => e.currentTarget.style.backgroundColor = buttonHoverStyle.backgroundColor}
                                 onMouseOut={(e) => e.currentTarget.style.backgroundColor = buttonStyle.backgroundColor}
                             >
-                                Continue to Rent
+                               Make payment
                             </button>
 
                             <button type="button" style={cancelButtonStyle} onClick={handleCancel}
