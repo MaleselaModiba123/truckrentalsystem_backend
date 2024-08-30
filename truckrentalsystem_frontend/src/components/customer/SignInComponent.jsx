@@ -48,10 +48,11 @@ const SignInComponent = () => {
 
                 if (paymentInfo) {
                     // Redirect to the PendingPayments component
-                    navigate("/customer-sidebar");
+                    navigate("/customer/profile");
+
                     // navigate("/pending-payments");
                 } else {
-                    navigate("/customer-sidebar");
+                    navigate("/customer/pending-payments");
                 }
             } else {
                 setError('Invalid email or password');

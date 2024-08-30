@@ -1,31 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import Home from './components/Home.jsx';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './components/Home';
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
 import Branches from './components/Branches';
 import GetQuote from './components/GetQuote';
-import CustomerProfile from './components/customer/CustomerProfile.jsx';
-import CustomerComponent from './components/customer/CustomerComponent.jsx';
-import HeaderComponent from './components/HeaderComponent.jsx';
-import SignUpComponent from "./components/customer/SignUpComponent.jsx";
-import SignInComponent from "./components/customer/SignInComponent.jsx";
-import ConfirmDetails from "./components/ConfirmDetails.jsx";
-import Payment from "./components/Payment.jsx";
+import CustomerProfile from './components/customer/CustomerProfile';
+import CustomerComponent from './components/customer/CustomerComponent';
+import HeaderComponent from './components/HeaderComponent';
+import SignUpComponent from './components/customer/SignUpComponent';
+import SignInComponent from './components/customer/SignInComponent';
+import ConfirmDetails from './components/ConfirmDetails';
+import Payment from './components/Payment';
 import './App.css';
-import ManagerPortal from "./components/manager/ManagerPortal.jsx";
-import Trucks from "./components/manager/Trucks.jsx";
-import Branchez from "./components/manager/Branchez.jsx";
-import Employees from "./components/manager/Employees.jsx";
-import TruckTypes from "./components/manager/TruckTypes.jsx";
-import ImagesComponent from "./components/manager/ImagesComponent.jsx";
-import InsuranceList from "./components/manager/InsuranceList.jsx";
-import PendingPayments from "./components/customer/PendingPayments.jsx";
-import CustomerSidebar from "./components/customer/CustomerSidebar.jsx";
-import ManagerContactUs from "./components/manager/ManagerContactUs.jsx";
-
-//import ManagerContactUs from "./components/manager/ManagerContactUs.jsx";
-
+import ManagerPortal from './components/manager/ManagerPortal';
+import Trucks from './components/manager/Trucks';
+import Branchez from './components/manager/Branchez';
+import Employees from './components/manager/Employees';
+import TruckTypes from './components/manager/TruckTypes';
+import ImagesComponent from './components/manager/ImagesComponent';
+import InsuranceList from './components/manager/InsuranceList';
+import PendingPayments from './components/customer/PendingPayments';
+import CustomerLayout from './components/customer/CustomerLayout';
+import ManagerContactUs from './components/manager/ManagerContactUs';
 
 function App() {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -42,6 +39,10 @@ function App() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [prevScrollPos]);
 
+    const handleSignOut = () => {
+        // Implement sign-out logic here
+    };
+
     return (
         <Router>
             <div className={`App ${!visible ? 'hidden' : ''}`}>
@@ -54,15 +55,15 @@ function App() {
                         <Route path="/branches" element={<Branches />} />
 
                         {/*---------MANAGER FUNCTIONALITY STARTS-----------*/}
-                        <Route path="/manager-portal/*" element={<ManagerPortal/>}>
-                            <Route path="dashboard" element={<div>Dashboard Content</div>}/>
-                            <Route path="trucks" element={<Trucks/>}/>
-                            <Route path="branchez" element={<Branchez/>}/>
-                            <Route path="employees" element={<Employees/>}/>
-                            <Route path="truck-types" element={<TruckTypes/>}/>
-                            <Route path="images" element={<ImagesComponent/>}/>
-                            <Route path="insurances" element={<InsuranceList/>}/>
-                            <Route path="manage-contact-us" element={<ManagerContactUs/>}/>
+                        <Route path="/manager-portal/*" element={<ManagerPortal />}>
+                            <Route path="dashboard" element={<div>Dashboard Content</div>} />
+                            <Route path="trucks" element={<Trucks />} />
+                            <Route path="branchez" element={<Branchez />} />
+                            <Route path="employees" element={<Employees />} />
+                            <Route path="truck-types" element={<TruckTypes />} />
+                            <Route path="images" element={<ImagesComponent />} />
+                            <Route path="insurances" element={<InsuranceList />} />
+                            <Route path="manage-contact-us" element={<ManagerContactUs />} />
                         </Route>
                         {/*---------MANAGER FUNCTIONALITY ENDS-----------*/}
 
@@ -70,12 +71,16 @@ function App() {
                         <Route path="/sign-in" element={<SignInComponent />} />
                         <Route path="/sign-up" element={<SignUpComponent />} />
                         <Route path="/update-customer/:customerID" element={<CustomerComponent />} />
-                        <Route path="/customer-profile" element={<CustomerProfile />} />
-                        <Route path="/customer-sidebar" element={<CustomerSidebar/>}/>
+
+                        {/* Customer Routes wrapped in layout */}
+                        <Route path="/customer/*" element={<CustomerLayout />}>
+                            <Route path="profile" element={<CustomerProfile />} />
+                            <Route path="pending-payments" element={<PendingPayments />} />
+                        </Route>
+
                         <Route path="/get-quote/:truckId" element={<GetQuote />} />
-                        <Route path="/confirm-details" element={<ConfirmDetails/>} />
-                        <Route path="/payment" element={<Payment/>}/>
-                        <Route path="/pending-payments" element={<PendingPayments/>}/>
+                        <Route path="/confirm-details" element={<ConfirmDetails />} />
+                        <Route path="/payment" element={<Payment />} />
                     </Routes>
                 </div>
                 {/*<FooterComponent />*/}
