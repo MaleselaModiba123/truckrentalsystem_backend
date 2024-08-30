@@ -1,10 +1,10 @@
-import React, {useContext, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {authenticateUser} from "../../services/AuthenticationService.js";
-import {signIn as customerSignIn} from "../../services/CustomerProfileService.js";
-import {AuthContext} from "../AuthContext.jsx";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { authenticateUser } from "../../services/AuthenticationService.js";
+import { signIn as customerSignIn } from "../../services/CustomerProfileService.js";
+import { AuthContext } from "../AuthContext.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const SignInComponent = () => {
     const [email, setEmail] = useState('');
@@ -21,7 +21,7 @@ const SignInComponent = () => {
             const employeeResponse = await authenticateUser(email, password);
 
             if (employeeResponse.status === 200 && employeeResponse.data) {
-                const {role} = employeeResponse.data;
+                const { role } = employeeResponse.data;
                 setAuth(employeeResponse.data);
 
                 if (role === "MANAGER") {
@@ -67,9 +67,12 @@ const SignInComponent = () => {
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-md-8 col-lg-6">
-                    <div className="card shadow-sm border-light rounded-lg" style={{backgroundColor: '#f8f9fa'}}>
+                    <div
+                        className="card shadow-sm border-light rounded-lg"
+                        style={{ backgroundColor: '#e0f7fa' }} // Very light blue background
+                    >
                         <div className="card-body">
-                            <h2 className="text-center mb-4">Sign In</h2>
+                            <h2 className="text-center mb-4" style={{ color: '#007bff' }}>Sign In</h2> {/* Match button color */}
                             <form onSubmit={handleSignIn}>
                                 <div className="form-group mb-3">
                                     <label className="form-label">Email</label>
