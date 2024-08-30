@@ -162,8 +162,8 @@ const ManagerPortal = () => {
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/contact-us') ? 'active' : ''}`}
-                                to="/manager-portal/contact-us"
+                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/manage-contact-us') ? 'active' : ''}`}
+                                to="/manager-portal/manage-contact-us"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'
@@ -182,8 +182,8 @@ const ManagerPortal = () => {
                                     e.currentTarget.style.backgroundColor = 'transparent';
                                     e.currentTarget.style.color = '#000'; // Default color
                                 }}>
-                                <i className="bi bi-file-earmark-text me-2"></i>
-                                Contact-us
+                                <i className="bi bi-telephone me-2"></i>
+                                Manage Contact
                             </Link>
                         </li>
                     </ul>

@@ -22,6 +22,7 @@ import ImagesComponent from "./components/manager/ImagesComponent.jsx";
 import InsuranceList from "./components/manager/InsuranceList.jsx";
 import PendingPayments from "./components/customer/PendingPayments.jsx";
 import CustomerSidebar from "./components/customer/CustomerSidebar.jsx";
+import ManagerContactUs from "./components/manager/ManagerContactUs.jsx";
 
 //import ManagerContactUs from "./components/manager/ManagerContactUs.jsx";
 
@@ -61,7 +62,7 @@ function App() {
                             <Route path="truck-types" element={<TruckTypes/>}/>
                             <Route path="images" element={<ImagesComponent/>}/>
                             <Route path="insurances" element={<InsuranceList/>}/>
-                            {/*<Route path="contact-us" element={<ManagerContactUs/>}/>*/}
+                            <Route path="manage-contact-us" element={<ManagerContactUs/>}/>
                         </Route>
                         {/*---------MANAGER FUNCTIONALITY ENDS-----------*/}
 

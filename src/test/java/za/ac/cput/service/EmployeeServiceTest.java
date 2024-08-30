@@ -12,7 +12,7 @@ import za.ac.cput.factory.AddressFactory;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
+//@Transactional
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class EmployeeServiceTest {
 
@@ -23,7 +23,7 @@ class EmployeeServiceTest {
     void a_shouldCreateEmployeeSuccessfully() {
         // Define unique values for this test
         Name name = new Name("Asimbonge", "", "Mbende");
-        Contact contact = new Contact("asimbonge.create@example.com", "0712345678");
+        Contact contact = new Contact("asimbonge@gmail.com", "0712345678");
         Address address = AddressFactory.createAddress("123 Hanover Road", "Cape Town", "Western Cape", "8001", "South Africa");
         String password = "password123";
         Role role = Role.MANAGER;
