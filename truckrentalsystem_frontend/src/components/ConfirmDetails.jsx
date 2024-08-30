@@ -7,12 +7,11 @@ const ConfirmDetails = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [customer, setCustomer] = useState(null);
-    const [rentData, setRentData] = useState(location.state?.rentData || {});
+    const [rentData, setUpdatedRentData] = useState(location.state?.rentData || {});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Assume auth.customerID is available in the context or state
-    const customerID = 1000; // Replace with actual customer ID from your authentication context
+    const customerID = 1000;
 
     useEffect(() => {
         const fetchCustomerData = async () => {
@@ -34,87 +33,70 @@ const ConfirmDetails = () => {
         navigate('/payment', { state: { rentData, personalDetails: customer } });
     };
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    const handleGetQuote = () => {
+        navigate('/get-quote', { state: { rentData } });
+    };
 
-    if (error) {
-        return <div>{error}</div>;
-    }
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>{error}</div>;
+    if (!customer) return <div>No customer data available.</div>;
 
-    if (!customer) {
-        return <div>No customer data available.</div>;
-    }
-
-    const {
-        firstName = '',
-        lastName = '',
-        email = '',
-        cellNo = '',
-        address = ''
-    } = customer;
+    const { firstName = '', lastName = '', email = '', cellNo = '', address = '' } = customer;
 
     return (
-        <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-            <h2>Confirm Your Details</h2>
+        <div className="confirm-details-container">
+            <h2 className="confirm-heading">Confirm Your Details</h2>
             {Object.keys(rentData).length > 0 ? (
                 <div className="get-quote-result">
-                    <h2 style={{ color: '#037bfc' }}>Rental Details</h2>
-                    <div style={{ marginBottom: '10px' }}>
+                    <h2 className="rental-heading">Rental Details</h2>
+                    <div className="detail-item">
                         <FaTruck />
                         <p><strong>Model:</strong> {rentData.truck?.model || 'N/A'}</p>
                     </div>
                     {rentData.truck?.image && (
-                        <div style={{ marginBottom: '10px' }}>
-                            <img src={rentData.truck.image} alt="Truck" style={{ width: '100%', height: 'auto' }} />
+                        <div className="detail-item">
+                            <img src={rentData.truck.image} alt="Truck" className="truck-image" />
                         </div>
                     )}
-                    <div style={{ marginBottom: '10px' }}>
+                    <div className="detail-item">
                         <FaMapMarkerAlt />
                         <p><strong>Pickup Location:</strong> {rentData.formData?.pickUp || 'N/A'}</p>
                     </div>
-                    <div style={{ marginBottom: '10px' }}>
+                    <div className="detail-item">
                         <FaMapMarkerAlt />
                         <p><strong>Drop-off Location:</strong> {rentData.formData?.dropOff || 'N/A'}</p>
                     </div>
-                    <div style={{ marginBottom: '10px' }}>
+                    <div className="detail-item">
                         <FaCalendarAlt />
                         <p><strong>Rental Date:</strong> {rentData.formData?.rentalDate || 'N/A'}</p>
                     </div>
-                    <div style={{ marginBottom: '10px' }}>
+                    <div className="detail-item">
                         <FaCalendarAlt />
                         <p><strong>Return Date:</strong> {rentData.formData?.returnDate || 'N/A'}</p>
                     </div>
-                    <div style={{ marginBottom: '10px' }}>
+                    <div className="detail-item">
                         <FaDollarSign />
                         <p><strong>Total Price:</strong> R{rentData.price || '0'}</p>
                     </div>
-                    <div style={{ marginBottom: '10px' }}>
+                    <div className="detail-item">
                         <FaClock />
                         <p><strong>Rental Duration:</strong> {rentData.rentalDuration || '0'} days</p>
-                        <Link
-                            to="/get-quote"
-                            state={{ rentData }}
-                            style={{ color: '#037bfc', textDecoration: 'underline' }}
-                        >
-                            Change
-                        </Link>
+                        <Link to="#" onClick={handleGetQuote} className="change-link">Change</Link>
                     </div>
                 </div>
             ) : (
                 <p>No rental details available.</p>
             )}
-            <div style={{ marginBottom: '10px' }}>
+            <div className="customer-details">
                 <p><strong>Full Name:</strong> {`${firstName} ${lastName}`}</p>
                 <p><strong>Email:</strong> {email}</p>
                 <p><strong>Phone Number:</strong> {cellNo}</p>
                 <p><strong>Address:</strong> {address}</p>
             </div>
-
             <button
                 type="button"
                 onClick={handleConfirm}
-                style={{ backgroundColor: '#002e7a', color: '#fff', padding: '10px 20px', borderRadius: '4px', cursor: 'pointer', marginTop: '20px' }}
+                className="confirm-button"
             >
                 Confirm and Proceed to Payment
             </button>

@@ -27,7 +27,6 @@ const PaymentPage = () => {
             return;
         }
 
-        // Store the payment information temporarily in localStorage
         localStorage.setItem('paymentInfo', JSON.stringify({
             ...rentData,
             paymentAmount: parseFloat(paymentAmount),
@@ -36,45 +35,49 @@ const PaymentPage = () => {
         setSuccess('Payment information stored. Redirecting to sign-in page...');
         setTimeout(() => {
             navigate('/sign-in');
-        }, 2000); // Redirect after 2 seconds
+        }, 2000);
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h1>Payment Page</h1>
-            <p><strong>Model:</strong> {rentData.vin.model}</p>
-            <p><strong>Pickup Location:</strong> {rentData.pickUp.branchName}</p>
-            <p><strong>Drop-off Location:</strong> {rentData.dropOff.branchName}</p>
-            <p><strong>Rental Date:</strong> {rentData.rentDate}</p>
-            <p><strong>Return Date:</strong> {rentData.returnDate}</p>
-            <p><strong>Total Cost:</strong> R{rentData.totalCost}</p>
+        <div className="payment-page-container">
+            <h1 className="payment-heading">Payment Page</h1>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {success && <p style={{ color: 'green' }}>{success}</p>}
+            {rentData.vin.image && (
+                <div className="truck-image-container">
+                    <img src={rentData.vin.image} alt="Truck" className="truck-image" />
+                </div>
+            )}
 
-            <label>
-                Payment Amount:
-                <input
-                    type="number"
-                    value={paymentAmount}
-                    onChange={(e) => setPaymentAmount(e.target.value)}
-                    style={{ padding: '10px', marginBottom: '10px' }}
-                />
-            </label>
-            <button
-                type="button"
-                onClick={handlePayment}
-                style={{
-                    backgroundColor: '#002e7a',
-                    color: '#fff',
-                    border: 'none',
-                    padding: '10px 20px',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                }}
-            >
-                Pay Now
-            </button>
+            <div className="rental-info">
+                <p><strong>Model:</strong> {rentData.vin.model}</p>
+                <p><strong>Pickup Location:</strong> {rentData.pickUp.branchName}</p>
+                <p><strong>Drop-off Location:</strong> {rentData.dropOff.branchName}</p>
+                <p><strong>Rental Date:</strong> {rentData.rentDate}</p>
+                <p><strong>Return Date:</strong> {rentData.returnDate}</p>
+                <p><strong>Total Cost:</strong> R{rentData.totalCost}</p>
+            </div>
+
+            {error && <p className="error-message">{error}</p>}
+            {success && <p className="success-message">{success}</p>}
+
+            <div className="payment-form">
+                <label className="payment-label">
+                    Payment Amount:
+                    <input
+                        type="number"
+                        value={paymentAmount}
+                        onChange={(e) => setPaymentAmount(e.target.value)}
+                        className="payment-input"
+                    />
+                </label>
+                <button
+                    type="button"
+                    onClick={handlePayment}
+                    className="payment-button"
+                >
+                    Pay Now
+                </button>
+            </div>
         </div>
     );
 };
