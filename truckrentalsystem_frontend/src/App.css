@@ -502,3 +502,176 @@ button:hover {
   background-image: url('../public/HomePage.jpeg');
   background-size: cover;
 }
+/* ConfirmDetails.css */
+
+.confirm-details-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.confirm-details-container .confirm-heading {
+  color: #002e7a;
+  font-size: 32px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.confirm-details-container .rental-heading {
+  color: #037bfc;
+  font-size: 24px;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.confirm-details-container .get-quote-result {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.confirm-details-container .detail-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.confirm-details-container .detail-item p {
+  margin: 0 0 0 8px;
+  color: #333;
+}
+
+.confirm-details-container .truck-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.confirm-details-container .customer-details {
+  margin-bottom: 20px;
+}
+
+.confirm-details-container .confirm-button {
+  background-color: #002e7a;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 16px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.confirm-details-container .confirm-button:hover {
+  background-color: #001c4d;
+}
+
+.confirm-details-container .change-link {
+  color: #037bfc;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 10px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.confirm-details-container .change-link:hover {
+  color: #025bb5;
+  text-decoration: none;
+}
+/*Payment Page*/
+
+.payment-page-container {
+  padding: 30px;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.payment-heading {
+  font-size: 32px;
+  color: #002e7a;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.truck-image-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.truck-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.rental-info p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.success-message {
+  color: green;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.payment-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment-label {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment-input {
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.payment-button {
+  background-color: #002e7a;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.payment-button:hover {
+  background-color: #001c4d;
+}
+
+
+
+
