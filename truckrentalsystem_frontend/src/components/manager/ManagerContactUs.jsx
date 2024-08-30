@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, Button, Form, FormControl, InputGroup, Modal, Table} from 'react-bootstrap';
-import {createContactUs, deleteContactUsById, getContactUs, updateContactUs} from "../../services/ContactUsService.js";
-import {getAllBranches} from "../../services/BranchService.js"; // Adjust the path as needed
+import React, { useEffect, useState } from 'react';
+import { Alert, Button, Form, FormControl, InputGroup, Modal, Table } from 'react-bootstrap';
+import { createContactUs, deleteContactUsById, updateContactUs, getContactUsId } from "../../services/ContactUsService.js";
+import { getAllBranches } from "../../services/BranchService.js"; // Adjust the path as needed
 
 function ManagerContactUs() {
     const [contactUs, setContactUs] = useState([]);
@@ -26,9 +26,9 @@ function ManagerContactUs() {
 
     const fetchContactUs = async () => {
         try {
-            const response = await getContactUs();
-            setContactUs(response.data);
-            setFilteredContactUs(response.data);
+            const data = await getContactUsId();
+            setContactUs(data);
+            setFilteredContactUs(data);
         } catch (error) {
             setError('Failed to fetch contact information.');
         }
