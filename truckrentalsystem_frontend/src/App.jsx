@@ -20,8 +20,7 @@ import Employees from "./components/Employees.jsx";
 import TruckTypes from "./components/manager/TruckTypes.jsx";
 import ImagesComponent from "./components/manager/ImagesComponent.jsx";
 import InsuranceList from "./components/manager/InsuranceList.jsx";
-
-//import ManagerContactUs from "./components/manager/ManagerContactUs.jsx";
+import ManagerContactUs from "./components/manager/ManagerContactUs.jsx";
 
 
 function App() {
@@ -59,7 +58,7 @@ function App() {
                             <Route path="truck-types" element={<TruckTypes/>}/>
                             <Route path="images" element={<ImagesComponent/>}/>
                             <Route path="insurances" element={<InsuranceList/>}/>
-                            {/*<Route path="contact-us" element={<ManagerContactUs/>}/>*/}
+                            <Route path="contact-us" element={<ManagerContactUs/>}/>
                         </Route>
                         {/*---------MANAGER FUNCTIONALITY ENDS-----------*/}
 

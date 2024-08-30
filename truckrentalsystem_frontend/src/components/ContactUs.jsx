@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getContactUs } from '../services/ContactUsService';
+import { getContactUsId } from '../services/ContactUsService';
 
 const ContactUs = () => {
     const [contactUs, setContactUs] = useState({
@@ -10,17 +10,18 @@ const ContactUs = () => {
     });
 
     useEffect(() => {
-        const fetchContactUsData = async () => {
+        const fetchContactUsByIdData = async () => {
             try {
-                const response = await getContactUs();  // Fetching data using the service function
-                setContactUs(response);  // Update the state with the fetched data
+                const data = await getContactUsId();  // Fetching data using the service function
+                setContactUs(data[0]);  // Assuming you're fetching an array and need the first element
             } catch (error) {
                 console.error('Error fetching contact info:', error);
             }
         };
 
-        fetchContactUsData();  // Call the function to fetch data on component mount
+        fetchContactUsByIdData();  // Call the function to fetch data on component mount
     }, []);
+
 
     return (
         <div className="contact-us">
