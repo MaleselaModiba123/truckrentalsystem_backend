@@ -1,6 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardActions, Button, Grid, Typography, Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { getAllInsurance, deleteInsuranceById, updateInsurance, createInsurance } from "../../services/InsuranceService.js";
+import React, {useEffect, useState} from 'react';
+import {
+    Box,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Grid,
+    InputAdornment,
+    styled,
+    TextField,
+    Typography
+} from '@mui/material';
+import {
+    createInsurance,
+    deleteInsuranceById,
+    getAllInsurance,
+    updateInsurance
+} from "../../services/InsuranceService.js";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SearchIcon from "@mui/icons-material/Search";
 
 const InsuranceList = () => {
     const [insurances, setInsurances] = useState([]);
@@ -101,7 +124,21 @@ const InsuranceList = () => {
     const handleCancelSave = () => {
         setIsSaveConfirmDialogOpen(false);
     };
+    // Styled CardActions to control spacing
+    const StyledCardActions = styled(CardActions)({
+        padding: '4px', // Adjust padding as needed
+        '& .MuiButton-root': {
+            margin: '0 2px', // Adjust margin as needed
+        },
+    });
+// Styled components
+    const CustomEditButton = styled(Button)({
+        color: '#ffc107',
+    });
 
+    const CustomDeleteButton = styled(Button)({
+        color: '#dc3545',
+    });
     return (
         <Box padding={2}>
             <style>
@@ -119,12 +156,23 @@ const InsuranceList = () => {
                     }
                 `}
             </style>
-            <input
-                type="text"
-                placeholder="Filter by Insurance Type or Policy Number"
+            <h2 className="mb-4 d-flex ">Insurances</h2>
+
+            <TextField
+
+                label="Filter by Insurance Type or Policy Number"
+                variant="outlined"
                 value={filter}
                 onChange={handleFilterChange}
-                style={{marginBottom: '20px', padding: '10px', width: '100%'}}
+                fullWidth
+                style={{marginBottom: '20px'}}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <SearchIcon/>
+                        </InputAdornment>
+                    ),
+                }}
             />
             <Button variant="contained" color="primary" onClick={handleAdd}>
                 Add Insurance
@@ -141,10 +189,12 @@ const InsuranceList = () => {
                                 <Typography color="textSecondary">Coverage: {insurance.coverage}</Typography>
                                 <Typography color="textSecondary">Premium: {insurance.premium}</Typography>
                             </CardContent>
-                            <CardActions>
-                                <Button size="small" onClick={() => handleEdit(insurance)}>Edit</Button>
-                                <Button size="small" onClick={() => handleDelete(insurance)}>Delete</Button>
-                            </CardActions>
+                            <StyledCardActions>
+                                <CustomEditButton onClick={() => handleEdit(insurance)}> <EditIcon
+                                    fontSize="medium"/></CustomEditButton>
+                                <CustomDeleteButton onClick={() => handleDelete(insurance)}> <DeleteIcon
+                                    fontSize="medium"/></CustomDeleteButton>
+                            </StyledCardActions>
                         </Card>
                     </Grid>
                 ))}

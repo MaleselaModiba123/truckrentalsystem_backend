@@ -203,7 +203,7 @@ const GetQuote = () => {
 
     const buttonStyle = {
         ...robotoStyle,
-        backgroundColor: '#002e7a',
+        backgroundColor: '#007bff',
         color: '#fff',
         border: 'none',
         padding: '10px 20px',
@@ -232,7 +232,7 @@ const GetQuote = () => {
     const modelStyle = {
         ...robotoStyle,
         fontSize: '24px',
-        color: '#002e7a',
+        color: '#007bff',
         fontWeight: '700',
     };
 
@@ -261,7 +261,7 @@ const GetQuote = () => {
 
     const iconStyle = {
         marginRight: '12px',
-        color: '#002e7a',
+        color: '#007bff',
         fontSize: '20px',
         verticalAlign: 'middle',
     };

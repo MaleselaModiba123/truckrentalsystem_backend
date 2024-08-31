@@ -157,10 +157,9 @@ function TruckTypes() {
         setSelectedTruckType(null);
         setActionType('add');
     };
-
     return (
-        <Container maxWidth="md" sx={{mt: 4}}>
-            <Typography variant="h4" gutterBottom align="center">
+        <Container maxWidth="md" sx={{mt: 4,ml:0}}>
+            <Typography variant="h4" gutterBottom  sx={{ fontWeight: 'bold' }}>
                 Truck Types
             </Typography>
             <style>
@@ -282,7 +281,7 @@ function TruckTypes() {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <Typography variant="h4" gutterBottom>
+                    <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold' }}>
                         Truck Types List
                     </Typography>
                     <div style={{maxHeight: '600px', overflowY: 'auto'}}>
@@ -293,10 +292,10 @@ function TruckTypes() {
                                     secondaryAction={
                                         <>
                                             <IconButton edge="end" onClick={() => handleEdit(truckType)}>
-                                                <EditIcon/>
+                                                <EditIcon sx={{ color: '#ffc107' }} />
                                             </IconButton>
                                             <IconButton edge="end" onClick={() => handleDelete(truckType)}>
-                                                <DeleteIcon/>
+                                                <DeleteIcon sx={{ color: '#dc3545' }} />
                                             </IconButton>
                                         </>
                                     }

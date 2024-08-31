@@ -1,6 +1,4 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {
     createTruck,
     deleteTruck,
@@ -11,6 +9,9 @@ import {
 } from '../../services/TruckService.js';
 import {getAllTruckTypes} from '../../services/TruckTypeService.js';
 import {getAllInsurance} from '../../services/InsuranceService.js';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+import {FaSearch} from "react-icons/fa";
 
 const Trucks = () => {
     const [trucks, setTrucks] = useState([]);
@@ -233,6 +234,22 @@ const Trucks = () => {
                         font-size: 2.5rem; /* Font size */
                         font-weight: bold; /* Font weight */
                     }
+                    .search-input {
+                        position: relative;
+                        width: 100%;
+                    }
+
+                    .search-input input {
+                        padding-left: 30px; /* Space for the icon */
+                    }
+
+                    .search-input .search-icon {
+                        position: absolute;
+                        left: 10px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        color: #007bff; /* Icon color */
+                    }
                 `}
             </style>
             <h1 className="mb-4">Truck Management</h1>
@@ -360,6 +377,7 @@ const Trucks = () => {
                 </div>
                 <div className="col-md-6">
                     <h2>Existing Trucks</h2>
+                    <div className="search-input mb-3">
                     <input
                         type="text"
                         className="form-control mb-3"
@@ -367,6 +385,8 @@ const Trucks = () => {
                         value={searchTerm}
                         onChange={handleSearchChange}
                     />
+                        <FaSearch className="search-icon"/>
+                    </div>
                     <div className="overflow-auto" style={{maxHeight: '500px'}}>
                         <ul className="list-group">
                             {currentTrucks.map(truck => (

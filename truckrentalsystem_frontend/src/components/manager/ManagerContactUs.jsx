@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Form, FormControl, InputGroup, Modal, Table } from 'react-bootstrap';
 import { createContactUs, deleteContactUsById, updateContactUs, getContactUsId } from "../../services/ContactUsService.js";
-import { getAllBranches } from "../../services/BranchService.js"; // Adjust the path as needed
-
+import { getAllBranches } from "../../services/BranchService.js";
+import {faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import SearchIcon from '@mui/icons-material/Search';
 function ManagerContactUs() {
     const [contactUs, setContactUs] = useState([]);
     const [filteredContactUs, setFilteredContactUs] = useState([]);
@@ -122,13 +124,34 @@ function ManagerContactUs() {
                         font-size: 2.5rem; /* Font size */
                         font-weight: bold; /* Font weight */
                     }
+                    
+                    .search-container {
+                        position: relative;
+                        max-width: 800px;
+                        margin: 0;
+                    }
+
+                    .search-icon {
+                        position: absolute;
+                        top: 50%;
+                        left: 10px;
+                        transform: translateY(-50%);
+                        color: #6c757d; /* Bootstrap's text-secondary color */
+                    }
+
+                    .search-input {
+                        padding-left: 35px; /* Adjust padding to fit the icon */
+                    }
                 `}
             </style>
-            <h2 className="mb-4 d-flex justify-content-center">Manage Contact Us</h2>
+            <h2 className="mb-4 d-flex">Manage Contact Us</h2>
 
-            <InputGroup className="mb-3" style={{maxWidth: '800px', margin: '0 auto'}}>
+            <InputGroup className="mb-3" style={{maxWidth: '800px', margin: '0'}}>
+                <InputGroup.Text>
+                    <SearchIcon />
+                </InputGroup.Text>
                 <FormControl
-                    placeholder="Search Contact Us Information"
+                    placeholder="Search Contact Us Information..."
                     value={searchTerm}
                     onChange={handleSearch}
                 />
@@ -140,7 +163,7 @@ function ManagerContactUs() {
             {error && <Alert variant="danger">{error}</Alert>}
             {success && <Alert variant="success">{success}</Alert>}
 
-            <Table striped bordered hover className="table-sm" style={{maxWidth: '800px', margin: '0 auto'}}>
+            <Table striped bordered hover className="table-sm" style={{maxWidth: '800px', margin: '0'}}>
                 <thead>
                 <tr>
                     <th>Email</th>
@@ -158,8 +181,8 @@ function ManagerContactUs() {
                         <td>{contact.address}</td>
                         <td>{contact.businessHours}</td>
                         <td>
-                            <Button variant="warning" onClick={() => handleEdit(contact)} className="me-2">Edit</Button>
-                            <Button variant="danger" onClick={() => handleDelete(contact.contactUsId)}>Delete</Button>
+                            <Button variant="warning" onClick={() => handleEdit(contact)} className="me-2"><FontAwesomeIcon icon={faEdit}/></Button>
+                            <Button variant="danger" onClick={() => handleDelete(contact.contactUsId)}><FontAwesomeIcon icon={faTrashAlt}/></Button>
                         </td>
                     </tr>
                 ))}

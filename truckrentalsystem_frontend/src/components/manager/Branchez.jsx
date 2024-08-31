@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Table, Modal, InputGroup, FormControl } from 'react-bootstrap';
 import { createBranch, deleteBranchById, getAllBranches, updateBranch } from "../../services/BranchService.js";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faEdit, faSearch, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 
 function Branchez() {
     const [branches, setBranches] = useState([]);
@@ -84,13 +86,33 @@ function Branchez() {
                         font-size: 2.5rem; /* Font size */
                         font-weight: bold; /* Font weight */
                     }
+
+                    .search-input {
+                        position: relative;
+                        width: 100%;
+                    }
+
+                    .search-input .form-control {
+                        padding-left: 40px; /* Adjust for the icon space */
+                    }
+
+                    .search-input .search-icon {
+                        position: absolute;
+                        left: 10px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        color: #007bff; /* Icon color */ 
+                    }
                 `}
             </style>
-            <h2 className="mb-4 d-flex justify-content-center">Branches</h2>
+            <h2 className="mb-4 d-flex ">Branches</h2>
 
-            <InputGroup className="mb-3" style={{maxWidth: '800px', margin: '0 auto'}}>
+            <InputGroup className="mb-3" style={{maxWidth: '800px', margin: '0'}}>
+                <InputGroup.Text className="search-icon">
+                    <FontAwesomeIcon icon={faSearch} />
+                </InputGroup.Text>
                 <FormControl
-                    placeholder="Search Branches"
+                    placeholder="Search Branches..."
                     value={searchTerm}
                     onChange={handleSearch}
                 />
@@ -98,7 +120,7 @@ function Branchez() {
                     New Branch</Button>
             </InputGroup>
 
-            <Table striped bordered hover className="table-sm" style={{maxWidth: '800px', margin: '0 auto'}}>
+            <Table striped bordered hover className="table-sm" style={{maxWidth: '800px', margin: '0 '}}>
                 <thead>
                 <tr>
                     <th>Branch Name</th>
@@ -112,8 +134,8 @@ function Branchez() {
                         <td>{branch.branchName}</td>
                         <td>{branch.address}</td>
                         <td>
-                            <Button variant="warning" onClick={() => handleEdit(branch)} className="me-2">Edit</Button>
-                            <Button variant="danger" onClick={() => handleDelete(branch.branchId)}>Delete</Button>
+                            <Button variant="warning" onClick={() => handleEdit(branch)} className="me-2">  <FontAwesomeIcon icon={faEdit}/></Button>
+                            <Button variant="danger" onClick={() => handleDelete(branch.branchId)}> <FontAwesomeIcon icon={faTrashAlt}/></Button>
                         </td>
                     </tr>
                 ))}

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getAllTrucks, getTruckImageUrl } from "../services/TruckService.js";
-import { Button, Card, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
-import { FaTruck, FaCogs, FaTachometerAlt, FaOilCan, FaGasPump, FaWeight } from 'react-icons/fa';
+import React, {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {getAllTrucks, getTruckImageUrl} from "../services/TruckService.js";
+import {Button, Card, Col, Container, Form, InputGroup, Row} from 'react-bootstrap';
+import {FaCogs, FaGasPump, FaOilCan, FaTachometerAlt, FaTruck, FaWeight} from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 
 const Home = () => {
     const [trucks, setTrucks] = useState([]);
@@ -70,10 +71,12 @@ const Home = () => {
                         background-color: #007bff;
                         color: white;
                     }
-
+                    .search-button svg {
+                        font-size: 1.5rem; 
+        }
                     .quote-button {
-                        background-color: #002e7a;
-                        border-color: #002e7a;
+                        background-color: #0275d8;
+                        border-color: #0275d8;
                         border-radius: 4px;
                         padding: 10px 20px;
                         font-weight: bold;
@@ -108,7 +111,7 @@ const Home = () => {
                         variant="outline-secondary"
                         className="search-button"
                     >
-                        Search
+                        <FaSearch />
                     </Button>
                 </InputGroup>
             </Form.Group>
@@ -136,35 +139,35 @@ const Home = () => {
                                     <Card.Title style={{
                                         fontSize: '1.5rem',
                                         fontWeight: 'bold',
-                                        color: '#002e7a'
+                                        color: '#007bff'
                                     }}>{truck.model}</Card.Title>
                                     <Card.Text style={{marginBottom: '16px', lineHeight: '1.5'}}>
                                         <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaTruck style={{marginRight: '8px', color: '#002e7a'}}/>
+                                            <FaTruck style={{marginRight: '8px', color: '#0275d8'}}/>
                                             <span><strong>Type:</strong> {truck.truckType.typeName}</span>
                                         </div>
                                         <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaWeight style={{marginRight: '8px', color: '#002e7a'}}/>
+                                            <FaWeight style={{marginRight: '8px', color: '#0275d8'}}/>
                                             <span><strong>Capacity:</strong> {truck.truckType.capacity} tons</span>
                                         </div>
                                         <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaCogs style={{marginRight: '8px', color: '#002e7a'}}/>
+                                            <FaCogs style={{marginRight: '8px', color: '#0275d8'}}/>
                                             <span><strong>Transmission:</strong> {truck.truckType.transmission}</span>
                                         </div>
                                         <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaTachometerAlt style={{marginRight: '8px', color: '#002e7a'}}/>
+                                            <FaTachometerAlt style={{marginRight: '8px', color: '#0275d8'}}/>
                                             <span><strong>Fuel Consumption:</strong> {truck.truckType.fuelConsumption} km/l</span>
                                         </div>
                                         <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaGasPump style={{marginRight: '8px', color: '#002e7a'}}/>
+                                            <FaGasPump style={{marginRight: '8px', color: '#0275d8'}}/>
                                             <span><strong>Fuel Type:</strong> {truck.truckType.fuelType}</span>
                                         </div>
                                         <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaOilCan style={{marginRight: '8px', color: '#002e7a'}}/>
+                                            <FaOilCan style={{marginRight: '8px', color: '#0275d8'}}/>
                                             <span><strong>Mileage:</strong> {truck.currentMileage} km</span>
                                         </div>
                                         <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaTruck style={{marginRight: '8px', color: '#002e7a'}}/>
+                                            <FaTruck style={{marginRight: '8px', color: '#0275d8'}}/>
                                             <span><strong>Dimensions:</strong> {truck.truckType.dimensions}m</span>
                                         </div>
                                     </Card.Text>

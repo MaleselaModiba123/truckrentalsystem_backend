@@ -1,8 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import {createEmployee, deleteEmployeeById, getEmployees, updateEmployee} from "../../services/EmployeesService.js";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
+import {
+    Box,
+    Button,
+    FormControl,
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    Modal,
+    Select,
+    TextField,
+    Typography
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import {Table} from "react-bootstrap";
 
 function Employees() {
     const [employees, setEmployees] = useState([]);
+    const [filteredEmployees, setFilteredEmployees] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const [newEmployee, setNewEmployee] = useState({
         name: {
             firstName: '',
@@ -25,14 +43,35 @@ function Employees() {
     });
     const [editing, setEditing] = useState(false);
     const [currentEmployeeNumber, setCurrentEmployeeNumber] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         fetchEmployees();
     }, []);
 
+    useEffect(() => {
+        filterEmployees(searchQuery);
+    }, [employees, searchQuery]);
+
     const fetchEmployees = async () => {
         const response = await getEmployees();
         setEmployees(response.data);
+    };
+
+    const filterEmployees = (query) => {
+        if (!query) {
+            setFilteredEmployees(employees);
+        } else {
+            setFilteredEmployees(employees.filter(employee =>
+                employee.name.firstName.toLowerCase().includes(query.toLowerCase()) ||
+                employee.name.lastName.toLowerCase().includes(query.toLowerCase()) ||
+                employee.contact.email.toLowerCase().includes(query.toLowerCase())
+            ));
+        }
+    };
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
     };
 
     const handleChange = (e) => {
@@ -63,8 +102,11 @@ function Employees() {
         }
         setEditing(false);
         fetchEmployees();
+        clearForm();
+        setModalOpen(false);
+    };
 
-        // Clear the form
+    const clearForm = () => {
         setNewEmployee({
             name: {
                 firstName: '',
@@ -86,13 +128,6 @@ function Employees() {
             role: 'MANAGER'
         });
         setCurrentEmployeeNumber('');
-
-        // Hide the modal
-        const modalElement = document.getElementById('addEmployeeModal');
-        const modal = bootstrap.Modal.getInstance(modalElement);
-        if (modal) {
-            modal.hide();
-        }
     };
 
     const handleEdit = (employee) => {
@@ -105,9 +140,7 @@ function Employees() {
         });
         setCurrentEmployeeNumber(employee.employeeNumber);
         setEditing(true);
-        // Open the modal programmatically if needed
-        const modal = new bootstrap.Modal(document.getElementById('addEmployeeModal'));
-        modal.show();
+        setModalOpen(true);
     };
 
     const handleDelete = async (employeeNumber) => {
@@ -116,137 +149,187 @@ function Employees() {
     };
 
     return (
+
         <div>
-            <h2>Employees</h2>
-            <div className="card">
-                <div className="card-body">
-                    <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
-                        Add Employee
-                    </button>
-                </div>
-            </div>
-            <div className="modal fade" id="addEmployeeModal" tabIndex="-1" aria-labelledby="addEmployeeModal" aria-hidden="true">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5"
-                                id="exampleModalLabel">{editing ? 'Edit' : 'Add'} Employee</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            <form onSubmit={handleSubmit}>
-                                {!editing && (
-                                    <>
-                                        <div className="mb-3">
-                                            <label htmlFor="firstName" className="form-label">First Name</label>
-                                            <input className="form-control" type="text" name="firstName"
-                                                   value={newEmployee.name.firstName}
-                                                   onChange={(e) => handleNestedChange(e, 'name')}
-                                                   placeholder="First Name" required/>
-                                        </div>
+            <style>
+                {`
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(-20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
 
-                                        <div className="mb-3">
-                                            <label htmlFor="middleName" className="form-label">Middle Name</label>
-                                            <input className="form-control" type="text" name="middleName"
-                                                   value={newEmployee.name.middleName}
-                                                   onChange={(e) => handleNestedChange(e, 'name')}
-                                                   placeholder="Middle Name"/>
-                                        </div>
-
-                                        <div className="mb-3">
-                                            <label htmlFor="lastName" className="form-label">Last Name</label>
-                                            <input className="form-control" type="text" name="lastName"
-                                                   value={newEmployee.name.lastName}
-                                                   onChange={(e) => handleNestedChange(e, 'name')}
-                                                   placeholder="Last Name" required/>
-                                        </div>
-                                    </>
-                                )}
-                                <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">Email Address</label>
-                                    <input className="form-control" type="email" name="email"
-                                           value={newEmployee.contact.email}
-                                           onChange={(e) => handleNestedChange(e, 'contact')} placeholder="Email"
-                                           required/>
-                                </div>
-
-                                <div className="mb-3">
-                                    <label htmlFor="cellNumber" className="form-label">Cell Number</label>
-                                    <input className="form-control" type="text" name="cellNumber"
-                                           value={newEmployee.contact.cellNumber}
-                                           onChange={(e) => handleNestedChange(e, 'contact')} placeholder="Cell Number"
-                                           required/>
-                                </div>
-
-                                <div className="mb-3">
-                                    <label htmlFor="street" className="form-label">Street</label>
-                                    <input className="form-control" type="text" name="street"
-                                           value={newEmployee.address.street}
-                                           onChange={(e) => handleNestedChange(e, 'address')} placeholder="Street"
-                                           required/>
-                                </div>
-
-                                <div className="mb-3">
-                                    <label htmlFor="city" className="form-label">City</label>
-                                    <input className="form-control" type="text" name="city"
-                                           value={newEmployee.address.city}
-                                           onChange={(e) => handleNestedChange(e, 'address')} placeholder="City"
-                                           required/>
-                                </div>
-
-                                <div className="mb-3">
-                                    <label htmlFor="province" className="form-label">Province</label>
-                                    <input className="form-control" type="text" name="province"
-                                           value={newEmployee.address.province}
-                                           onChange={(e) => handleNestedChange(e, 'address')} placeholder="Province"
-                                           required/>
-                                </div>
-
-                                <div className="mb-3">
-                                    <label htmlFor="postalCode" className="form-label">Postal Code</label>
-                                    <input className="form-control" type="text" name="postalCode"
-                                           value={newEmployee.address.postalCode}
-                                           onChange={(e) => handleNestedChange(e, 'address')} placeholder="Postal Code"
-                                           required/>
-                                </div>
-
-                                <div className="mb-3">
-                                    <label htmlFor="country" className="form-label">Country</label>
-                                    <input className="form-control" type="text" name="country"
-                                           value={newEmployee.address.country}
-                                           onChange={(e) => handleNestedChange(e, 'address')} placeholder="Country"
-                                           required/>
-                                </div>
-
-                                <div className="mb-3">
-                                    <label htmlFor="password" className="form-label">Password</label>
-                                    <input className="form-control" type="password" name="password"
-                                           value={newEmployee.password} onChange={handleChange} placeholder="Password"
-                                           required/>
-                                </div>
-
-                                <div className="mb-3">
-                                    <label htmlFor="role" className="form-label">Role</label>
-                                    <select className="form-select" name="role" value={newEmployee.role}
-                                            onChange={handleChange} required>
-                                        <option value="MANAGER">MANAGER</option>
-                                        <option value="MECHANIC">MECHANIC</option>
-                                    </select>
-                                </div>
-
-                                <div className="d-grid gap-2">
-                                    <button className="btn btn-primary"
-                                            type="submit">{editing ? 'Update' : 'Add'} Employee
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <table className="table table-striped-columns">
+                    h1, h2,h3,h4 {
+                        animation: fadeIn 1s ease-out;
+                        color: #007bff; /* Blue color */
+                        font-size: 2.5rem; /* Font size */
+                        font-weight: bold; /* Font weight */
+                    }
+                `}
+            </style>
+            <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold' }}>
+                Employees
+            </Typography>
+            <Box marginBottom={2}>
+                <TextField
+                    label="Search Employees"
+                    variant="outlined"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    fullWidth
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <SearchIcon/>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+            </Box>
+            <Box marginBottom={2}>
+                <Button variant="contained" color="primary" onClick={() => setModalOpen(true)}>
+                    Add Employee
+                </Button>
+            </Box>
+            <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+                <Box
+                    bgcolor="background.paper"
+                    p={3}
+                    mx="auto"
+                    my={5}
+                    maxWidth={600}
+                    borderRadius={2}
+                >
+                    <Typography variant="h5" component="h1" gutterBottom>
+                        {editing ? 'Edit' : 'Add'} Employee
+                    </Typography>
+                    <form onSubmit={handleSubmit}>
+                        {!editing && (
+                            <>
+                                <TextField
+                                    label="First Name"
+                                    name="firstName"
+                                    value={newEmployee.name.firstName}
+                                    onChange={(e) => handleNestedChange(e, 'name')}
+                                    fullWidth
+                                    margin="normal"
+                                    required
+                                />
+                                <TextField
+                                    label="Middle Name"
+                                    name="middleName"
+                                    value={newEmployee.name.middleName}
+                                    onChange={(e) => handleNestedChange(e, 'name')}
+                                    fullWidth
+                                    margin="normal"
+                                />
+                                <TextField
+                                    label="Last Name"
+                                    name="lastName"
+                                    value={newEmployee.name.lastName}
+                                    onChange={(e) => handleNestedChange(e, 'name')}
+                                    fullWidth
+                                    margin="normal"
+                                    required
+                                />
+                            </>
+                        )}
+                        <TextField
+                            label="Email Address"
+                            name="email"
+                            type="email"
+                            value={newEmployee.contact.email}
+                            onChange={(e) => handleNestedChange(e, 'contact')}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                        <TextField
+                            label="Cell Number"
+                            name="cellNumber"
+                            value={newEmployee.contact.cellNumber}
+                            onChange={(e) => handleNestedChange(e, 'contact')}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                        <TextField
+                            label="Street"
+                            name="street"
+                            value={newEmployee.address.street}
+                            onChange={(e) => handleNestedChange(e, 'address')}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                        <TextField
+                            label="City"
+                            name="city"
+                            value={newEmployee.address.city}
+                            onChange={(e) => handleNestedChange(e, 'address')}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                        <TextField
+                            label="Province"
+                            name="province"
+                            value={newEmployee.address.province}
+                            onChange={(e) => handleNestedChange(e, 'address')}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                        <TextField
+                            label="Postal Code"
+                            name="postalCode"
+                            value={newEmployee.address.postalCode}
+                            onChange={(e) => handleNestedChange(e, 'address')}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                        <TextField
+                            label="Country"
+                            name="country"
+                            value={newEmployee.address.country}
+                            onChange={(e) => handleNestedChange(e, 'address')}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                        <TextField
+                            label="Password"
+                            name="password"
+                            type="password"
+                            value={newEmployee.password}
+                            onChange={handleChange}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                        <FormControl fullWidth margin="normal" required>
+                            <InputLabel>Role</InputLabel>
+                            <Select
+                                name="role"
+                                value={newEmployee.role}
+                                onChange={handleChange}
+                            >
+                                <MenuItem value="MANAGER">MANAGER</MenuItem>
+                                <MenuItem value="MECHANIC">MECHANIC</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                        >
+                            {editing ? 'Update' : 'Add'} Employee
+                        </Button>
+                    </form>
+                </Box>
+            </Modal>
+            <Table striped bordered hover className="table-sm">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -254,12 +337,12 @@ function Employees() {
                     <th scope="col">Last Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Role</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col">Actions</th>
+                    {/*<th scope="col"></th>*/}
                 </tr>
                 </thead>
                 <tbody>
-                {employees.map((employee) => (
+                {filteredEmployees.map((employee) => (
                     <tr key={employee.employeeNumber}>
                         <th scope="row">{employee.employeeNumber}</th>
                         <td>{employee.name.firstName}</td>
@@ -267,17 +350,26 @@ function Employees() {
                         <td>{employee.contact.email}</td>
                         <td>{employee.role}</td>
                         <td>
-                            <button className="btn btn-primary" onClick={() => handleEdit(employee)}>Edit</button>
-                        </td>
-                        <td>
-                            <button className="btn btn-danger"
-                                    onClick={() => handleDelete(employee.employeeNumber)}>Delete
-                            </button>
+                            <Button
+                                variant="contained"
+                                color="warning"
+                                onClick={() => handleEdit(employee)} className="me-2"
+                            >
+                                <FontAwesomeIcon icon={faEdit}/>
+                            </Button>
+
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() => handleDelete(employee.employeeNumber)}
+                            >
+                                <FontAwesomeIcon icon={faTrashAlt}/>
+                            </Button>
                         </td>
                     </tr>
                 ))}
                 </tbody>
-            </table>
+            </Table>
         </div>
     );
 }
