@@ -23,6 +23,7 @@ import InsuranceList from './components/manager/InsuranceList';
 import PendingPayments from './components/customer/PendingPayments';
 import CustomerLayout from './components/customer/CustomerLayout';
 import ManagerContactUs from './components/manager/ManagerContactUs';
+import RentalsList from "./components/customer/RentalsList.jsx";
 
 function App() {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -76,6 +77,7 @@ function App() {
                         <Route path="/customer/*" element={<CustomerLayout />}>
                             <Route path="profile" element={<CustomerProfile />} />
                             <Route path="pending-payments" element={<PendingPayments />} />
+                            <Route path="customer/rentals" element={<RentalsList />} />
                         </Route>
 
                         <Route path="/get-quote/:truckId" element={<GetQuote />} />

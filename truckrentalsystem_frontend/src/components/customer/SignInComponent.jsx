@@ -42,17 +42,20 @@ const SignInComponent = () => {
 
             if (customerResponse.status === 200 && customerResponse.data) {
                 setAuth(customerResponse.data);
-
+                // Save customer ID in localStorage or context
+                const customerID = customerResponse.data.customerID;
+                localStorage.setItem('customerID', customerID);
                 // Check if there is payment data in localStorage
                 const paymentInfo = JSON.parse(localStorage.getItem('paymentInfo'));
 
                 if (paymentInfo) {
                     // Redirect to the PendingPayments component
-                    navigate("/customer/profile");
+                    navigate("/customer/pending-payments");
+                    // navigate("/customer/profile");
 
                     // navigate("/pending-payments");
                 } else {
-                    navigate("/customer/pending-payments");
+                    navigate("/customer/profile");
                 }
             } else {
                 setError('Invalid email or password');
