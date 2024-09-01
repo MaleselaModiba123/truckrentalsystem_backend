@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
+import {BrowserRouter as Router, Navigate, Route, Routes,useNavigate } from 'react-router-dom';
 import Home from './components/Home';
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
@@ -23,7 +23,8 @@ import InsuranceList from './components/manager/InsuranceList';
 import PendingPayments from './components/customer/PendingPayments';
 import CustomerLayout from './components/customer/CustomerLayout';
 import ManagerContactUs from './components/manager/ManagerContactUs';
-import RentalsList from "./components/customer/RentalsList.jsx";
+import RentalsList from './components/customer/RentalsList.jsx';
+
 
 function App() {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -40,9 +41,6 @@ function App() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [prevScrollPos]);
 
-    const handleSignOut = () => {
-        // Implement sign-out logic here
-    };
 
     return (
         <Router>
@@ -77,7 +75,7 @@ function App() {
                         <Route path="/customer/*" element={<CustomerLayout />}>
                             <Route path="profile" element={<CustomerProfile />} />
                             <Route path="pending-payments" element={<PendingPayments />} />
-                            <Route path="customer/rentals" element={<RentalsList />} />
+                            <Route path="customer/rentals" element={<RentalsList/>}/>
                         </Route>
 
                         <Route path="/get-quote/:truckId" element={<GetQuote />} />

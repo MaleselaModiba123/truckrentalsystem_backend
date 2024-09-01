@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faMoneyBillWave, faSignOutAlt, faUser} from '@fortawesome/free-solid-svg-icons';
 
@@ -23,7 +23,13 @@ const ulStyle = {
     marginBottom: '30px'
 };
 
-const CustomerSidebar = ({handleSignOut}) => {
+const CustomerSidebar = () => {
+    const navigate = useNavigate();
+
+    // Handle sign-out and navigation
+    const handleSignOutAndNavigate = () => {
+        navigate('/home'); // Redirect to the home page
+    };
     return (
         <nav className="bg-light border-right" style={navStyle}>
             <ul className="nav flex-column" style={ulStyle}>
@@ -61,7 +67,7 @@ const CustomerSidebar = ({handleSignOut}) => {
                     <button
                         className="btn btn-danger d-flex align-items-center"
                         style={{width: '50%'}}
-                        onClick={handleSignOut}
+                        onClick={handleSignOutAndNavigate}
                     >
                         <FontAwesomeIcon icon={faSignOutAlt} style={{marginLeft: '10px'}}/>
                         Sign Out

@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import {createRentTruck} from "../../services/RentTructService.js";
+
 
 const PendingPayments = () => {
     const [pendingPayment, setPendingPayment] = useState(null);
@@ -21,25 +22,38 @@ const PendingPayments = () => {
             console.error('No payment information available.');
             return;
         }
-
         try {
-            const response = await axios.post('http://localhost:8080/truckrentalsystem/rentTruck/create', {
+            const customerID = localStorage.getItem('customerID'); // Retrieve customerID from localStorage
+            if (!customerID) {
+                console.error('No customer ID found.');
+                return;
+            }
+
+            const rentTruckData = {
                 rentDate: pendingPayment.rentDate,
                 returnDate: pendingPayment.returnDate,
                 totalCost: pendingPayment.totalCost,
-                isPaymentMade: true,
-                customerID: pendingPayment.customerID,
-                vin: pendingPayment.vin,
-                pickUp: pendingPayment.pickUp,
-                dropOff: pendingPayment.dropOff,
-                paymentAmount: pendingPayment.paymentAmount
-            });
+                isPaymentMade: true, // Mark payment as completed
+                customerID: parseInt(customerID, 10),
+                vin: pendingPayment.vin.vin,
+                pickUpBranchId: pendingPayment.pickUp.branchId,
+                dropOffBranchId: pendingPayment.dropOff.branchId,
+            };
 
-            localStorage.removeItem('paymentInfo');
-            setPendingPayment(null);
-            alert('Payment successfully finalized.');
+            console.log('Sending payload:', rentTruckData); // Log payload for debugging
+
+            // Create the RentTruck
+            const response = await createRentTruck(rentTruckData);
+            if (response.status === 200) {
+                localStorage.removeItem('paymentInfo');
+                localStorage.removeItem('customerID'); // Clear customerID from localStorage
+                setPendingPayment(null);
+                alert('Payment successfully finalized.');
+            } else {
+                alert('Failed to finalize payment.');
+            }
         } catch (error) {
-            console.error('Error finalizing payment:', error);
+            console.error('Error finalizing payment:', error.response ? error.response.data : error.message);
             alert('Failed to finalize payment.');
         }
     };

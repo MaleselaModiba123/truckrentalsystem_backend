@@ -15,6 +15,8 @@ import java.util.Objects;
 @Entity
 public class RentTruck {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rentTruck_seq")
+    @SequenceGenerator(name = "rentTruck_seq", sequenceName = "rentTruck_seq", allocationSize = 1,initialValue = 100)
     private int rentId;
     private LocalDate rentDate = LocalDate.now();
     private LocalDate returnDate;
