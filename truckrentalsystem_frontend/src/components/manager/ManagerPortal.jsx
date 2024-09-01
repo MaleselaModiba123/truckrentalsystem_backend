@@ -22,9 +22,9 @@ const ManagerPortal = () => {
                      style={{height: '100vh', top: 0}}>
                     <ul className="nav flex-column">
                         <li className="nav-item">
-                            <Link
-                                className={`nav-link d-flex align-items-center active ${path === '/manager-portal/dashboard' ? 'active' : ''}`}
-                                to="/manager-portal/dashboard"
+                            <span
+                                className={`nav-link d-flex align-items-center active ${path === '/manager-portal/dashboard/' ? 'active' : ''}`}
+                                // to="/manager-portal/dashboard"
                                 style={{
                                     fontSize: '25px',
                                     fontWeight: 'bold',
@@ -36,12 +36,12 @@ const ManagerPortal = () => {
                             >
                                 <i className="bi bi-house-door me-2"></i>
                                 Dashboard
-                            </Link>
+                            </span>
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/trucks') ? 'active' : ''}`}
-                                to="/manager-portal/trucks"
+                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/dashboard/trucks') ? 'active' : ''}`}
+                                to="/manager-portal/dashboard/trucks"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'
@@ -67,8 +67,8 @@ const ManagerPortal = () => {
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/truck-types') ? 'active' : ''}`}
-                                to="/manager-portal/truck-types"
+                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/dashboard/truck-types') ? 'active' : ''}`}
+                                to="/manager-portal/dashboard/truck-types"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'
@@ -93,8 +93,8 @@ const ManagerPortal = () => {
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/branchez') ? 'active' : ''}`}
-                                to="/manager-portal/branchez"
+                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/dashboard/branchez') ? 'active' : ''}`}
+                                to="/manager-portal/dashboard/branchez"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'
@@ -119,8 +119,8 @@ const ManagerPortal = () => {
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/employees') ? 'active' : ''}`}
-                                to="/manager-portal/employees"
+                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/dashboard/employees') ? 'active' : ''}`}
+                                to="/manager-portal/dashboard/employees"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'
@@ -145,8 +145,8 @@ const ManagerPortal = () => {
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center${path.startsWith('/manager-portal/insurances') ? 'active' : ''}`}
-                                to="/manager-portal/insurances"
+                                className={`nav-link d-flex align-items-center${path.startsWith('/manager-portal/dashboard/insurances') ? 'active' : ''}`}
+                                to="/manager-portal/dashboard/insurances"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'
@@ -171,8 +171,8 @@ const ManagerPortal = () => {
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/manage-contact-us') ? 'active' : ''}`}
-                                to="/manager-portal/manage-contact-us"
+                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/dashboard/manage-contact-us') ? 'active' : ''}`}
+                                to="/manager-portal/dashboard/manage-contact-us"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'

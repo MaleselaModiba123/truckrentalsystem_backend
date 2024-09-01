@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 import Home from './components/Home';
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
@@ -55,8 +55,8 @@ function App() {
                         <Route path="/branches" element={<Branches />} />
 
                         {/*---------MANAGER FUNCTIONALITY STARTS-----------*/}
-                        <Route path="/manager-portal/*" element={<ManagerPortal />}>
-                            <Route path="dashboard" element={<div>Dashboard Content</div>} />
+                        <Route path="/manager-portal/dashboard/*" element={<ManagerPortal />}>
+                            <Route index element={<Navigate to="trucks" />} />
                             <Route path="trucks" element={<Trucks />} />
                             <Route path="branchez" element={<Branchez />} />
                             <Route path="employees" element={<Employees />} />

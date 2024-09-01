@@ -25,7 +25,7 @@ const SignInComponent = () => {
                 setAuth(employeeResponse.data);
 
                 if (role === "MANAGER") {
-                    navigate("/manager-portal");
+                    navigate("/manager-portal/dashboard");
                 } else if (role === "HELP_DESK") {
                     navigate("/help-desk-portal");
                 } else {
