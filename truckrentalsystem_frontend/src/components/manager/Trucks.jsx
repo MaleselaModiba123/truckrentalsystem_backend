@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
     createTruck,
     deleteTruck,
@@ -18,10 +18,12 @@ const Trucks = () => {
     const [filteredTrucks, setFilteredTrucks] = useState([]);
     const [truckTypes, setTruckTypes] = useState([]);
     const [insurances, setInsurances] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+    const errorTimeoutRef = useRef(null);
     const [formState, setFormState] = useState({
         model: '',
         truckImage: null,
-        availability: false,
+        availability: true,
         licensePlate: '',
         currentMileage: '',
         truckTypeId: '',
@@ -98,6 +100,9 @@ const Trucks = () => {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+        if (file) {
+            const allowedTypes = ['image/jpeg', 'image/png'];
+            if (allowedTypes.includes(file.type)) {
         setFormState(prevState => ({
             ...prevState,
             truckImage: file
@@ -107,8 +112,28 @@ const Trucks = () => {
         reader.onloadend = () => {
             setImagePreview(reader.result);
         };
-        if (file) {
-            reader.readAsDataURL(file);
+                reader.readAsDataURL(file);
+                setErrorMessage('');
+            } else {
+                setErrorMessage('Please select a JPEG or PNG image.');
+                setFormState(prevState => ({
+                    ...prevState,
+                    truckImage: null
+                }));
+                setImagePreview(null);
+                e.target.value = ''; // Clear the file input
+
+                // Clear any existing timeout
+                if (errorTimeoutRef.current) {
+                    clearTimeout(errorTimeoutRef.current);
+                }
+
+                // Set a new timeout to clear the error message after 3 seconds
+                errorTimeoutRef.current = setTimeout(() => {
+                    setErrorMessage('');
+                }, 2000);
+
+            }
         } else {
             setImagePreview(null);
         }
@@ -154,7 +179,7 @@ const Trucks = () => {
         setFormState({
             model: '',
             truckImage: null,
-            availability: false,
+            availability: true,
             licensePlate: '',
             currentMileage: '',
             truckTypeId: '',
@@ -289,6 +314,11 @@ const Trucks = () => {
                                 marginTop: '10px',
                                 borderRadius: '5px'
                             }}/>}
+                            {errorMessage && (
+                                <div className="alert alert-danger mt-2">
+                                    {errorMessage}
+                                </div>
+                            )}
                         </div>
                         <div className="form-group">
                             <div className="form-check">

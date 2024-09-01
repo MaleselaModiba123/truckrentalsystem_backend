@@ -2,7 +2,16 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {getAllTrucks, getTruckImageUrl} from "../services/TruckService.js";
 import {Button, Card, Col, Container, Form, InputGroup, Row} from 'react-bootstrap';
-import {FaCogs, FaGasPump, FaOilCan, FaTachometerAlt, FaTruck, FaWeight} from 'react-icons/fa';
+import {
+    FaCheckCircle,
+    FaCogs,
+    FaGasPump,
+    FaOilCan,
+    FaTachometerAlt,
+    FaTimesCircle,
+    FaTruck,
+    FaWeight
+} from 'react-icons/fa';
 import { FaSearch } from 'react-icons/fa';
 
 const Home = () => {
@@ -42,7 +51,10 @@ const Home = () => {
     const handleGetQuote = (truckId) => {
         navigate(`/get-quote/${truckId}`);
     };
-
+    // const formatAvailability = (availability) => availability ? 'Available' : 'Not Available';
+    const formatAvailability = (availability) => (
+        availability ? <FaCheckCircle style={{ color: 'green' }} /> : <FaTimesCircle style={{ color: 'red' }} />
+    );
     return (
         <Container className="rent-trucks mt-4">
             <style>
@@ -86,6 +98,11 @@ const Home = () => {
                     .quote-button:hover {
                         background-color: #001f5f;
                         border-color: #001f5f;
+                    }
+                    .quote-button:disabled {
+                        background-color: #b0bec5;
+                        border-color: #b0bec5;
+                        cursor: not-allowed;
                     }
                 `}
             </style>
@@ -170,12 +187,24 @@ const Home = () => {
                                             <FaTruck style={{marginRight: '8px', color: '#0275d8'}}/>
                                             <span><strong>Dimensions:</strong> {truck.truckType.dimensions}m</span>
                                         </div>
+                                        {/*<div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>*/}
+                                        {/*    <FaTruck style={{marginRight: '8px', color: '#0275d8'}}/>*/}
+                                        {/*    <span><strong>Availability:</strong> {formatAvailability(truck.availability)}</span>*/}
+                                        {/*</div>*/}
+
+                                        <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
+                                            {formatAvailability(truck.availability)}
+                                            <span style={{marginLeft: '8px'}}>
+                                                <strong>Availability:</strong> {truck.availability ? 'Available' : 'Not Available'}
+                                            </span>
+                                        </div>
                                     </Card.Text>
                                 </div>
                                 <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: 'auto'}}>
                                     <Button
                                         className="quote-button"
                                         onClick={() => handleGetQuote(truck.vin)}
+                                        disabled={!truck.availability}
                                     >
                                         Get Quote
                                     </Button>
