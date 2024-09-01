@@ -1,10 +1,19 @@
 import React from 'react';
-import {Link, Outlet, useLocation} from 'react-router-dom';
+import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom';
 import truckGif from '../../../public/truckGif.gif'
 
 const ManagerPortal = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const path = location.pathname;
+
+    const handleSignOut = () => {
+        // Clear authentication data here if needed (e.g., remove tokens or user data from local storage)
+        localStorage.removeItem('authToken');
+
+        // Navigate to home page
+        navigate('/home');
+    };
     return (
         <div className="container-fluid">
             <div className="row">
@@ -49,7 +58,7 @@ const ManagerPortal = () => {
                                     e.currentTarget.style.fontSize = '23px';
                                     e.currentTarget.style.fontWeight = 'normal';
                                     e.currentTarget.style.backgroundColor = 'transparent';
-                                    e.currentTarget.style.color = '#000'; // Default color
+                                    e.currentTarget.style.color = '#0056b3'; // Default color
                                 }}
                             >
                                 <i className="bi bi-truck me-2"></i>
@@ -76,7 +85,7 @@ const ManagerPortal = () => {
                                     e.currentTarget.style.fontSize = '23px';
                                     e.currentTarget.style.fontWeight = 'normal';
                                     e.currentTarget.style.backgroundColor = 'transparent';
-                                    e.currentTarget.style.color = '#000'; // Default color
+                                    e.currentTarget.style.color = '#0056b3'; // Default color
                                 }}>
                                 <i className="bi bi-truck me-2"></i>
                                 Truck Types
@@ -102,7 +111,7 @@ const ManagerPortal = () => {
                                     e.currentTarget.style.fontSize = '23px';
                                     e.currentTarget.style.fontWeight = 'normal';
                                     e.currentTarget.style.backgroundColor = 'transparent';
-                                    e.currentTarget.style.color = '#000'; // Default color
+                                    e.currentTarget.style.color = '#0056b3'; // Default color
                                 }}>
                                 <i className="bi bi-geo-alt me-2"></i>
                                 Branches
@@ -128,7 +137,7 @@ const ManagerPortal = () => {
                                     e.currentTarget.style.fontSize = '23px';
                                     e.currentTarget.style.fontWeight = 'normal';
                                     e.currentTarget.style.backgroundColor = 'transparent';
-                                    e.currentTarget.style.color = '#000'; // Default color
+                                    e.currentTarget.style.color = '#0056b3'; // Default color
                                 }}>
                                 <i className="bi bi-person me-2"></i>
                                 Employees
@@ -154,7 +163,7 @@ const ManagerPortal = () => {
                                     e.currentTarget.style.fontSize = '23px';
                                     e.currentTarget.style.fontWeight = 'normal';
                                     e.currentTarget.style.backgroundColor = 'transparent';
-                                    e.currentTarget.style.color = '#000'; // Default color
+                                    e.currentTarget.style.color = '#0056b3'; // Default color
                                 }}>
                                 <i className="bi bi-file-earmark-text me-2"></i>
                                 Insurances
@@ -180,11 +189,43 @@ const ManagerPortal = () => {
                                     e.currentTarget.style.fontSize = '23px';
                                     e.currentTarget.style.fontWeight = 'normal';
                                     e.currentTarget.style.backgroundColor = 'transparent';
-                                    e.currentTarget.style.color = '#000'; // Default color
+                                    e.currentTarget.style.color = '#0056b3'; // Default color
                                 }}>
                                 <i className="bi bi-telephone me-2"></i>
                                 Manage Contact
                             </Link>
+                        </li>
+                        {/* Sign Out Button */}
+                        <li className="nav-item">
+                            <button
+                                className="nav-link d-flex align-items-center"
+                                style={{
+                                    fontSize: '23px',
+                                    backgroundColor: 'transparent',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    color: '#c9302c',
+                                    transition: 'all 0.3s ease'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.fontSize = '25px';
+                                    e.currentTarget.style.fontWeight = 'bold';
+                                    e.currentTarget.style.backgroundColor = '#f8f9fa';
+                                    e.currentTarget.style.color = '#c9302c';
+                                    e.currentTarget.style.borderRadius = '4px';
+                                    e.currentTarget.style.textDecoration = 'none';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.fontSize = '23px';
+                                    e.currentTarget.style.fontWeight = 'normal';
+                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                    e.currentTarget.style.color = '#c9302c'; // Default color
+                                }}
+                                onClick={handleSignOut}
+                            >
+                                <i className="bi bi-box-arrow-right me-2"></i>
+                                Sign Out
+                            </button>
                         </li>
                     </ul>
                 </nav>

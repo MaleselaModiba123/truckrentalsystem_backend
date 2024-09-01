@@ -152,6 +152,9 @@ const GetQuote = () => {
         setRentalDuration(null);
         setError('');
     };
+    const handleBack = () => {
+        navigate('/home');
+    };
 
     const robotoStyle = {
         fontFamily: "'Roboto', sans-serif",
@@ -362,6 +365,11 @@ const GetQuote = () => {
                                     onMouseOver={(e) => e.currentTarget.style.backgroundColor = buttonHoverStyle.backgroundColor}
                                     onMouseOut={(e) => e.currentTarget.style.backgroundColor = buttonStyle.backgroundColor}>
                                 Rent Truck
+                            </button>
+                            <button type="button" style={cancelButtonStyle} onClick={handleBack}
+                                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#c9302c'}
+                                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = cancelButtonStyle.backgroundColor}>
+                                Back
                             </button>
                         </form>
                     </div>
