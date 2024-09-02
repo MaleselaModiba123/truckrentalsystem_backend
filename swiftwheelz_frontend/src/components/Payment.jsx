@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 const PaymentPage = () => {
     const location = useLocation();
@@ -37,7 +37,9 @@ const PaymentPage = () => {
             navigate('/sign-in');
         }, 2000);
     };
-
+    const handleBack = () => {
+        navigate('/home');
+    };
     return (
         <div className="payment-page-container">
             <h1 className="payment-heading">Payment Page</h1>
@@ -65,18 +67,45 @@ const PaymentPage = () => {
                     Payment Amount:
                     <input
                         type="number"
+                        min="1"
                         value={paymentAmount}
                         onChange={(e) => setPaymentAmount(e.target.value)}
                         className="payment-input"
                     />
                 </label>
-                <button
-                    type="button"
-                    onClick={handlePayment}
-                    className="payment-button"
+                <div style={{display: 'flex', gap: '10px'}}>
+                    <button
+                        type="button"
+                        onClick={handlePayment}
+
+                        style={{
+                            padding: '10px 20px',
+                            fontSize: '16px',
+                            cursor: 'pointer',
+                            backgroundColor: '#004080',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                        }}
                 >
                     Pay Now
                 </button>
+                    <button
+                        type="button"
+                        onClick={handleBack}
+                        style={{
+                            padding: '10px 20px',
+                            fontSize: '16px',
+                            cursor: 'pointer',
+                            backgroundColor: '#f44336', // Red color
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                        }}
+                    >
+                        Cancel
+                    </button>
+                </div>
             </div>
         </div>
     );
