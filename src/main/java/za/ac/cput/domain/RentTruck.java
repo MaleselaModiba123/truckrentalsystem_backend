@@ -21,6 +21,7 @@ public class RentTruck {
     private LocalDate rentDate = LocalDate.now();
     private LocalDate returnDate;
     private double totalCost;
+    @Column(name = "isPaymentMade", columnDefinition = "BOOLEAN")
     private boolean isPaymentMade;
 
     @ManyToOne

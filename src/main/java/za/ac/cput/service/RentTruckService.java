@@ -86,7 +86,7 @@ public class RentTruckService {
                 .setRentDate(rentDate)
                 .setReturnDate(returnDate)
                 .setTotalCost(totalCost)
-                .setPaymentMade(isPaymentMade)
+                .setPaymentMade((true))
                 .setCustomerID(customerRepository.findById(customerId).orElseThrow(() -> new IllegalArgumentException("Invalid customer ID")))
                 .setVin(truckRepository.findById(truckVin).orElseThrow(() -> new IllegalArgumentException("Invalid truck VIN")))
                 .setPickUp(branchRepository.findById(pickUpBranchId).orElseThrow(() -> new IllegalArgumentException("Invalid pickup branch ID")))

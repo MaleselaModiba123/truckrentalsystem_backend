@@ -187,7 +187,7 @@ const InsuranceList = () => {
                                 <Typography color="textSecondary">Policy Number: {insurance.policyNumber}</Typography>
                                 <Typography color="textSecondary">Effective Date: {insurance.effectiveDate}</Typography>
                                 <Typography color="textSecondary">Coverage: {insurance.coverage}</Typography>
-                                <Typography color="textSecondary">Premium: {insurance.premium}</Typography>
+                                <Typography color="textSecondary">Premium: R{insurance.premium}</Typography>
                             </CardContent>
                             <StyledCardActions>
                                 <CustomEditButton onClick={() => handleEdit(insurance)}> <EditIcon
