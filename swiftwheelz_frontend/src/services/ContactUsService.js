@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const REST_API_BASE_URL = "http://localhost:8080/truckrentalsystem/contactUs";
+const REST_API_BASE_URL = "http://localhost:8080/swiftwheelzdb/contactUs";
 
 // Function to fetch contact us data
 export const getContactUsId = async () => {

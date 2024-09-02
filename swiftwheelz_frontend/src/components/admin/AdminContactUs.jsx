@@ -5,7 +5,7 @@ import { getAllBranches } from "../../services/BranchService.js";
 import {faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import SearchIcon from '@mui/icons-material/Search';
-function ManagerContactUs() {
+function AdminContactUs() {
     const [contactUs, setContactUs] = useState([]);
     const [filteredContactUs, setFilteredContactUs] = useState([]);
     const [branches, setBranches] = useState([]);
@@ -267,4 +267,4 @@ function ManagerContactUs() {
     );
 }
 
-export default ManagerContactUs;
+export default AdminContactUs;

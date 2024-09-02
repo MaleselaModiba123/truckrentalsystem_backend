@@ -2,7 +2,7 @@ import React from 'react';
 import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom';
 import truckGif from '../../../public/truckGif.gif'
 
-const ManagerPortal = () => {
+const AdminPortal = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const path = location.pathname;
@@ -23,8 +23,8 @@ const ManagerPortal = () => {
                     <ul className="nav flex-column">
                         <li className="nav-item">
                             <span
-                                className={`nav-link d-flex align-items-center active ${path === '/manager-portal/dashboard/' ? 'active' : ''}`}
-                                // to="/manager-portal/dashboard"
+                                className={`nav-link d-flex align-items-center active ${path === '/admin-portal/dashboard/' ? 'active' : ''}`}
+                                // to="/admin-portal/dashboard"
                                 style={{
                                     fontSize: '25px',
                                     fontWeight: 'bold',
@@ -40,8 +40,8 @@ const ManagerPortal = () => {
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/dashboard/trucks') ? 'active' : ''}`}
-                                to="/manager-portal/dashboard/trucks"
+                                className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/trucks') ? 'active' : ''}`}
+                                to="/admin-portal/dashboard/trucks"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'
@@ -67,8 +67,8 @@ const ManagerPortal = () => {
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/dashboard/truck-types') ? 'active' : ''}`}
-                                to="/manager-portal/dashboard/truck-types"
+                                className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/truck-types') ? 'active' : ''}`}
+                                to="/admin-portal/dashboard/truck-types"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'
@@ -93,8 +93,8 @@ const ManagerPortal = () => {
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/dashboard/branchez') ? 'active' : ''}`}
-                                to="/manager-portal/dashboard/branchez"
+                                className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/branchez') ? 'active' : ''}`}
+                                to="/admin-portal/dashboard/branchez"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'
@@ -119,8 +119,8 @@ const ManagerPortal = () => {
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/dashboard/employees') ? 'active' : ''}`}
-                                to="/manager-portal/dashboard/employees"
+                                className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/employees') ? 'active' : ''}`}
+                                to="/admin-portal/dashboard/employees"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'
@@ -145,8 +145,8 @@ const ManagerPortal = () => {
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center${path.startsWith('/manager-portal/dashboard/insurances') ? 'active' : ''}`}
-                                to="/manager-portal/dashboard/insurances"
+                                className={`nav-link d-flex align-items-center${path.startsWith('/admin-portal/dashboard/insurances') ? 'active' : ''}`}
+                                to="/admin-portal/dashboard/insurances"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'
@@ -171,8 +171,8 @@ const ManagerPortal = () => {
                         </li>
                         <li className="nav-item">
                             <Link
-                                className={`nav-link d-flex align-items-center ${path.startsWith('/manager-portal/dashboard/manage-contact-us') ? 'active' : ''}`}
-                                to="/manager-portal/dashboard/manage-contact-us"
+                                className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/manage-contact-us') ? 'active' : ''}`}
+                                to="/admin-portal/dashboard/manage-contact-us"
                                 style={{
                                     fontSize: '23px',
                                     transition: 'all 0.3s ease'
@@ -234,7 +234,7 @@ const ManagerPortal = () => {
                 <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <div className="container mt-4">
                         {/* Conditionally render the welcome message */}
-                        {path === '/manager-portal/dashboard' && (
+                        {path === '/admin-portal/dashboard' && (
                             <>
                                 <h2 style={{
                                     color: '#007bff', // Blue color
@@ -242,7 +242,7 @@ const ManagerPortal = () => {
                                     fontWeight: 'bold',
                                     animation: 'fadeIn 2s ease-in-out'
                                 }}>
-                                    Welcome to the Manager Portal
+                                    Welcome to the Admin Portal
                                 </h2>
                                 <p style={{
                                     fontSize: '1.25rem',
@@ -275,4 +275,4 @@ const ManagerPortal = () => {
     );
 };
 
-export default ManagerPortal;
+export default AdminPortal;

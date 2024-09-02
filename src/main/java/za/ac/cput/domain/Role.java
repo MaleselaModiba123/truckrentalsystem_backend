@@ -1,7 +1,7 @@
 package za.ac.cput.domain;
 
 public enum Role {
-    MANAGER("Manager"),
+    ADMIN("ADMIN"),
     RENTAL_AGENT("Rental Agent"),
     MECHANIC("Mechanic"),
     HELP_DESK("Help Desk");

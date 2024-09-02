@@ -39,7 +39,7 @@ function Employees() {
             country: ''
         },
         password: '',
-        role: 'MANAGER'
+        role: 'ADMIN'
     });
     const [editing, setEditing] = useState(false);
     const [currentEmployeeNumber, setCurrentEmployeeNumber] = useState('');
@@ -125,7 +125,7 @@ function Employees() {
                 country: ''
             },
             password: '',
-            role: 'MANAGER'
+            role: 'ADMIN'
         });
         setCurrentEmployeeNumber('');
     };
@@ -314,7 +314,7 @@ function Employees() {
                                 value={newEmployee.role}
                                 onChange={handleChange}
                             >
-                                <MenuItem value="MANAGER">MANAGER</MenuItem>
+                                <MenuItem value="ADMIN">ADMIN</MenuItem>
                                 <MenuItem value="MECHANIC">MECHANIC</MenuItem>
                             </Select>
                         </FormControl>

@@ -26,7 +26,7 @@ class EmployeeServiceTest {
         Contact contact = new Contact("asimbonge@gmail.com", "0712345678");
         Address address = AddressFactory.createAddress("123 Hanover Road", "Cape Town", "Western Cape", "8001", "South Africa");
         String password = "password123";
-        Role role = Role.MANAGER;
+        Role role = Role.ADMIN;
 
         try {
             Employee createdEmployee = employeeService.createEmployee(name, contact, address, password, role);
@@ -46,7 +46,7 @@ class EmployeeServiceTest {
         Contact contact = new Contact("asimbonge.read@example.com", "0712345679");
         Address address = AddressFactory.createAddress("456 Elm Street", "Cape Town", "Western Cape", "8002", "South Africa");
         String password = "password123";
-        Role role = Role.MANAGER;
+        Role role = Role.ADMIN;
         Employee createdEmployee = null;
         String employeeNumber = null;
 
@@ -76,7 +76,7 @@ class EmployeeServiceTest {
         Contact contact = new Contact("asimbonge.update@example.com", "0712345680");
         Address address = AddressFactory.createAddress("789 Oak Street", "Cape Town", "Western Cape", "8003", "South Africa");
         String password = "password123";
-        Role role = Role.MANAGER;
+        Role role = Role.ADMIN;
         Employee createdEmployee = null;
         String employeeNumber = null;
 
@@ -93,7 +93,7 @@ class EmployeeServiceTest {
         Contact updatedContact = new Contact("john.smith@example.com", "0612345679");
         Address updatedAddress = AddressFactory.createAddress("321 Pine Street", "Cape Town", "Western Cape", "8004", "South Africa");
         String updatedPassword = "updatedpassword";
-        Role updatedRole = Role.MANAGER;
+        Role updatedRole = Role.ADMIN;
 
         try {
             Employee updatedEmployee = employeeService.updateEmployee(employeeNumber, updatedName, updatedContact, updatedAddress, updatedPassword, updatedRole);
@@ -117,7 +117,7 @@ class EmployeeServiceTest {
         Contact contact = new Contact("unique.email@example.com", "0712345678");
         Address address = AddressFactory.createAddress("123 Hanover Road", "Cape Town", "Western Cape", "8001", "South Africa");
         String password = "password123";
-        Role role = Role.MANAGER;
+        Role role = Role.ADMIN;
 
         try {
             employeeService.createEmployee(name, contact, address, password, role);
@@ -149,7 +149,7 @@ class EmployeeServiceTest {
         Contact contact = new Contact("asimbonge.cell@example.com", "0712345678");
         Address address = AddressFactory.createAddress("123 Hanover Road", "Cape Town", "Western Cape", "8001", "South Africa");
         String password = "password123";
-        Role role = Role.MANAGER;
+        Role role = Role.ADMIN;
 
         try {
             employeeService.createEmployee(name, contact, address, password, role);
@@ -181,7 +181,7 @@ class EmployeeServiceTest {
         Contact contact = new Contact("asimbonge.address@example.com", "0712345678");
         Address address = AddressFactory.createAddress("123 Unique Street", "Cape Town", "Western Cape", "8001", "South Africa");
         String password = "password123";
-        Role role = Role.MANAGER;
+        Role role = Role.ADMIN;
 
         try {
             employeeService.createEmployee(name, contact, address, password, role);

@@ -29,7 +29,7 @@ public class AuthService {
         if (employeeOpt.isPresent()) {
             Employee employee = employeeOpt.get();
             Role role = employee.getRole();
-            if (role == Role.MANAGER || role == Role.HELP_DESK) {
+            if (role == Role.ADMIN || role == Role.HELP_DESK) {
                 return new UserDetails(employee.getContact().getEmail(), employee.getPassword(), role.name());
             } else {
                 throw new AuthenticationException("Access denied for role: " + role.name());

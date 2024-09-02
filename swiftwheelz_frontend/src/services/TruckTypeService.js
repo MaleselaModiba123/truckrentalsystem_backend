@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const REST_API_BASE_URL = "http://localhost:8080/truckrentalsystem/truckType";
+const REST_API_BASE_URL = "http://localhost:8080/swiftwheelzdb/truckType";
 
 // Fetch all truck types
 export const getAllTruckTypes = () => axios.get(`${REST_API_BASE_URL}/getAll`);

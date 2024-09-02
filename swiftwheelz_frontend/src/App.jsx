@@ -13,16 +13,16 @@ import SignInComponent from './components/customer/SignInComponent';
 import ConfirmDetails from './components/ConfirmDetails';
 import Payment from './components/Payment';
 import './App.css';
-import ManagerPortal from './components/manager/ManagerPortal';
-import Trucks from './components/manager/Trucks';
-import Branchez from './components/manager/Branchez';
-import Employees from './components/manager/Employees';
-import TruckTypes from './components/manager/TruckTypes';
-import ImagesComponent from './components/manager/ImagesComponent';
-import InsuranceList from './components/manager/InsuranceList';
+import AdminPortal from './components/admin/AdminPortal';
+import Trucks from './components/admin/Trucks';
+import Branchez from './components/admin/Branchez';
+import Employees from './components/admin/Employees';
+import TruckTypes from './components/admin/TruckTypes';
+import ImagesComponent from './components/admin/ImagesComponent';
+import InsuranceList from './components/admin/InsuranceList';
 import PendingPayments from './components/customer/PendingPayments';
 import CustomerLayout from './components/customer/CustomerLayout';
-import ManagerContactUs from './components/manager/ManagerContactUs';
+import AdminContactUs from './components/admin/AdminContactUs';
 import RentalsList from './components/customer/RentalsList.jsx';
 
 
@@ -53,8 +53,8 @@ function App() {
                         <Route path="/about-us" element={<AboutUs />} />
                         <Route path="/branches" element={<Branches />} />
 
-                        {/*---------MANAGER FUNCTIONALITY STARTS-----------*/}
-                        <Route path="/manager-portal/dashboard/*" element={<ManagerPortal />}>
+                        {/*---------ADMIN FUNCTIONALITY STARTS-----------*/}
+                        <Route path="/admin-portal/dashboard/*" element={<AdminPortal />}>
                             <Route index element={<Navigate to="trucks" />} />
                             <Route path="trucks" element={<Trucks />} />
                             <Route path="branchez" element={<Branchez />} />
@@ -62,9 +62,9 @@ function App() {
                             <Route path="truck-types" element={<TruckTypes />} />
                             <Route path="images" element={<ImagesComponent />} />
                             <Route path="insurances" element={<InsuranceList />} />
-                            <Route path="manage-contact-us" element={<ManagerContactUs />} />
+                            <Route path="manage-contact-us" element={<AdminContactUs />} />
                         </Route>
-                        {/*---------MANAGER FUNCTIONALITY ENDS-----------*/}
+                        {/*---------ADMIN FUNCTIONALITY ENDS-----------*/}
 
                         <Route path="/contact-us" element={<ContactUs />} />
                         <Route path="/sign-in" element={<SignInComponent />} />

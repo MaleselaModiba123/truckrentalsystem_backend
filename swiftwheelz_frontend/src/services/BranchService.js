@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const REST_API_BASE_URL = "http://localhost:8080/truckrentalsystem/branch";
+const REST_API_BASE_URL = "http://localhost:8080/swiftwheelzdb/branch";
 export const getAllBranches=() =>{ 
     console.info(`Fetching all branches`); 
     console.info(`Attempting to fetch the truck usign the link: ${REST_API_BASE_URL}/getAll`); 

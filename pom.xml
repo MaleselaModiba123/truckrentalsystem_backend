@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>za.ac.cput</groupId>
-    <artifactId>truckrentalsystem_backend</artifactId>
+    <artifactId>swiftwheelz_backend</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

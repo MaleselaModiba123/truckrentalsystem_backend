@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const REST_API_BASE_URL = "http://localhost:8080/truckrentalsystem/customer";
+const REST_API_BASE_URL = "http://localhost:8080/swiftwheelzdb/customer";
 
 export const getCustomerById = (customerID) =>
     axios.get(`${REST_API_BASE_URL}/read/${customerID}`);
