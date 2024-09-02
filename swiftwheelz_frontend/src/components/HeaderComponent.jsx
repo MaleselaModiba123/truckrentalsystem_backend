@@ -141,12 +141,12 @@ const HeaderComponent = () => {
                                             <a
                                                 key={branch.branchId}
                                                 className="dropdown-item"
-                                                href={`#${branch.branchName.toLowerCase().replace(' ', '-')}`}
+                                                href={`#${branch.branchName.toLowerCase().replace(' ')}`}
                                                 style={styles.dropdownItem}
                                                 onMouseOver={(e) => Object.assign(e.target.style, styles.dropdownItemHover)}
                                                 onMouseOut={(e) => Object.assign(e.target.style, styles.dropdownItem)}
                                             >
-                                                {branch.branchName} - {branch.address}
+                                                {branch.branchName}
                                             </a>
                                         ))
                                     )}
