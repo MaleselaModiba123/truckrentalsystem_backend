@@ -6,13 +6,6 @@ import java.util.List;
 import java.util.Objects;
 
 
-/**
- * Contact.java
- * This is the domain class
- * @author Zukhanye Mene (219404275)
- * Date: 28 August 2024
- */
-
 @Entity
 public class ContactUs {
     @Id

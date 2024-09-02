@@ -3,13 +3,6 @@ package za.ac.cput.domain;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-
-/**
- * Employee.java
- * This is the Domain program
- * @author Asimbonge Mbende (221090754)
- * Date: 03 May 2024
- */
 @Entity
 @Table(name = "employees")
 public class Employee {

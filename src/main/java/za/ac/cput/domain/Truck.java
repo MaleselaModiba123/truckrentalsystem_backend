@@ -6,12 +6,6 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Ayanda Phumzile Khoza (218057172)
- * Date: 23 May 2024
- * */
-
-
 @Entity
 public class Truck {
     @Id

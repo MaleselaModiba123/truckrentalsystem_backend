@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Objects;
-/*  Completed By Malesela Modiba
-    23 May 2024
- */
 @Entity
 public class ServiceRecord {
     @Id

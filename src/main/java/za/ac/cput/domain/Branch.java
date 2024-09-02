@@ -5,13 +5,6 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Branch.java
- * This is the domain class
- * @author Thandolwethu Zamasiba Khoza (221797289)
- * Date: 16 May 2024
- */
-
 @Entity
 public class Branch {
     @Id

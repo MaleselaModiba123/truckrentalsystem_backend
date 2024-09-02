@@ -5,14 +5,6 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-
-/**
- * Insurance.java
- * This is the Domain program
- *
- * @aurthor Asimbonge Mbende (221090754)
- * Date: 22 May 2024
- */
 @Entity
 public class Insurance {
     @Id

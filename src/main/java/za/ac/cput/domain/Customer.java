@@ -5,12 +5,6 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
-/**
- * Customer.java
- * This is the Customer Domain program
- * @aurthor Zukhanye Anele Mene (219404275)
- * Date: 03 May 2024
- */
 @Entity
 public class Customer {
     @Id
