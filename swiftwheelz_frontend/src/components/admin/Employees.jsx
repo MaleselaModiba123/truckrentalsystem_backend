@@ -193,11 +193,14 @@ function Employees() {
             <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
                 <Box
                     bgcolor="background.paper"
-                    p={3}
+                    p={2}
                     mx="auto"
-                    my={5}
-                    maxWidth={600}
+                    my={4}
+                    maxWidth={500}
                     borderRadius={2}
+                    height="90vh"
+                    // maxHeight="90vh" // Optional: limits the maximum height of the modal
+                    overflow="auto"
                 >
                     <Typography variant="h5" component="h1" gutterBottom>
                         {editing ? 'Edit' : 'Add'} Employee
@@ -315,7 +318,7 @@ function Employees() {
                                 onChange={handleChange}
                             >
                                 <MenuItem value="ADMIN">ADMIN</MenuItem>
-                                <MenuItem value="MECHANIC">MECHANIC</MenuItem>
+                                <MenuItem value="HELP DESK">HELP DESK</MenuItem>
                             </Select>
                         </FormControl>
                         <Button
