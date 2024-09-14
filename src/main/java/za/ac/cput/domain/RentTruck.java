@@ -15,7 +15,8 @@ public class RentTruck {
     private double totalCost;
     @Column(name = "isPaymentMade", columnDefinition = "BOOLEAN")
     private boolean isPaymentMade;
-
+    @Column(name = "isReturned", columnDefinition = "BOOLEAN")
+    private boolean isReturned = false;
     @ManyToOne
     @JoinColumn(name ="customerID", nullable = false)
     private Customer customerID;
@@ -41,6 +42,7 @@ public class RentTruck {
         this.returnDate = builder.returnDate;
         this.totalCost = builder.totalCost;
         this.isPaymentMade = builder.isPaymentMade;
+        this.isReturned = builder.isReturned;
         this.customerID = builder.customerID;
         this.vin = builder.vin;
         this.pickUp = builder.pickUp;
@@ -66,6 +68,9 @@ public class RentTruck {
     public boolean isPaymentMade() {
         return isPaymentMade;
     }
+    public boolean isReturned() {
+        return isReturned;
+    }
 
     public Customer getCustomerID() {
         return customerID;
@@ -88,12 +93,12 @@ public class RentTruck {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RentTruck rentTruck = (RentTruck) o;
-        return rentId == rentTruck.rentId && Double.compare(totalCost, rentTruck.totalCost) == 0 && isPaymentMade == rentTruck.isPaymentMade && Objects.equals(rentDate, rentTruck.rentDate) && Objects.equals(returnDate, rentTruck.returnDate) && Objects.equals(customerID, rentTruck.customerID) && Objects.equals(vin, rentTruck.vin)  && Objects.equals(pickUp, rentTruck.pickUp) && Objects.equals(dropOff, rentTruck.dropOff);
+        return rentId == rentTruck.rentId && Double.compare(totalCost, rentTruck.totalCost) == 0 && isPaymentMade == rentTruck.isPaymentMade && isReturned == rentTruck.isReturned && Objects.equals(rentDate, rentTruck.rentDate) && Objects.equals(returnDate, rentTruck.returnDate) && Objects.equals(customerID, rentTruck.customerID) && Objects.equals(vin, rentTruck.vin)  && Objects.equals(pickUp, rentTruck.pickUp) && Objects.equals(dropOff, rentTruck.dropOff);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rentId, rentDate, returnDate, totalCost, isPaymentMade, customerID, vin, pickUp, dropOff);
+        return Objects.hash(rentId, rentDate, returnDate, totalCost, isPaymentMade,isReturned, customerID, vin, pickUp, dropOff);
     }
 
     @Override
@@ -104,6 +109,7 @@ public class RentTruck {
                 ", returnDate=" + returnDate +
                 ", totalCost=" + totalCost +
                 ", isPaymentMade=" + isPaymentMade +
+                ", isReturned=" + isReturned +
                 ", customerID=" + customerID.getCustomerID() +
                 ", vin=" + vin.getVin() +
                 ", pickUp=" + pickUp.getBranchId() +
@@ -117,6 +123,7 @@ public class RentTruck {
         private LocalDate returnDate;
         private double totalCost;
         private boolean isPaymentMade;
+        private boolean isReturned;
         private Customer customerID;
         private Truck vin;
         private Branch pickUp;
@@ -150,7 +157,10 @@ public class RentTruck {
             isPaymentMade = paymentMade;
             return this;
         }
-
+        public Builder setReturned(boolean returned) {
+            this.isReturned = returned;
+            return this;
+        }
         public Builder setCustomerID(Customer customerID) {
             this.customerID = customerID;
             return this;
@@ -171,16 +181,17 @@ public class RentTruck {
             return this;
         }
 
-        public Builder copy(RentTruck builder) {
-            this.rentId = builder.rentId;
-            this.rentDate = builder.rentDate;
-            this.returnDate = builder.returnDate;
-            this.totalCost = builder.totalCost;
-            this.isPaymentMade = builder.isPaymentMade;
-            this.customerID = builder.customerID;
-            this.vin = builder.vin;
-            this.pickUp = builder.pickUp;
-            this.dropOff = builder.dropOff;
+        public Builder copy(RentTruck rentTruck) {
+            this.rentId = rentTruck.rentId;
+            this.rentDate = rentTruck.rentDate;
+            this.returnDate = rentTruck.returnDate;
+            this.totalCost = rentTruck.totalCost;
+            this.isPaymentMade = rentTruck.isPaymentMade;
+            this.isReturned = rentTruck.isReturned;
+            this.customerID = rentTruck.customerID;
+            this.vin = rentTruck.vin;
+            this.pickUp = rentTruck.pickUp;
+            this.dropOff = rentTruck.dropOff;
             return this;
         }
 

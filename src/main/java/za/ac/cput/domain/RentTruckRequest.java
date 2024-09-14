@@ -7,6 +7,7 @@ public class RentTruckRequest {
     private LocalDate returnDate;
     private double totalCost;
     private boolean isPaymentMade;
+    private boolean isReturned;
     private int customerID;
     private String vin;
     private int pickUpBranchId;
@@ -44,6 +45,15 @@ public class RentTruckRequest {
     public void setPaymentMade(boolean paymentMade) {
         isPaymentMade = paymentMade;
     }
+
+    public boolean isReturned() {
+        return isReturned;
+    }
+
+    public void setReturned(boolean returned) {
+        this.isReturned = returned;
+    }
+
 
     public int getCustomerID() {
         return customerID;

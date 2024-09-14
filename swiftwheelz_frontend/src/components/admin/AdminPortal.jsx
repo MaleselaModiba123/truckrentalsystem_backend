@@ -197,6 +197,33 @@ const AdminPortal = () => {
                                 Manage Contact
                             </Link>
                         </li>
+
+                        <li className="nav-item">
+                            <Link
+                                className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/rented-trucks') ? 'active' : ''}`}
+                                to="/admin-portal/dashboard/rented-trucks"
+                                style={{
+                                    fontSize: '23px',
+                                    transition: 'all 0.3s ease'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.fontSize = '25px';
+                                    e.currentTarget.style.fontWeight = 'bold';
+                                    e.currentTarget.style.backgroundColor = '#f8f9fa';
+                                    e.currentTarget.style.color = '#0056b3';
+                                    e.currentTarget.style.borderRadius = '4px';
+                                    e.currentTarget.style.textDecoration = 'none';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.fontSize = '23px';
+                                    e.currentTarget.style.fontWeight = 'normal';
+                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                    e.currentTarget.style.color = '#0056b3'; // Default color
+                                }}>
+                                <i className="bi bi-truck me-2"></i>
+                                Rentals
+                            </Link>
+                        </li>
                         {/* Sign Out Button */}
                         <li className="nav-item">
                             <button

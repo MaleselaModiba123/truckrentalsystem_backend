@@ -14,7 +14,7 @@ import java.time.LocalDate;
 
 public class RentTruckFactory {
     public static RentTruck buildRentTruck(int rentId, LocalDate rentDate, LocalDate returnDate,
-                                           double totalCost, boolean isPaymentMade,
+                                           double totalCost, boolean isPaymentMade,boolean isReturned,
                                            Customer customer,
                                            Truck truck,
                                            Branch pickUp, Branch dropOff) {
@@ -35,6 +35,7 @@ public class RentTruckFactory {
                 .setReturnDate(returnDate)
                 .setTotalCost(totalCost)
                 .setPaymentMade(isPaymentMade)
+                .setReturned(isReturned)
                 .setCustomerID(customer)
                 .setVin(truck)
                 .setPickUp(pickUp)

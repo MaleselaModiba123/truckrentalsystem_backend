@@ -35,6 +35,7 @@ public class RentTruckController {
                     request.getReturnDate(),
                     request.getTotalCost(),
                     request.isPaymentMade(),
+                    request.isReturned(),
                     request.getCustomerID(),
                     request.getVin(),
                     request.getPickUpBranchId(),
@@ -46,17 +47,17 @@ public class RentTruckController {
         }
     }
 
-    @GetMapping("/read/{rentTruckID}")
-    public ResponseEntity<RentTruck> read(@PathVariable int rentTruckID) {
-        Optional<RentTruck> rentTruck = rentTruckService.getRentTruckById(rentTruckID);
+    @GetMapping("/read/{rentId}")
+    public ResponseEntity<RentTruck> read(@PathVariable int rentId) {
+        Optional<RentTruck> rentTruck = rentTruckService.getRentTruckById(rentId);
         return rentTruck.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 
-    @DeleteMapping("/delete/{rentTruckID}")
-    public ResponseEntity<Void> delete(@PathVariable int rentTruckID) {
+    @DeleteMapping("/delete/{rentId}")
+    public ResponseEntity<Void> delete(@PathVariable int rentId) {
         try {
-            rentTruckService.deleteRentTruck(rentTruckID);
+            rentTruckService.deleteRentTruck(rentId);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -64,15 +65,16 @@ public class RentTruckController {
     }
 
 
-    @PutMapping("/update/{rentTruckID}")
-    public ResponseEntity<RentTruck> update(@PathVariable int rentTruckID, @RequestBody RentTruckRequest request) {
+    @PutMapping("/update/{rentId}")
+    public ResponseEntity<RentTruck> update(@PathVariable int rentId, @RequestBody RentTruckRequest request) {
         try {
             RentTruck updatedRentTruck = rentTruckService.updateRentTruck(
-                    rentTruckID,
+                    rentId,
                     request.getRentDate(),
                     request.getReturnDate(),
                     request.getTotalCost(),
                     request.isPaymentMade(),
+                    request.isReturned(),
                     request.getCustomerID(),
                     request.getVin(),
                     request.getPickUpBranchId(),
@@ -94,6 +96,21 @@ public class RentTruckController {
     public ResponseEntity<List<RentTruck>> getRentalsByCustomerId(@PathVariable int customerID) {
         List<RentTruck> rentals = rentTruckService.getRentalsByCustomerId(customerID);
         return ResponseEntity.ok(rentals);
+    }
+    @PatchMapping("/markAsReturned/{rentId}")
+    public ResponseEntity<?> markAsReturned(@PathVariable int rentId) {
+        try {
+            RentTruck updatedRentTruck = rentTruckService.markAsReturned(rentId);
+            return ResponseEntity.ok(updatedRentTruck);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error marking rent truck as returned: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/not returned")
+    public ResponseEntity<List<RentTruck>> getAvailableTrucks() {
+        List<RentTruck> availableTrucks = rentTruckService.getAvailableRentTrucks();
+        return ResponseEntity.ok(availableTrucks);
     }
 
 }

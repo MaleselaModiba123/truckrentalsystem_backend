@@ -22,6 +22,7 @@ class RentTruckFactoryTest {
         LocalDate returnDate = LocalDate.of(2023, 5, 7);
         double totalCost = 500.0;
         boolean isPaymentMade = true;
+        boolean isReturned = false;
         TruckType truckType= TruckTypeFactory.buildTruckType("Enclosed", "Large box truck suitable for moving large items.With its higher payload capacity, you can transport a wide range of items, including large packages, bulky equipment, furniture, appliances, and more", "7.4m * 2.48m*2.7m",
                 6.3, "Manual", 5.89, "Diesel");
         Insurance insurance=InsuranceFactory.buildInsurance("Truck Insurance", "Out Surance"
@@ -35,7 +36,7 @@ class RentTruckFactoryTest {
 
 
         RentTruck rentTruck = RentTruckFactory.buildRentTruck(
-                rentId, rentDate, returnDate, totalCost, isPaymentMade,
+                rentId, rentDate, returnDate, totalCost, isPaymentMade,isReturned,
                 customer, truck, pickUp, dropOff);
 
         Assertions.assertNotNull(rentTruck);
@@ -44,6 +45,7 @@ class RentTruckFactoryTest {
         Assertions.assertEquals(returnDate, rentTruck.getReturnDate());
         Assertions.assertEquals(totalCost, rentTruck.getTotalCost());
         Assertions.assertTrue(rentTruck.isPaymentMade());
+        Assertions.assertTrue(rentTruck.isReturned());
         Assertions.assertEquals(customer, rentTruck.getCustomerID());
         Assertions.assertEquals(truck, rentTruck.getVin());
         Assertions.assertEquals(pickUp, rentTruck.getPickUp());

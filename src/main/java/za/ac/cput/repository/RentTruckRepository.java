@@ -17,4 +17,6 @@ import java.util.List;
 @Repository
 public interface RentTruckRepository extends JpaRepository<RentTruck, Integer> {
     List<RentTruck> findByCustomerID(Customer customerID);
+
+    List<RentTruck> findByIsReturnedFalse();
 }

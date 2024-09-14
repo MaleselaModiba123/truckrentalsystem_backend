@@ -24,6 +24,7 @@ import PendingPayments from './components/customer/PendingPayments';
 import CustomerLayout from './components/customer/CustomerLayout';
 import AdminContactUs from './components/admin/AdminContactUs';
 import RentalsList from './components/customer/RentalsList.jsx';
+import RentedTrucksList from "./components/admin/RentedTrucksList.jsx";
 
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
                             <Route path="images" element={<ImagesComponent />} />
                             <Route path="insurances" element={<InsuranceList />} />
                             <Route path="manage-contact-us" element={<AdminContactUs />} />
+                            <Route path="rented-trucks" element={<RentedTrucksList />} />
                         </Route>
                         {/*---------ADMIN FUNCTIONALITY ENDS-----------*/}
 

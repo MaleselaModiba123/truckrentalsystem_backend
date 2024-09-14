@@ -52,7 +52,7 @@ public class RentTruckControllerTest {
         rentTruck = RentTruckFactory.buildRentTruck(1432,
                 LocalDate.of(2024, 5, 14),
                 LocalDate.of(2024, 5, 19),
-                8006.0, true, customer1,
+                8006.0, true,false, customer1,
                 truck1,
                 branch1, branch1);
     }

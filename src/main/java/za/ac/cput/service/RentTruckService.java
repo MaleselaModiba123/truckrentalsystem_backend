@@ -1,5 +1,6 @@
 package za.ac.cput.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Branch;
@@ -34,7 +35,7 @@ public class RentTruckService {
         this.branchRepository = branchRepository;
     }
 
-    public RentTruck createRentTruck(LocalDate rentDate, LocalDate returnDate, double totalCost, boolean isPaymentMade,
+    public RentTruck createRentTruck(LocalDate rentDate, LocalDate returnDate, double totalCost, boolean isPaymentMade,boolean isReturned,
                                      int customerId, String truckVin, int pickUpBranchId, int dropOffBranchId) {
         Optional<Customer> customer = customerRepository.findById(customerId);
         Optional<Truck> truck = truckRepository.findById(truckVin);
@@ -50,6 +51,7 @@ public class RentTruckService {
                 .setReturnDate(returnDate)
                 .setTotalCost(totalCost)
                 .setPaymentMade(isPaymentMade)
+                .setReturned(isReturned)
                 .setCustomerID(customer.get())
                 .setVin(truck.get())
                 .setPickUp(pickUpBranch.get())
@@ -73,7 +75,7 @@ public class RentTruckService {
     }
 
     // Update Operation
-    public RentTruck updateRentTruck(int id, LocalDate rentDate, LocalDate returnDate, double totalCost, boolean isPaymentMade,
+    public RentTruck updateRentTruck(int id, LocalDate rentDate, LocalDate returnDate, double totalCost, boolean isPaymentMade,boolean isReturned,
                                      int customerId, String truckVin, int pickUpBranchId, int dropOffBranchId) {
         Optional<RentTruck> existingRentTruck = rentTruckRepository.findById(id);
         if (existingRentTruck.isEmpty()) {
@@ -86,7 +88,8 @@ public class RentTruckService {
                 .setRentDate(rentDate)
                 .setReturnDate(returnDate)
                 .setTotalCost(totalCost)
-                .setPaymentMade((true))
+                .setPaymentMade((isPaymentMade))
+                .setReturned(isReturned)
                 .setCustomerID(customerRepository.findById(customerId).orElseThrow(() -> new IllegalArgumentException("Invalid customer ID")))
                 .setVin(truckRepository.findById(truckVin).orElseThrow(() -> new IllegalArgumentException("Invalid truck VIN")))
                 .setPickUp(branchRepository.findById(pickUpBranchId).orElseThrow(() -> new IllegalArgumentException("Invalid pickup branch ID")))
@@ -112,4 +115,19 @@ public class RentTruckService {
         // Use the customer entity to fetch rentals
         return rentTruckRepository.findByCustomerID(customer);
     }
+    public RentTruck markAsReturned(int rentId) {
+        RentTruck rentTruck = rentTruckRepository.findById(rentId)
+                .orElseThrow(() -> new EntityNotFoundException("Rent truck not found"));
+
+        RentTruck updatedRentTruck = new RentTruck.Builder()
+                .copy(rentTruck)
+                .setReturned(true)
+                .build();
+        return rentTruckRepository.save(updatedRentTruck);
+    }
+
+    public List<RentTruck> getAvailableRentTrucks() {
+        return rentTruckRepository.findByIsReturnedFalse();
+    }
+
 }
