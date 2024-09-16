@@ -92,4 +92,8 @@ public class TruckController {
                         .body(imageBytes))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @GetMapping("/available")
+    public ResponseEntity<List<Truck>> getAvailableTrucks() {
+        return ResponseEntity.ok(truckService.getAvailableTrucks());
+    }
 }

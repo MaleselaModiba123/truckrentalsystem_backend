@@ -16,7 +16,7 @@ import {
     FaWeight
 } from 'react-icons/fa';
 
-const GetQuote = () => {
+const GetQuote = x => {
     const { truckId } = useParams();
     const navigate = useNavigate();
 
@@ -101,12 +101,12 @@ const GetQuote = () => {
             return;
         }
 
-        if (returnDateOnly <= rentalDateOnly) {
+        if (returnDateOnly < rentalDateOnly) {
             setError('Return date must be after the rental date.');
             return;
         }
 
-        const calculatedDuration = Math.ceil((returnDateOnly - rentalDateOnly) / (1000 * 60 * 60 * 24));
+        const calculatedDuration = Math.ceil(Math.ceil((returnDateOnly - rentalDateOnly) / (1000 * 60 * 60 * 24)),1);
         setRentalDuration(calculatedDuration);
 
         const calculatedPrice = calculatePrice(calculatedDuration, formData.pickUp, formData.dropOff, truck);
@@ -120,7 +120,7 @@ const GetQuote = () => {
         if (!truck) return 0;
         const basePrice = truck.truckType.typeName === 'Flatbed' ? 100 : 500;
         const distanceFactor = pickupLocation !== dropoffLocation ? 1.5 : 1.0;
-        return basePrice * duration * distanceFactor;
+        return basePrice * Math.max(duration, 1)  * distanceFactor;
     };
 
     const handleContinueToRent = () => {

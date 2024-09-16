@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {getAllTrucks, getTruckImageUrl} from "../services/TruckService.js";
+import {getAllTrucks, getAvailableTrucks, getTruckImageUrl} from "../services/TruckService.js";
 import {Button, Card, Col, Container, Form, InputGroup, Row} from 'react-bootstrap';
 import {
+    FaArrowDown, FaArrowUp,
     FaCheckCircle,
     FaCogs,
     FaGasPump,
@@ -18,10 +19,12 @@ const Home = () => {
     const [trucks, setTrucks] = useState([]);
     const [filteredTrucks, setFilteredTrucks] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [showAvailable, setShowAvailable] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
-        getAllTrucks()
+        const fetchTrucks = showAvailable ? getAvailableTrucks : getAllTrucks;
+        fetchTrucks()
             .then(response => {
                 const trucksWithImages = response.data.map(truck => ({
                     ...truck,
@@ -33,7 +36,7 @@ const Home = () => {
             .catch(error => {
                 console.error('There was an error fetching the trucks!', error);
             });
-    }, []);
+    }, [showAvailable]);
 
     const handleSearchChange = (event) => {
         const query = event.target.value.toLowerCase();
@@ -51,7 +54,6 @@ const Home = () => {
     const handleGetQuote = (truckId) => {
         navigate(`/get-quote/${truckId}`);
     };
-    // const formatAvailability = (availability) => availability ? 'Available' : 'Not Available';
     const formatAvailability = (availability) => (
         availability ? <FaCheckCircle style={{ color: 'green' }} /> : <FaTimesCircle style={{ color: 'red' }} />
     );
@@ -104,6 +106,23 @@ const Home = () => {
                         border-color: #b0bec5;
                         cursor: not-allowed;
                     }
+                                        .button-show-all {
+                        background-color: #28a745;
+                        color: white;
+                    }
+
+                    .button-show-all:hover {
+                        background-color: #218838;
+                    }
+
+                    .button-show-available {
+                        background-color: #007bff;
+                        color: white;
+                    }
+
+                    .button-show-available:hover {
+                        background-color: #0056b3;
+                    }
                 `}
             </style>
             <div className="header-section text-center mb-4">
@@ -131,6 +150,16 @@ const Home = () => {
                         <FaSearch />
                     </Button>
                 </InputGroup>
+            </Form.Group>
+            <Form.Group className="mb-4">
+                <Button
+                    variant="outline-primary"
+                    className={showAvailable ? 'button-show-all' : 'button-show-available'}
+                    onClick={() => setShowAvailable(prev => !prev)}
+                >
+                    {showAvailable ? 'Show All Trucks' : 'Show Available Trucks'}
+                    {showAvailable ? <FaArrowDown style={{ marginLeft: '8px' }} /> : <FaArrowUp style={{ marginLeft: '8px' }} />}
+                </Button>
             </Form.Group>
             <Row className="g-4">
                 {filteredTrucks.map((truck) => (

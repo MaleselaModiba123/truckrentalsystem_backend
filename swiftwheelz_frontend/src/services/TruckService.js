@@ -32,3 +32,5 @@ export const deleteTruck = (vin) => axios.delete(`${REST_API_BASE_URL}/truck/${v
 // export const getAllInsurances = () => axios.get(`${REST_API_BASE_URL}/insurance/getAll`);
 // // Fetch truck image by VIN
 export const getTruckImageUrl = (vin) => `${REST_API_BASE_URL}/truck/image/${vin}`;
+// Fetch available trucks
+export const getAvailableTrucks = () => axios.get(`${REST_API_BASE_URL}/truck/available`);

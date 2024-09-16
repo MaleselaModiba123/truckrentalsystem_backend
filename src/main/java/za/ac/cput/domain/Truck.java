@@ -167,6 +167,7 @@ public class Truck {
             this.truckImage=truck.truckImage;
             this.availability = truck.availability;
             this.licensePlate = truck.licensePlate;
+            this.currentMileage = truck.currentMileage;
             this.truckType = truck.truckType;
             this.insurance = truck.insurance;
             return this;

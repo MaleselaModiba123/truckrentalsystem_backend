@@ -109,8 +109,12 @@ public class TruckService {
 
         return saveOrUpdateTruck(truck);
     }
+    public List<Truck> getAvailableTrucks() {
+        return truckRepository.findAvailableTrucks();
+    }
 
     public Optional<byte[]> getTruckImageByVin(String vin) {
         return getTruckByVin(vin).map(Truck::getTruckImage);
     }
+
 }
