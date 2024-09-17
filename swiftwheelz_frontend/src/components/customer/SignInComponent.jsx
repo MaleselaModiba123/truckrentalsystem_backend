@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { authenticateUser } from "../../services/AuthenticationService.js";
-import { signIn as customerSignIn } from "../../services/CustomerProfileService.js";
-import { AuthContext } from "../AuthContext.jsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import React, {useContext, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {authenticateUser} from "../../services/AuthenticationService.js";
+import {signIn as customerSignIn} from "../../services/CustomerProfileService.js";
+import {AuthContext} from "../AuthContext.jsx";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
 
 const SignInComponent = () => {
     const [email, setEmail] = useState('');
@@ -23,6 +23,8 @@ const SignInComponent = () => {
             if (employeeResponse.status === 200 && employeeResponse.data) {
                 const { role } = employeeResponse.data;
                 setAuth(employeeResponse.data);
+                // Save email to local storage or context
+                localStorage.setItem('adminEmail', email);
 
                 if (role === "ADMIN") {
                     navigate("/admin-portal/dashboard");

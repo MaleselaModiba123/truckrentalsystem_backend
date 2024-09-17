@@ -57,4 +57,10 @@ public class EmployeeService implements IEmployeeService {
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
     }
+
+
+    public Employee getEmployeeByEmail(String email) {
+        return employeeRepository.findByContactEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+    }
 }

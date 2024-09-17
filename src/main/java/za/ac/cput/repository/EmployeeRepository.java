@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
     @Query("SELECT e FROM Employee e WHERE e.contact.email = :email AND e.password = :password")
     Optional<Employee> findByEmailAndPassword(@Param("email") String email, @Param("password") String password);
+
+    Optional<Employee> findByContactEmail(String email);
 }

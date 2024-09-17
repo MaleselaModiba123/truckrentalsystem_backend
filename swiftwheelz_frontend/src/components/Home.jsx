@@ -3,17 +3,18 @@ import {useNavigate} from 'react-router-dom';
 import {getAllTrucks, getAvailableTrucks, getTruckImageUrl} from "../services/TruckService.js";
 import {Button, Card, Col, Container, Form, InputGroup, Row} from 'react-bootstrap';
 import {
-    FaArrowDown, FaArrowUp,
+    FaArrowDown,
+    FaArrowUp,
     FaCheckCircle,
     FaCogs,
     FaGasPump,
     FaOilCan,
+    FaSearch,
     FaTachometerAlt,
     FaTimesCircle,
     FaTruck,
     FaWeight
 } from 'react-icons/fa';
-import { FaSearch } from 'react-icons/fa';
 
 const Home = () => {
     const [trucks, setTrucks] = useState([]);
@@ -58,7 +59,7 @@ const Home = () => {
         availability ? <FaCheckCircle style={{ color: 'green' }} /> : <FaTimesCircle style={{ color: 'red' }} />
     );
     return (
-        <Container className="rent-trucks mt-4">
+        <Container className="rent-trucks  d-flex flex-column min-vh-100 p-4">
             <style>
                 {`
                     @keyframes fadeIn {
@@ -123,6 +124,17 @@ const Home = () => {
                     .button-show-available:hover {
                         background-color: #0056b3;
                     }
+                    .truck-list {
+                        flex: 1;
+                        overflow-y: auto;
+                    }
+
+                    .fixed-top {
+                        position: sticky;
+                        top: 0;
+                        background: white;
+                        z-index: 1;
+                    }
                 `}
             </style>
             <div className="header-section text-center mb-4">
@@ -131,118 +143,156 @@ const Home = () => {
             </div>
             <div className="intro-section text-center mb-4">
                 <h2>Our trucks for hire across South Africa</h2>
-                <p>SwiftWheelz Truck Rentals provides an extensive range of quality trucks for hire across South Africa. Browse our
+                <p>SwiftWheelz Truck Rentals provides an extensive range of quality trucks for hire across South Africa.
+                    Browse our
                     selection of truck rentals.</p>
             </div>
-            <Form.Group className="mb-4">
-                <InputGroup>
-                    <Form.Control
-                        type="text"
-                        placeholder="Search by model"
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        style={{ borderRadius: '4px', borderColor: '#007bff' }}
-                    />
+            <div className="fixed-top mb-4">
+                <Form.Group className="mb-2">
+                    <InputGroup>
+                        <Form.Control
+                            type="text"
+                            placeholder="Search by model"
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            style={{borderRadius: '4px', borderColor: '#007bff'}}
+                        />
+                        <Button
+                            variant="outline-secondary"
+                            className="search-button"
+                        >
+                            <FaSearch/>
+                        </Button>
+                    </InputGroup>
+                </Form.Group>
+                <Form.Group className="mb-4">
                     <Button
-                        variant="outline-secondary"
-                        className="search-button"
+                        variant="outline-primary"
+                        className={showAvailable ? 'button-show-all' : 'button-show-available'}
+                        onClick={() => setShowAvailable(prev => !prev)}
                     >
-                        <FaSearch />
+                        {showAvailable ? 'Show All Trucks' : 'Show Available Trucks'}
+                        {showAvailable ? <FaArrowDown style={{marginLeft: '8px'}}/> :
+                            <FaArrowUp style={{marginLeft: '8px'}}/>}
                     </Button>
-                </InputGroup>
-            </Form.Group>
-            <Form.Group className="mb-4">
-                <Button
-                    variant="outline-primary"
-                    className={showAvailable ? 'button-show-all' : 'button-show-available'}
-                    onClick={() => setShowAvailable(prev => !prev)}
-                >
-                    {showAvailable ? 'Show All Trucks' : 'Show Available Trucks'}
-                    {showAvailable ? <FaArrowDown style={{ marginLeft: '8px' }} /> : <FaArrowUp style={{ marginLeft: '8px' }} />}
-                </Button>
-            </Form.Group>
-            <Row className="g-4">
-                {filteredTrucks.map((truck) => (
-                    <Col md={4} lg={4} key={truck.vin}>
-                        <Card style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            height: '100%',
-                            border: '1px solid #ddd',
-                            padding: '24px',
-                            borderRadius: '12px',
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-                        }}>
-                            <Card.Img variant="top" src={truck.image} alt={`Truck ${truck.model}`}
-                                      style={{marginBottom: '16px'}}/>
-                            <Card.Body style={{
+                </Form.Group>
+            </div>
+            <div className="truck-list">
+                <Row className="g-4">
+                    {filteredTrucks.map((truck) => (
+                        <Col md={4} lg={4} key={truck.vin}>
+                            <Card style={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                justifyContent: 'space-between',
-                                flexGrow: 1
+                                height: '100%',
+                                border: '1px solid #ddd',
+                                padding: '24px',
+                                borderRadius: '12px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
                             }}>
-                                <div>
-                                    <Card.Title style={{
-                                        fontSize: '1.5rem',
-                                        fontWeight: 'bold',
-                                        color: '#007bff'
-                                    }}>{truck.model}</Card.Title>
-                                    <Card.Text style={{marginBottom: '16px', lineHeight: '1.5'}}>
-                                        <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaTruck style={{marginRight: '8px', color: '#0275d8'}}/>
-                                            <span><strong>Type:</strong> {truck.truckType.typeName}</span>
-                                        </div>
-                                        <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaWeight style={{marginRight: '8px', color: '#0275d8'}}/>
-                                            <span><strong>Capacity:</strong> {truck.truckType.capacity} tons</span>
-                                        </div>
-                                        <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaCogs style={{marginRight: '8px', color: '#0275d8'}}/>
-                                            <span><strong>Transmission:</strong> {truck.truckType.transmission}</span>
-                                        </div>
-                                        <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaTachometerAlt style={{marginRight: '8px', color: '#0275d8'}}/>
-                                            <span><strong>Fuel Consumption:</strong> {truck.truckType.fuelConsumption} km/l</span>
-                                        </div>
-                                        <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaGasPump style={{marginRight: '8px', color: '#0275d8'}}/>
-                                            <span><strong>Fuel Type:</strong> {truck.truckType.fuelType}</span>
-                                        </div>
-                                        <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaOilCan style={{marginRight: '8px', color: '#0275d8'}}/>
-                                            <span><strong>Mileage:</strong> {truck.currentMileage} km</span>
-                                        </div>
-                                        <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            <FaTruck style={{marginRight: '8px', color: '#0275d8'}}/>
-                                            <span><strong>Dimensions:</strong> {truck.truckType.dimensions}m</span>
-                                        </div>
-                                        {/*<div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>*/}
-                                        {/*    <FaTruck style={{marginRight: '8px', color: '#0275d8'}}/>*/}
-                                        {/*    <span><strong>Availability:</strong> {formatAvailability(truck.availability)}</span>*/}
-                                        {/*</div>*/}
+                                <Card.Img variant="top" src={truck.image} alt={`Truck ${truck.model}`}
+                                          style={{marginBottom: '16px'}}/>
+                                <Card.Body style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    flexGrow: 1
+                                }}>
+                                    <div>
+                                        <Card.Title style={{
+                                            fontSize: '1.5rem',
+                                            fontWeight: 'bold',
+                                            color: '#007bff'
+                                        }}>{truck.model}</Card.Title>
+                                        <Card.Text style={{marginBottom: '16px', lineHeight: '1.5'}}>
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                marginBottom: '8px'
+                                            }}>
+                                                <FaTruck style={{marginRight: '8px', color: '#0275d8'}}/>
+                                                <span><strong>Type:</strong> {truck.truckType.typeName}</span>
+                                            </div>
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                marginBottom: '8px'
+                                            }}>
+                                                <FaWeight style={{marginRight: '8px', color: '#0275d8'}}/>
+                                                <span><strong>Capacity:</strong> {truck.truckType.capacity} tons</span>
+                                            </div>
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                marginBottom: '8px'
+                                            }}>
+                                                <FaCogs style={{marginRight: '8px', color: '#0275d8'}}/>
+                                                <span><strong>Transmission:</strong> {truck.truckType.transmission}</span>
+                                            </div>
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                marginBottom: '8px'
+                                            }}>
+                                                <FaTachometerAlt style={{marginRight: '8px', color: '#0275d8'}}/>
+                                                <span><strong>Fuel Consumption:</strong> {truck.truckType.fuelConsumption} km/l</span>
+                                            </div>
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                marginBottom: '8px'
+                                            }}>
+                                                <FaGasPump style={{marginRight: '8px', color: '#0275d8'}}/>
+                                                <span><strong>Fuel Type:</strong> {truck.truckType.fuelType}</span>
+                                            </div>
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                marginBottom: '8px'
+                                            }}>
+                                                <FaOilCan style={{marginRight: '8px', color: '#0275d8'}}/>
+                                                <span><strong>Mileage:</strong> {truck.currentMileage} km</span>
+                                            </div>
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                marginBottom: '8px'
+                                            }}>
+                                                <FaTruck style={{marginRight: '8px', color: '#0275d8'}}/>
+                                                <span><strong>Dimensions:</strong> {truck.truckType.dimensions}m</span>
+                                            </div>
+                                            {/*<div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>*/}
+                                            {/*    <FaTruck style={{marginRight: '8px', color: '#0275d8'}}/>*/}
+                                            {/*    <span><strong>Availability:</strong> {formatAvailability(truck.availability)}</span>*/}
+                                            {/*</div>*/}
 
-                                        <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px'}}>
-                                            {formatAvailability(truck.availability)}
-                                            <span style={{marginLeft: '8px'}}>
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                marginBottom: '8px'
+                                            }}>
+                                                {formatAvailability(truck.availability)}
+                                                <span style={{marginLeft: '8px'}}>
                                                 <strong>Availability:</strong> {truck.availability ? 'Available' : 'Not Available'}
                                             </span>
-                                        </div>
-                                    </Card.Text>
-                                </div>
-                                <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: 'auto'}}>
-                                    <Button
-                                        className="quote-button"
-                                        onClick={() => handleGetQuote(truck.vin)}
-                                        disabled={!truck.availability}
-                                    >
-                                        Get Quote
-                                    </Button>
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                ))}
-            </Row>
+                                            </div>
+                                        </Card.Text>
+                                    </div>
+                                    <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: 'auto'}}>
+                                        <Button
+                                            className="quote-button"
+                                            onClick={() => handleGetQuote(truck.vin)}
+                                            disabled={!truck.availability}
+                                        >
+                                            Get Quote
+                                        </Button>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    ))}
+                </Row>
+            </div>
         </Container>
     );
 };

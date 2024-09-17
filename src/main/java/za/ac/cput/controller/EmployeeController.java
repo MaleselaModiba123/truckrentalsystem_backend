@@ -82,4 +82,14 @@ public class EmployeeController {
         List<Employee> employees = employeeService.getAllEmployees();
         return ResponseEntity.ok(employees);
     }
+
+    @GetMapping("/getByEmail/{email}")
+    public ResponseEntity<Employee> getEmployeeByEmail(@PathVariable String email) {
+        try {
+            Employee employee = employeeService.getEmployeeByEmail(email);
+            return ResponseEntity.ok(employee);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
