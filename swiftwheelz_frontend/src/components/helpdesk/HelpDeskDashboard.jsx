@@ -51,12 +51,18 @@ const HelpDeskDashboard = () => {
                                     <h4 className="mb-1" style={{ fontSize: '16px', fontWeight: 'bold', color: '#007bff' }}>
                                         {helpDeskUser.name.firstName} {helpDeskUser.name.lastName}
                                     </h4>
+                                     <p className="text-muted mb-1" style={{fontSize: '13px'}}>
+                                     <strong>Employee Number:</strong> {helpDeskUser.employeeNumber}
+                                     </p>
+                                     <p className="text-muted mb-1" style={{fontSize: '13px'}}>
+                                     <strong>Role:</strong> {helpDeskUser.role}
+                                      </p>
                                     <p className="text-muted mb-1" style={{ fontSize: '13px' }}>
                                         <strong>Email:</strong> {helpDeskUser.contact.email}
                                     </p>
                                 </div>
                             ) : (
-                                <div>No user details available</div>
+                                <div>No helpdesk user details available</div>
                             )}
                         </div>
 
@@ -65,7 +71,10 @@ const HelpDeskDashboard = () => {
                             <li className="nav-item">
                                 <span
                                     className={`nav-link d-flex align-items-center ${path === '/help-desk/dashboard' ? 'active' : ''}`}
-                                    style={{ fontSize: '23px', fontWeight: 'bold', color: '#007bff' }}
+                                    style={{ fontSize: '23px', fontWeight: 'bold', color: '#007bff' , transition: 'all 0.3s ease'}}
+
+                                    onMouseEnter={(e) => e.currentTarget.style.fontSize = '25px'}
+                                    onMouseLeave={(e) => e.currentTarget.style.fontSize = '23px'}
                                 >
                                     <i className="bi bi-house-door me-2"></i>
                                     Dashboard

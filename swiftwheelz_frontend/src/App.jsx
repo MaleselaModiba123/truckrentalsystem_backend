@@ -68,6 +68,15 @@ function App() {
                         </Route>
                         {/*---------ADMIN FUNCTIONALITY ENDS-----------*/}
 
+                        {/*---------HELPDESK FUNCTIONALITY STARTS-----------*/}
+                            < Route path="/help-desk/dashboard/*" element={< HelpDeskDashboard />}>
+                             <Route index element={<Navigate to="complaints" />} />
+                             <Route path="complaints" element={<Complaints />} />
+                             <Route path="customerAccidentReports" element={<CustomerAccidentReports />} />
+                             <Route path="discounts" element={<Discounts />} />
+                             </Route>
+                         {/*---------HELPDESK FUNCTIONALITY ENDS-----------*/}
+
                         <Route path="/contact-us" element={<ContactUs />} />
                         <Route path="/sign-in" element={<SignInComponent />} />
                         <Route path="/sign-up" element={<SignUpComponent />} />
