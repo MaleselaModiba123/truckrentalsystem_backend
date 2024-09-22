@@ -49,11 +49,11 @@ const HelpDeskDashboard = () => {
                             {helpDeskUser ? (
                                 <div>
                                     <h4 className="mb-1" style={{ fontSize: '16px', fontWeight: 'bold', color: '#007bff' }}>
-                                        {helpDeskUser.name.firstName} {helpDeskUser.name.lastName}
+                                        Welcome, {helpDeskUser.name.firstName} {helpDeskUser.name.lastName}
                                     </h4>
-                                     <p className="text-muted mb-1" style={{fontSize: '13px'}}>
-                                     <strong>Employee Number:</strong> {helpDeskUser.employeeNumber}
-                                     </p>
+                                     {/*<p className="text-muted mb-1" style={{fontSize: '13px'}}>*/}
+                                     {/*<strong>Employee Number:</strong> {helpDeskUser.employeeNumber}*/}
+                                     {/*</p>*/}
                                      <p className="text-muted mb-1" style={{fontSize: '13px'}}>
                                      <strong>Role:</strong> {helpDeskUser.role}
                                       </p>
@@ -129,30 +129,30 @@ const HelpDeskDashboard = () => {
                                     Complaints
                                 </Link>
                             </li>
-                            <li className="nav-item">
-                                <Link
-                                    className={`nav-link d-flex align-items-center ${path.startsWith('/help-desk/dashboard/discounts') ? 'active' : ''}`}
-                                    to="/help-desk/dashboard/discounts"
-                                    style={{ fontSize: '20px', transition: 'all 0.3s ease' }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.fontSize = '21px';
-                                        e.currentTarget.style.fontWeight = 'bold';
-                                        e.currentTarget.style.backgroundColor = '#f8f9fa';
-                                        e.currentTarget.style.color = '#0056b3';
-                                        e.currentTarget.style.borderRadius = '4px';
-                                        e.currentTarget.style.textDecoration = 'none';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.fontSize = '20px';
-                                        e.currentTarget.style.fontWeight = 'normal';
-                                        e.currentTarget.style.backgroundColor = 'transparent';
-                                        e.currentTarget.style.color = '#0056b3';
-                                    }}
-                                >
-                                    <i className="bi bi-percent me-2"></i>
-                                    Discounts
-                                </Link>
-                            </li>
+                            {/*<li className="nav-item">*/}
+                            {/*    <Link*/}
+                            {/*        className={`nav-link d-flex align-items-center ${path.startsWith('/help-desk/dashboard/discounts') ? 'active' : ''}`}*/}
+                            {/*        to="/help-desk/dashboard/discounts"*/}
+                            {/*        style={{ fontSize: '20px', transition: 'all 0.3s ease' }}*/}
+                            {/*        onMouseEnter={(e) => {*/}
+                            {/*            e.currentTarget.style.fontSize = '21px';*/}
+                            {/*            e.currentTarget.style.fontWeight = 'bold';*/}
+                            {/*            e.currentTarget.style.backgroundColor = '#f8f9fa';*/}
+                            {/*            e.currentTarget.style.color = '#0056b3';*/}
+                            {/*            e.currentTarget.style.borderRadius = '4px';*/}
+                            {/*            e.currentTarget.style.textDecoration = 'none';*/}
+                            {/*        }}*/}
+                            {/*        onMouseLeave={(e) => {*/}
+                            {/*            e.currentTarget.style.fontSize = '20px';*/}
+                            {/*            e.currentTarget.style.fontWeight = 'normal';*/}
+                            {/*            e.currentTarget.style.backgroundColor = 'transparent';*/}
+                            {/*            e.currentTarget.style.color = '#0056b3';*/}
+                            {/*        }}*/}
+                            {/*    >*/}
+                            {/*        <i className="bi bi-percent me-2"></i>*/}
+                            {/*        Discounts*/}
+                            {/*    </Link>*/}
+                            {/*</li>*/}
 
                               {/* Divider */}
                                <li className="nav-item">

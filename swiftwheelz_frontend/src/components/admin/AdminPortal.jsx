@@ -50,11 +50,11 @@ const AdminPortal = () => {
                                 <div>
                                     <h4 className="mb-1"
                                         style={{fontSize: '16px', fontWeight: 'bold', color: '#007bff'}}>
-                                        {admin.name.firstName} {admin.name.lastName}
+                                        Welcome, {admin.name.firstName} {admin.name.lastName}
                                     </h4>
-                                    <p className="text-muted mb-1" style={{fontSize: '13px'}}>
-                                        <strong>Employee Number:</strong> {admin.employeeNumber}
-                                    </p>
+                                    {/*<p className="text-muted mb-1" style={{fontSize: '13px'}}>*/}
+                                    {/*    <strong>Employee Number:</strong> {admin.employeeNumber}*/}
+                                    {/*</p>*/}
                                     <p className="text-muted mb-1" style={{fontSize: '13px'}}>
                                         <strong>Role:</strong> {admin.role}
                                     </p>
