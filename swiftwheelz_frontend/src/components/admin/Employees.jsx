@@ -318,7 +318,7 @@ function Employees() {
                                 onChange={handleChange}
                             >
                                 <MenuItem value="ADMIN">ADMIN</MenuItem>
-                                <MenuItem value="HELP DESK">HELP DESK</MenuItem>
+                                <MenuItem value="HELP_DESK">HELP DESK</MenuItem>
                             </Select>
                         </FormControl>
                         <Button

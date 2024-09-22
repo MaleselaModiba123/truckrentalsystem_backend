@@ -25,6 +25,8 @@ import CustomerLayout from './components/customer/CustomerLayout';
 import AdminContactUs from './components/admin/AdminContactUs';
 import RentalsList from './components/customer/RentalsList.jsx';
 import RentedTrucksList from "./components/admin/RentedTrucksList.jsx";
+import HelpDeskDashboard from "./components/helpdesk/HelpDeskDashboard.jsx";
+import Complaints from "./components/helpdesk/Complaints.jsx";
 
 
 function App() {
@@ -72,8 +74,8 @@ function App() {
                             < Route path="/help-desk/dashboard/*" element={< HelpDeskDashboard />}>
                              <Route index element={<Navigate to="complaints" />} />
                              <Route path="complaints" element={<Complaints />} />
-                             <Route path="customerAccidentReports" element={<CustomerAccidentReports />} />
-                             <Route path="discounts" element={<Discounts />} />
+                             {/*<Route path="customerAccidentReports" element={<CustomerAccidentReports />} />*/}
+                             {/*<Route path="discounts" element={<Discounts />} />*/}
                              </Route>
                          {/*---------HELPDESK FUNCTIONALITY ENDS-----------*/}
 

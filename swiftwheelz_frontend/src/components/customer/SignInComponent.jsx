@@ -29,7 +29,7 @@ const SignInComponent = () => {
                 if (role === "ADMIN") {
                     navigate("/admin-portal/dashboard");
                 } else if (role === "HELP_DESK") {
-                    navigate("/help-desk-portal");
+                    navigate("/help-desk/dashboard");
                 } else {
                     setError('Unknown employee role');
                 }

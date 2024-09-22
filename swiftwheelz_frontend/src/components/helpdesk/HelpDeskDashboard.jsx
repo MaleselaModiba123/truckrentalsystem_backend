@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { getHelpDeskDetails } from "../../services/EmployeesService.js";
+import { getAdminDetails } from "../../services/EmployeesService.js";
 
 const HelpDeskDashboard = () => {
     const location = useLocation();
@@ -11,10 +11,10 @@ const HelpDeskDashboard = () => {
 
     useEffect(() => {
         const fetchHelpDeskUser = async () => {
-            const email = localStorage.getItem('helpDeskEmail');
+            const email = localStorage.getItem('adminEmail');
             if (email) {
                 try {
-                    const response = await getHelpDeskDetails(email);
+                    const response = await getAdminDetails(email);
                     setHelpDeskUser(response.data);
                 } catch (error) {
                     console.error('Error fetching help desk user details:', error);
