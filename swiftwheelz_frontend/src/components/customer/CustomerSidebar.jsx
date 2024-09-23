@@ -53,16 +53,16 @@ const CustomerSidebar = () => {
                         Pending Payments
                     </Link>
                 </li>
-                {/*<li className="nav-item mb-2">*/}
-                {/*    <Link*/}
-                {/*        to="/customer/rentals"*/}
-                {/*        className="nav-link d-flex align-items-center"*/}
-                {/*        style={{width: '100%'}}*/}
-                {/*    >*/}
-                {/*        <FontAwesomeIcon icon={faMoneyBillWave} style={{marginRight: '10px'}}/>*/}
-                {/*        Rentals*/}
-                {/*    </Link>*/}
-                {/*</li>*/}
+                <li className="nav-item mb-2">
+                   <Link
+                        to="/customer/rentals-list"
+                        className="nav-link d-flex align-items-center"
+                        style={{width: '100%'}}
+                    >
+                        <FontAwesomeIcon icon={faMoneyBillWave} style={{marginRight: '10px'}}/>
+                        Rentals
+                    </Link>
+                </li>
                 <li className="nav-item mt-auto">
                     <button
                         className="btn btn-danger d-flex align-items-center"

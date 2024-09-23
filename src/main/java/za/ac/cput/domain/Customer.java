@@ -26,7 +26,7 @@ public class Customer {
 //    @JoinColumn(name = "rentalAgentEmpNo", updatable = false)
 //    private RentalAgent rentalAgent;
 
-    protected Customer() {
+    public Customer() {
     }
 
     public Customer(Builder builder) {

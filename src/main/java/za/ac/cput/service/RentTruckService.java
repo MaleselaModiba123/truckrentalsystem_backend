@@ -140,12 +140,15 @@ public class RentTruckService {
                 .build();
         truckRepository.save(updatedTruck);
     }
-
+    @Transactional
     public List<RentTruck> getRentalsByCustomerId(int customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+
+        // Fetching rentals associated with the customer
         return rentTruckRepository.findByCustomerID(customer);
     }
+
 
     @Transactional
     public RentTruck markAsReturned(int rentId) {
@@ -173,6 +176,13 @@ public class RentTruckService {
 
         return savedRentTruck;
     }
+    /*public List<RentTruck> getPaidRentalsByCustomerId(int customerId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+
+        return rentTruckRepository.findByCustomerIDAndIsPaymentMadeTrue(customer);
+    }*/
+
 
     public List<RentTruck> getAvailableRentTrucks() {
         return rentTruckRepository.findByIsReturnedFalse();
