@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getReportsByCustomerId, createAccidentReport, updateAccidentReport, deleteAccidentReportById } from "../../services/AccidentReportService.js"; // Import your service
+import { getReportsByCustomerId, createAccidentReport, updateAccidentReport, deleteAccidentReportById } from "../../services/AccidentReportService.js";
 
 const ReportAccident = ({ customerId }) => {
     const [reports, setReports] = useState([]);
