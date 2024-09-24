@@ -19,9 +19,12 @@ public class Customer {
     private String license;
     @Column(unique = true)
     private String cellNo;
+    private String role = "CUSTOMER";
+    private int rentalCount = 0;
     @OneToMany(mappedBy = "rentId",cascade = CascadeType.ALL)
     private List<RentTruck> rentedTruck;
-
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<AccidentReport> accidentReports;
 //    @ManyToOne
 //    @JoinColumn(name = "rentalAgentEmpNo", updatable = false)
 //    private RentalAgent rentalAgent;
@@ -37,6 +40,9 @@ public class Customer {
         this.password=builder.password;
         this.license = builder.license;
         this.cellNo = builder.cellNo;
+        this.rentalCount = builder.rentalCount;
+        this.role = builder.role;
+        this.accidentReports = builder.accidentReports;
         //this.rentedTruck=builder.rentedTruck;
 //        this.rentalAgent=builder.rentalAgent;
     }
@@ -73,7 +79,19 @@ public class Customer {
 
         return cellNo;
     }
+    public String getRole() { // Getter for role
+        return role;
+    }
+    public int getRentalCount() {
+        return rentalCount;
+    }
 
+    public void incrementRentalCount() {
+        this.rentalCount++;
+    }
+    public List<AccidentReport> getAccidentReports() {
+        return accidentReports;
+    }
 //    public List<RentTruck> getRentedTruck() {
 //        return rentedTruck;
 //    }
@@ -87,12 +105,13 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return customerID == customer.customerID && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(password, customer.password) && Objects.equals(license, customer.license) && Objects.equals(cellNo, customer.cellNo) && Objects.equals(rentedTruck, customer.rentedTruck);
+        return customerID == customer.customerID && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(password, customer.password) && Objects.equals(license, customer.license) && Objects.equals(cellNo, customer.cellNo) &&
+                rentalCount == customer.rentalCount && Objects.equals(role, customer.role) && Objects.equals(rentedTruck, customer.rentedTruck) && Objects.equals(accidentReports, customer.accidentReports);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerID, firstName, lastName, email, password, license, cellNo, rentedTruck);
+        return Objects.hash(customerID, firstName, lastName, email, password, license, cellNo, rentalCount,role, accidentReports, rentedTruck);
     }
 
     @Override
@@ -105,6 +124,9 @@ public class Customer {
                 ", password='" + password + '\'' +
                 ", license='" + license + '\'' +
                 ", cellNo='" + cellNo + '\'' +
+                ", rentalCount=" + rentalCount +
+                ", role='" + role + '\'' +
+                ", accidentReports=" + accidentReports +
              //   ", rentedTruck='" + rentedTruck + '\'' +
 //                ", rentalAgent='" + rentalAgent.getEmployeeNumber() + '\'' +
                 '}';
@@ -118,7 +140,9 @@ public class Customer {
         private String password;
         private String license;
         private String cellNo;
-
+        private int rentalCount = 0;
+        private String role = "CUSTOMER";
+        private List<AccidentReport> accidentReports;
        // private List<RentTruck> rentedTruck;
 
 //        private RentalAgent rentalAgent;
@@ -156,7 +180,18 @@ public class Customer {
             this.cellNo = cellNo;
             return this;
         }
-
+        public Builder setRentalCount(int rentalCount) {
+            this.rentalCount = rentalCount;
+            return this;
+        }
+        public Builder setRole(String role) { // Optional setter for role
+            this.role = role;
+            return this;
+        }
+        public Builder setAccidentReports(List<AccidentReport> accidentReports) {
+            this.accidentReports = accidentReports;
+            return this;
+        }
 //        public Builder setRentedTruck(List<RentTruck> rentedTruck ) {
 //            this.rentedTruck = rentedTruck;
 //            return this;
@@ -175,7 +210,10 @@ public class Customer {
             this.password = customer.password;
             this.license = customer.license;
             this.cellNo = customer.cellNo;
-          //  this.rentedTruck = customer.rentedTruck;
+            this.rentalCount = customer.rentalCount;
+            this.role = customer.role;
+            this.accidentReports = customer.accidentReports;
+            //  this.rentedTruck = customer.rentedTruck;
 //            this.rentalAgent = customer.rentalAgent;
             return this;
         }

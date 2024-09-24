@@ -207,8 +207,8 @@ const AdminPortal = () => {
                             </li>
                             <li className="nav-item">
                                 <Link
-                                    className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/manage-contact') ? 'active' : ''}`}
-                                    to="/admin-portal/dashboard/manage-contact"
+                                    className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/manage-contact-us') ? 'active' : ''}`}
+                                    to="/admin-portal/dashboard/manage-contact-us"
                                     style={{fontSize: '20px', transition: 'all 0.3s ease'}}
                                     onMouseEnter={(e) => {
                                         e.currentTarget.style.fontSize = '21px';
@@ -231,8 +231,8 @@ const AdminPortal = () => {
                             </li>
                             <li className="nav-item">
                                 <Link
-                                    className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/rentals') ? 'active' : ''}`}
-                                    to="/admin-portal/dashboard/rentals"
+                                    className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/rented-trucks') ? 'active' : ''}`}
+                                    to="/admin-portal/dashboard/rented-trucks"
                                     style={{fontSize: '20px', transition: 'all 0.3s ease'}}
                                     onMouseEnter={(e) => {
                                         e.currentTarget.style.fontSize = '21px';

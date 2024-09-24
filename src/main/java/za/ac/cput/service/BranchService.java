@@ -21,6 +21,7 @@ public class BranchService implements IBranchService{
     BranchService(BranchRepository branchRepository){
         this.branchRepository = branchRepository;
     }
+
     @Override
     public Branch create(Branch branch) {
         return branchRepository.save(branch);
