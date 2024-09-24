@@ -54,14 +54,16 @@ const CustomerSidebar = () => {
                     </Link>
                 </li>
                 <li className="nav-item mb-2">
-                   <Link
+                    <Link
                         to="/customer/rentals-list"
                         className="nav-link d-flex align-items-center"
                         style={{width: '100%'}}
                     >
                         <FontAwesomeIcon icon={faMoneyBillWave} style={{marginRight: '10px'}}/>
                         Rentals
-
+                    </Link>
+                </li>
+                <li className="nav-item mb-2">
                     <Link
                         to="/customer/report-accident"
                         className="nav-link d-flex align-items-center"
