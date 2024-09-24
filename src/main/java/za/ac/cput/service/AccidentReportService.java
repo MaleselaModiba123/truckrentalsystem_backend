@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class AccidentReportService implements IAccidentReportService {
-    private AccidentReportRepository accidentReportRepository;
+    private final AccidentReportRepository accidentReportRepository;
 
     @Autowired
     AccidentReportService(AccidentReportRepository accidentReportRepository){
@@ -51,7 +51,7 @@ public class AccidentReportService implements IAccidentReportService {
         return accidentReportRepository.findAll();
     }
 
-    public List<AccidentReport> getReportsByCustomerId(int customerId) {
-        return accidentReportRepository.findByCustomerId(customerId);
+    public List<AccidentReport> getReportsByCustomerId(int customerID) {
+        return accidentReportRepository.findByCustomer_CustomerID(customerID);
     }
 }

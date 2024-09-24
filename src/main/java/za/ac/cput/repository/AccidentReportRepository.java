@@ -9,5 +9,7 @@ import java.util.List;
 
 @Repository
 public interface AccidentReportRepository extends JpaRepository<AccidentReport, Integer> {
-    List<AccidentReport> findByCustomerId(@Param("customerId") int customerId);
+//    List<AccidentReport> findByCustomerId(@Param("customerId") int customerId);
+    List<AccidentReport> findByCustomer_CustomerID(@Param("customerID") int customerId);
+
 }
