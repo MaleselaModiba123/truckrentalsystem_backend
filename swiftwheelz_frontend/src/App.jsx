@@ -27,6 +27,7 @@ import RentalsList from './components/customer/RentalsList.jsx';
 import RentedTrucksList from "./components/admin/RentedTrucksList.jsx";
 import HelpDeskDashboard from "./components/helpdesk/HelpDeskDashboard.jsx";
 import Complaints from "./components/helpdesk/Complaints.jsx";
+import ReportAccident from "./components/customer/ReportAccident.jsx";
 
 
 function App() {
@@ -88,6 +89,7 @@ function App() {
                         <Route path="/customer/*" element={<CustomerLayout />}>
                             <Route path="profile" element={<CustomerProfile />} />
                             <Route path="pending-payments" element={<PendingPayments />} />
+                            <Route path="report-accident" element={<ReportAccident customerId={1} />} />
                             <Route path="customer/rentals" element={<RentalsList/>}/>
                         </Route>
 
