@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-// Replace with your base API URL
-const API_BASE_URL = 'http://localhost:8080/swiftwheelzdb/accidentReport';
+import { getAllAccidentReport } from "../../services/AccidentReportService.js";
 
 const AdminAccidentReports = () => {
     const [accidentReports, setAccidentReports] = useState([]);
@@ -14,7 +11,7 @@ const AdminAccidentReports = () => {
     useEffect(() => {
         const fetchReports = async () => {
             try {
-                const result = await axios.get(`${API_BASE_URL}/getAll`);
+                const result = await getAllAccidentReport(); // Use the imported function
                 setAccidentReports(result.data);
                 setLoading(false);
             } catch (error) {
@@ -42,7 +39,7 @@ const AdminAccidentReports = () => {
                 adminResponse: responseText[reportId] // Assuming the backend supports this field
             };
 
-            await axios.put(`${API_BASE_URL}/update/${reportId}`, updatedReport);
+            await updateAccidentReport(reportId, updatedReport); // Update to use the imported update function
             alert('Response submitted successfully.');
         } catch (error) {
             alert('Error submitting response.');
@@ -129,12 +126,12 @@ const AdminAccidentReports = () => {
                 {accidentReports.map((report) => (
                     <tr key={report.reportId}>
                         <td style={styles.td}>{report.reportId}</td>
-                        <td style={styles.td}>{report.customer.customerId}</td>
+                        <td style={styles.td}>{report.customer ? report.customer.customerId : 'N/A'}</td>
                         <td style={styles.td}>{report.accidentDate}</td>
                         <td style={styles.td}>{report.description}</td>
                         <td style={styles.td}>{report.location}</td>
                         <td style={styles.td}>{report.damageCost}</td>
-                        <td style={styles.td}>{report.truck.vin}</td>
+                        <td style={styles.td}>{report.truck ? report.truck.vin : 'N/A'}</td>
                         <td style={styles.td}>
                 <textarea
                     style={styles.textarea}

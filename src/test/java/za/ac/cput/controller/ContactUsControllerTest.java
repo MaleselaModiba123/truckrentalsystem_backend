@@ -31,7 +31,7 @@ public class ContactUsControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private final String BASE_URL = "http://localhost:8080/truckrentalsystem/contactUs";
+    private final String BASE_URL = "http://localhost:8080/swiftwheelzdb/contactUs";
     private static ContactUs contactUs;
 
     @BeforeAll
