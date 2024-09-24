@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AccidentReportControllerTest {
     @Autowired
     private static TestRestTemplate restTemplate;
-    private static final String BASE_URL = "http://localhost:8080/truckrentalsystem/accidentReport";
+    private static final String BASE_URL = "http://localhost:8080/swiftwheelzdb/accidentReport";
     private static AccidentReport accidentReport;
     @Autowired
     private static CustomerRepository customerRepository;
