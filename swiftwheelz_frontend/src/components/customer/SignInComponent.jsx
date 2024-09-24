@@ -16,6 +16,7 @@ const SignInComponent = () => {
 
     const handleSignIn = async (e) => {
         e.preventDefault();
+        setError('');
 
         try {
             const employeeResponse = await authenticateUser(email, password);
@@ -30,6 +31,8 @@ const SignInComponent = () => {
                     navigate("/admin-portal/dashboard");
                 } else if (role === "HELP_DESK") {
                     navigate("/help-desk/dashboard");
+                } else if (role === "CUSTOMER") {
+                    await handleCustomerSignIn(email, password);
                 } else {
                     setError('Unknown employee role');
                 }
@@ -38,8 +41,13 @@ const SignInComponent = () => {
         } catch (error) {
             console.error("Employee authentication error:", error);
         }
+        // Handle customer sign-in
+        await handleCustomerSignIn(email, password);
+    };
 
-        try {
+
+    const handleCustomerSignIn = async (email, password) => {
+    try {
             const customerResponse = await customerSignIn(email, password);
 
             if (customerResponse.status === 200 && customerResponse.data) {
