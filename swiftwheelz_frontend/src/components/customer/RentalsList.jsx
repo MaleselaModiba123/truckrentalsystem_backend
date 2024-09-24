@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Alert, Card, Col, Container, Row, Spinner } from 'react-bootstrap';
-import { getRentalsByCustomerId } from "../../services/RentTructService.js";
-import { FaSearch } from 'react-icons/fa';
-import { AuthContext } from "../AuthContext.jsx";
+import React, {useContext, useEffect, useState} from 'react';
+import {Alert, Card, Col, Container, Row, Spinner} from 'react-bootstrap';
+import {getRentalsByCustomerId} from "../../services/RentTructService.js";
+import {FaSearch} from 'react-icons/fa';
+import {AuthContext} from "../AuthContext.jsx";
 
 const RentalsList = () => {
     const [rentals, setRentals] = useState([]);
@@ -58,11 +58,12 @@ const RentalsList = () => {
 
     // Filter rentals based on search query
     const filteredRentals = rentals.filter(rental =>
-        rental.customerId?.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        rental.customerId?.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        rental.customerID.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        rental.customerID.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         rental.vin.model.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const sortedRentals = filteredRentals.sort((a, b) => new Date(b.rentDate) - new Date(a.rentDate));
     return (
         <Container className="my-5">
             <style>
@@ -124,11 +125,11 @@ const RentalsList = () => {
                 />
             </div>
 
-            {filteredRentals.length === 0 ? (
+            {sortedRentals.length === 0 ? (
                 <Alert variant="danger">No trucks match your search criteria.</Alert>
             ) : (
                 <Row>
-                    {filteredRentals.map((rental) => (
+                    {sortedRentals.map((rental) => (
                         <Col md={6} lg={4} className="mb-4" key={rental.rentId}>
                             <Card className="shadow-sm">
                                 <Card.Body>
@@ -141,7 +142,9 @@ const RentalsList = () => {
                                         <strong>Rent Date:</strong> {rental.rentDate ? new Date(rental.rentDate).toLocaleDateString() : 'N/A'} <br />
                                         <strong>Return Date:</strong> {rental.returnDate ? new Date(rental.returnDate).toLocaleDateString() : 'N/A'} <br />
                                         <strong>Total Cost:</strong> R {rental.totalCost ? rental.totalCost.toFixed(2) : '0.00'} <br />
-                                        <strong>Customer Name:</strong> {rental.customerId?.firstName || 'N/A'} {rental.customerId?.lastName || ''} <br />
+                                        <strong>Customer
+                                            Name:</strong> {rental.customerID?.firstName || 'N/A'} {rental.customerID?.lastName || ''}
+                                        <br/>
                                         <strong>Pick-Up Branch:</strong> {rental.pickUp?.branchName || 'N/A'} <br />
                                         <strong>Drop-Off Branch:</strong> {rental.dropOff?.branchName || 'N/A'}
                                     </Card.Text>

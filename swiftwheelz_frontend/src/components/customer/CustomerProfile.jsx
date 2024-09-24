@@ -83,8 +83,22 @@ const CustomerProfile = () => {
 
     return (
         <div style={styles.container}>
-            <CustomerSidebar handleSignOut={handleSignOut} />
+            <CustomerSidebar handleSignOut={handleSignOut}/>
+            <style>
+                {`
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(-20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
 
+                    h1, h2 {
+                        animation: fadeIn 1s ease-out;
+                        color: #007bff;
+                        font-size: 2.5rem;
+                        font-weight: bold;
+                    }
+                `}
+            </style>
             <main style={styles.mainContent}>
                 <div style={styles.contentSection}>
                     <section style={styles.profileSection}>
@@ -94,14 +108,14 @@ const CustomerProfile = () => {
                                 <h4>Customer Details</h4>
                                 <div style={styles.details}>
                                     {[
-                                        { label: "Customer ID", value: customer.customerID },
-                                        { label: "First Name", value: customer.firstName },
-                                        { label: "Last Name", value: customer.lastName },
-                                        { label: "Email", value: customer.email },
-                                        { label: "Password", value: "••••••••" },
-                                        { label: "License", value: customer.license },
-                                        { label: "Cell Number", value: customer.cellNo }
-                                    ].map(({ label, value }) => (
+                                        {label: "Customer ID", value: customer.customerID},
+                                        {label: "First Name", value: customer.firstName},
+                                        {label: "Last Name", value: customer.lastName},
+                                        {label: "Email", value: customer.email},
+                                        {label: "Password", value: "••••••••"},
+                                        {label: "License", value: customer.license},
+                                        {label: "Cell Number", value: customer.cellNo}
+                                    ].map(({label, value}) => (
                                         <div style={styles.detailItem} key={label}>
                                             <span style={styles.detailLabel}>{label}:</span>
                                             <span style={styles.detailValue}>{value}</span>
@@ -133,14 +147,14 @@ const CustomerProfile = () => {
                                     <h4>Pending Payment</h4>
                                     <div style={styles.details}>
                                         {[
-                                            { label: "Model", value: pendingPayment.vin.model },
-                                            { label: "Pickup Location", value: pendingPayment.pickUp.branchName },
-                                            { label: "Drop-off Location", value: pendingPayment.dropOff.branchName },
-                                            { label: "Rental Date", value: pendingPayment.rentDate },
-                                            { label: "Return Date", value: pendingPayment.returnDate },
-                                            { label: "Total Cost", value: `R${pendingPayment.totalCost}` },
-                                            { label: "Payment Amount", value: `R${pendingPayment.paymentAmount}` }
-                                        ].map(({ label, value }) => (
+                                            {label: "Model", value: pendingPayment.vin.model},
+                                            {label: "Pickup Location", value: pendingPayment.pickUp.branchName},
+                                            {label: "Drop-off Location", value: pendingPayment.dropOff.branchName},
+                                            {label: "Rental Date", value: pendingPayment.rentDate},
+                                            {label: "Return Date", value: pendingPayment.returnDate},
+                                            {label: "Total Cost", value: `R${pendingPayment.totalCost}`},
+                                            {label: "Payment Amount", value: `R${pendingPayment.paymentAmount}`}
+                                        ].map(({label, value}) => (
                                             <div style={styles.detailItem} key={label}>
                                                 <span style={styles.detailLabel}>{label}:</span>
                                                 <span style={styles.detailValue}>{value}</span>

@@ -70,7 +70,7 @@ const RentedTrucksList = () => {
         rental.customerID?.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         rental.vin.model.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
+    const sortedRentals = filteredRentals.sort((a, b) => new Date(b.rentDate) - new Date(a.rentDate));
     return (
         <Container className="my-5">
             <style>
@@ -129,13 +129,13 @@ const RentedTrucksList = () => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </div>
-            {filteredRentals.length === 0 ? (
+            {sortedRentals.length === 0 ? (
                 <Alert variant="danger">
                     No trucks match your search criteria.
                 </Alert>
             ) : (
                 <Row>
-                    {filteredRentals.map((rental) => (
+                    {sortedRentals.map((rental) => (
                         <Col md={6} lg={4} className="mb-4" key={rental.rentId}>
                             <Card className="shadow-sm">
                                 <Card.Body>
