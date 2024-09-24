@@ -36,11 +36,11 @@ public class AuthService {
             }
         }
 
-//        // Check Customer
-//        Customer customer = customerRepository.findByEmailAndPassword(email, password);
-//        if (customer != null) {
-//            return new UserDetails(customer.getEmail(), customer.getPassword(), "CUSTOMER");
-//        }
+
+        Customer customer = customerRepository.findByEmailAndPassword(email, password);
+       if (customer != null) {
+           return new UserDetails(customer.getEmail(), customer.getPassword(), "CUSTOMER");
+        }
 
         throw new AuthenticationException("Invalid email or password");
     }

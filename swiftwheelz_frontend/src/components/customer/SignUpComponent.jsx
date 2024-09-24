@@ -338,7 +338,7 @@ const SignUpComponent = () => {
                                     fontSize: '16px'
                                 }}
                             >
-                                Sign Up
+                                Sign Up`
                             </button>
                         </div>
                         <div style={{textAlign: 'center'}}>

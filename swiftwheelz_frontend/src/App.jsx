@@ -89,8 +89,10 @@ function App() {
                         <Route path="/customer/*" element={<CustomerLayout />}>
                             <Route path="profile" element={<CustomerProfile />} />
                             <Route path="pending-payments" element={<PendingPayments />} />
+                            <Route path="rentals-list" element={<RentalsList/>}/>
                             <Route path="report-accident" element={<ReportAccident customerId={1} />} />
-                            <Route path="customer/rentals" element={<RentalsList/>}/>
+                          
+
                         </Route>
 
                         <Route path="/get-quote/:truckId" element={<GetQuote />} />

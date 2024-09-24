@@ -1,33 +1,26 @@
 import React, { useState, useEffect } from 'react';
-
+import {getAllComplaints} from '../../services/ComplaintService.js';
 const Complaints = () => {
     const [complaints, setComplaints] = useState([]);
     const [selectedComplaint, setSelectedComplaint] = useState(null);
-    const [loading, setLoading] = useState(true); // For loading state
-    const [error, setError] = useState(null); // For error state
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Define an async function inside the useEffect to handle the asynchronous operation
         const fetchComplaints = async () => {
             try {
-                const response = await fetch('/api/complaints');
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-                setComplaints(data);
+                const response = await getAllComplaints();
+                setComplaints(response.data);
             } catch (error) {
                 setError(error.message);
                 console.error('Error fetching complaints:', error);
             } finally {
-                setLoading(false); // Stop loading regardless of success or failure
+                setLoading(false);
             }
         };
 
-        fetchComplaints(); // Call the async function
-    }, []); // Empty dependency array means this effect runs once on mount
+        fetchComplaints();
+    }, []);
 
     if (loading) {
         return <p>Loading complaints...</p>;

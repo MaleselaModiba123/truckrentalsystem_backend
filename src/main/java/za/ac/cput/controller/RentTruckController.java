@@ -92,11 +92,6 @@ public class RentTruckController {
         List<RentTruck> rentTrucks = rentTruckService.getAllRentTrucks();
         return ResponseEntity.ok(rentTrucks);
     }
-    @GetMapping("/history/{customerID}")
-    public ResponseEntity<List<RentTruck>> getRentalsByCustomerId(@PathVariable int customerID) {
-        List<RentTruck> rentals = rentTruckService.getRentalsByCustomerId(customerID);
-        return ResponseEntity.ok(rentals);
-    }
     @PatchMapping("/markAsReturned/{rentId}")
     public ResponseEntity<?> markAsReturned(@PathVariable int rentId) {
         try {
@@ -112,6 +107,18 @@ public class RentTruckController {
         List<RentTruck> availableTrucks = rentTruckService.getAvailableRentTrucks();
         return ResponseEntity.ok(availableTrucks);
     }
+    @GetMapping("/getRentalsByCustomerId/{customerID}")
+    public ResponseEntity<List<RentTruck>> getRentalsByCustomerId(@PathVariable int customerID) {
+        try {
+            List<RentTruck> rentals = rentTruckService.getRentalsByCustomerId(customerID);
+            return ResponseEntity.ok(rentals);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
 
 }
 

@@ -7,15 +7,9 @@ export const createRentTruck = (rentTruck) => axios.post(`${REST_API_BASE_URL}/c
 export const deleteRentTruckById = (rentTruckNumber) => axios.delete(`${REST_API_BASE_URL}/delete/${rentTruckNumber}`);
 export const updateRentTruck = (rentId, rentTruck) => axios.put(`${REST_API_BASE_URL}/update/${rentId}`, rentTruck);
 
-export const getRentalsList = async (customerID) => {
-    try {
-        const response = await axios.get(`${REST_API_BASE_URL}/history/${customerID}`);
-        return response.data; // Return the data from the response
-    } catch (error) {
-        console.error("Error fetching rental history:", error);
-        throw error;
-    }
-};
+export const getRentalsByCustomerId = async (customerId) => axios.get(`${REST_API_BASE_URL}/getRentalsByCustomerId/${customerId}`);
+
+
 export const markTruckAsReturned = (rentId) =>
     axios.patch(`${REST_API_BASE_URL}/markAsReturned/${rentId}`);
 
