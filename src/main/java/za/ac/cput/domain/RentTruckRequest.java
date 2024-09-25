@@ -12,6 +12,7 @@ public class RentTruckRequest {
     private String vin;
     private int pickUpBranchId;
     private int dropOffBranchId;
+    private RentalStatus status;
 
     // Getters and setters
     public LocalDate getRentDate() {
@@ -86,4 +87,13 @@ public class RentTruckRequest {
     public void setDropOffBranchId(int dropOffBranchId) {
         this.dropOffBranchId = dropOffBranchId;
     }
+
+    public RentalStatus getStatus() {
+        return status;
+    }
+    public void setStatus(RentalStatus status) {
+        this.status = status;
+    }
+
+
 }
