@@ -54,7 +54,7 @@ public class RentTruckControllerTest {
                 LocalDate.of(2024, 5, 19),
                 8006.0, true,false, customer1,
                 truck1,
-                branch1, branch1);
+                branch1, branch1,RentalStatus.ACTIVE);
     }
         @Test
         void a_create () {
