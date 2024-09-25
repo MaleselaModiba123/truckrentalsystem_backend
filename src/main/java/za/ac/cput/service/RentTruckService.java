@@ -4,26 +4,36 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import za.ac.cput.domain.Branch;
-import za.ac.cput.domain.Customer;
-import za.ac.cput.domain.RentTruck;
-import za.ac.cput.domain.Truck;
-import za.ac.cput.repository.BranchRepository;
-import za.ac.cput.repository.CustomerRepository;
-import za.ac.cput.repository.RentTruckRepository;
-import za.ac.cput.repository.TruckRepository;
+import za.ac.cput.domain.*;
+import za.ac.cput.repository.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RentTruckService {
+public class RentTruckService implements IRentTruckService{ //implement the interface to be able to use the JPA auto update/creation handling capabilities
+
+    @Override
+    public RentTruck create(RentTruck rentTruck) {
+        return null;
+    }
+
+    @Override
+    public RentTruck update(RentTruck rentTruck) {
+        return null;
+    }
+
+    @Override
+    public void delete(Integer integer) {
+
+    }
 
     private final RentTruckRepository rentTruckRepository;
     private final CustomerRepository customerRepository;
     private final TruckRepository truckRepository;
     private final BranchRepository branchRepository;
+    private final CancelRepository cancelRepository = null;
 
     @Autowired
     public RentTruckService(RentTruckRepository rentTruckRepository,
@@ -38,7 +48,7 @@ public class RentTruckService {
 
     @Transactional
     public RentTruck createRentTruck(LocalDate rentDate, LocalDate returnDate, double totalCost, boolean isPaymentMade, boolean isReturned,
-                                     int customerId, String truckVin, int pickUpBranchId, int dropOffBranchId) {
+                                     int customerId, String truckVin, int pickUpBranchId, int dropOffBranchId, RentalStatus status) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID"));
         Truck truck = truckRepository.findById(truckVin)
@@ -63,6 +73,7 @@ public class RentTruckService {
                 .setVin(truck)
                 .setPickUp(pickUpBranch)
                 .setDropOff(dropOffBranch)
+                .setStatus(RentalStatus.ACTIVE)
                 .build();
 
         // Save RentTruck instance
@@ -87,7 +98,7 @@ public class RentTruckService {
     }
     @Transactional
     public RentTruck updateRentTruck(int id, LocalDate rentDate, LocalDate returnDate, double totalCost, boolean isPaymentMade, boolean isReturned,
-                                     int customerId, String truckVin, int pickUpBranchId, int dropOffBranchId) {
+                                     int customerId, String truckVin, int pickUpBranchId, int dropOffBranchId, RentalStatus status) {
         RentTruck existingRentTruck = rentTruckRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("RentTruck not found"));
 
@@ -116,6 +127,7 @@ public class RentTruckService {
                 .setVin(truck)
                 .setPickUp(pickUpBranch)
                 .setDropOff(dropOffBranch)
+                .setStatus(status)
                 .build();
 
         return rentTruckRepository.save(updatedRentTruck);
@@ -163,6 +175,7 @@ public class RentTruckService {
         RentTruck updatedRentTruck = new RentTruck.Builder()
                 .copy(rentTruck)
                 .setReturned(true)
+                .setStatus(RentalStatus.COMPLETED)
                 .build();
         RentTruck savedRentTruck = rentTruckRepository.save(updatedRentTruck);
 
@@ -186,5 +199,16 @@ public class RentTruckService {
 
     public List<RentTruck> getAvailableRentTrucks() {
         return rentTruckRepository.findByIsReturnedFalse();
+    }
+
+        @Override
+    public List<RentTruck> getAll() {
+        return rentTruckRepository.findAll();
+    }
+
+    @Override
+    public RentTruck read(Integer integer) {
+        return rentTruckRepository.findById(integer)
+                .orElseThrow(() -> new EntityNotFoundException("RentTruck not found"));
     }
 }

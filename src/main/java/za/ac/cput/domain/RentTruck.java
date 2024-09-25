@@ -34,6 +34,11 @@ public class RentTruck {
     @JoinColumn(name = "branch_IdD")
     private Branch dropOff;
 
+    //added this to be able to trac the rental status
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private RentalStatus status;
+
     protected RentTruck() {
     }
     private RentTruck(Builder builder) {
@@ -47,6 +52,7 @@ public class RentTruck {
         this.vin = builder.vin;
         this.pickUp = builder.pickUp;
         this.dropOff = builder.dropOff;
+        this.status = builder.status;
     }
 
     public int getRentId() {
@@ -88,17 +94,19 @@ public class RentTruck {
         return dropOff;
     }
 
+    public RentalStatus getStatus() {return status;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RentTruck rentTruck = (RentTruck) o;
-        return rentId == rentTruck.rentId && Double.compare(totalCost, rentTruck.totalCost) == 0 && isPaymentMade == rentTruck.isPaymentMade && isReturned == rentTruck.isReturned && Objects.equals(rentDate, rentTruck.rentDate) && Objects.equals(returnDate, rentTruck.returnDate) && Objects.equals(customerID, rentTruck.customerID) && Objects.equals(vin, rentTruck.vin)  && Objects.equals(pickUp, rentTruck.pickUp) && Objects.equals(dropOff, rentTruck.dropOff);
+        return rentId == rentTruck.rentId && Double.compare(totalCost, rentTruck.totalCost) == 0 && isPaymentMade == rentTruck.isPaymentMade && isReturned == rentTruck.isReturned && Objects.equals(rentDate, rentTruck.rentDate) && Objects.equals(returnDate, rentTruck.returnDate) && Objects.equals(customerID, rentTruck.customerID) && Objects.equals(vin, rentTruck.vin)  && Objects.equals(pickUp, rentTruck.pickUp) && Objects.equals(dropOff, rentTruck.dropOff)&& Objects.equals(status, rentTruck.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rentId, rentDate, returnDate, totalCost, isPaymentMade,isReturned, customerID, vin, pickUp, dropOff);
+        return Objects.hash(rentId, rentDate, returnDate, totalCost, isPaymentMade,isReturned, customerID, vin, pickUp, dropOff, status);
     }
 
     @Override
@@ -114,6 +122,7 @@ public class RentTruck {
                 ", vin=" + vin.getVin() +
                 ", pickUp=" + pickUp.getBranchId() +
                 ", dropOff=" + dropOff.getBranchId() +
+                ", dropOff=" + status +
                 '}';
     }
 
@@ -128,6 +137,7 @@ public class RentTruck {
         private Truck vin;
         private Branch pickUp;
         private Branch dropOff;
+        private RentalStatus status;
 
         public Builder() {
         }
@@ -181,6 +191,11 @@ public class RentTruck {
             return this;
         }
 
+        public Builder setStatus(RentalStatus status) {
+            this.status = status;
+            return this;
+        }
+
         public Builder copy(RentTruck rentTruck) {
             this.rentId = rentTruck.rentId;
             this.rentDate = rentTruck.rentDate;
@@ -192,6 +207,7 @@ public class RentTruck {
             this.vin = rentTruck.vin;
             this.pickUp = rentTruck.pickUp;
             this.dropOff = rentTruck.dropOff;
+            this.status = rentTruck.status;
             return this;
         }
 

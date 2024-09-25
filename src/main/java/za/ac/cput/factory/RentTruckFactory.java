@@ -17,7 +17,8 @@ public class RentTruckFactory {
                                            double totalCost, boolean isPaymentMade,boolean isReturned,
                                            Customer customer,
                                            Truck truck,
-                                           Branch pickUp, Branch dropOff) {
+                                           Branch pickUp, Branch dropOff,
+                                           RentalStatus status ) {
 
 
         if (Helper.isIntNotValid(rentId)
@@ -40,6 +41,7 @@ public class RentTruckFactory {
                 .setVin(truck)
                 .setPickUp(pickUp)
                 .setDropOff(dropOff)
+                .setStatus(RentalStatus.ACTIVE)
                 .build();
     }
 }
