@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faMoneyBillWave, faSignOutAlt, faUser, faExclamationTriangle} from '@fortawesome/free-solid-svg-icons';
+import {faMoneyBillWave, faSignOutAlt,faGear, faUser,faHistory,faHome, faExclamationTriangle} from '@fortawesome/free-solid-svg-icons';
 
 const navStyle = {
     width: '250px',
@@ -34,6 +34,17 @@ const CustomerSidebar = () => {
         <nav className="bg-light border-right" style={navStyle}>
             <ul className="nav flex-column" style={ulStyle}>
                 <li className="nav-item mb-2">
+                    {/* Customer Home link */}
+                <li className="nav-item mb-2">
+                    <Link
+                        to="/customer-landing"
+                        className="nav-link d-flex align-items-center"
+                        style={{ width: '100%', marginTop: '50px' }}
+                    >
+                        <FontAwesomeIcon icon={faHome} style={{ marginRight: '10px' }} />
+                        Customer Home
+                    </Link>
+                </li>
                     <Link
                         to="/customer/profile"
                         className="nav-link d-flex align-items-center"
@@ -55,12 +66,22 @@ const CustomerSidebar = () => {
                 </li>
                 <li className="nav-item mb-2">
                     <Link
-                        to="/customer/rentals-list"
+                        to="/customer/manageRentals"
                         className="nav-link d-flex align-items-center"
                         style={{width: '100%'}}
                     >
-                        <FontAwesomeIcon icon={faMoneyBillWave} style={{marginRight: '10px'}}/>
-                        Rentals
+                        <FontAwesomeIcon icon={faGear} style={{marginRight: '10px'}}/>
+                        Manage Rentals
+                    </Link>
+                </li>
+                <li className="nav-item mb-2">
+                    <Link
+                        to="/customer/rentals"
+                        className="nav-link d-flex align-items-center"
+                        style={{ width: '100%' }}
+                    >
+                        <FontAwesomeIcon icon={faHistory} style={{ marginRight: '10px' }} />
+                        Rental History
                     </Link>
                 </li>
                 <li className="nav-item mb-2">
