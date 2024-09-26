@@ -1,7 +1,7 @@
 import React, {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {authenticateUser} from "../../services/AuthenticationService.js";
-import {signIn as customerSignIn} from "../../services/CustomerProfileService.js";
+import {signIn as customerSignIn} from "../../services/CustomerService.js";
 import {AuthContext} from "../AuthContext.jsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";

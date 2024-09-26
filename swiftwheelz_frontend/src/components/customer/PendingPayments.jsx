@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {createRentTruck} from "../../services/RentTructService.js";
+import {createRentTruck} from "../../services/RentTruckService.js";
 
 
 const PendingPayments = () => {

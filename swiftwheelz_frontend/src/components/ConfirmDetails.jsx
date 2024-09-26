@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { getCustomerById } from '../services/CustomerProfileService';
+import { getCustomerById } from '../services/CustomerService.js';
 import { FaCalendarAlt, FaClock, FaDollarSign, FaMapMarkerAlt, FaTruck } from 'react-icons/fa';
 
 const ConfirmDetails = () => {

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Alert, Button, Card, Col, Container, Modal, Row, Spinner} from 'react-bootstrap';
-import {getAvailableTrucks, markTruckAsReturned} from "../../services/RentTructService.js";
+import {getAvailableTrucks, markTruckAsReturned} from "../../services/RentTruckService.js";
 import {FaSearch} from 'react-icons/fa';
 
 const RentedTrucksList = () => {

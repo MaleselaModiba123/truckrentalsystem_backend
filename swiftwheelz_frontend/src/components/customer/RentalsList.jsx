@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Alert, Button, Card, Col, Container, Modal, Row, Spinner, Form } from 'react-bootstrap';
-import { getRentalsList, updateRental, cancelRental } from "../../services/RentTructService.js";
+// import { getRentalsList, updateRental, cancelRental } from "../../services/RentTruckService.js";
 import { getAllBranches } from '../../services/BranchService.js';
-import { getCustomerById } from '../../services/CustomerProfileService.js';
+import { getCustomerById } from '../../services/CustomerService.js';
 import { AuthContext } from "../AuthContext.jsx";
 
 const RentedTrucksList = () => {
@@ -57,7 +57,7 @@ const RentedTrucksList = () => {
         setLoading(true);
         try {
             if (thisUser?.customerID) {
-                const response = await getRentalsList(thisUser.customerID);
+                // const response = await getRentalsList(thisUser.customerID);
                 const rentalData = response; 
                 const activeRentals = rentalData.filter(rental => rental.status === 'ACTIVE');
                 setRentals(rentalData);
@@ -110,7 +110,7 @@ const RentedTrucksList = () => {
                     rentDate: editFormData.rentDate,
                     returnDate: editFormData.returnDate,
                 };
-                await updateRental(selectedRental.rentId, updatedRental);
+                // await updateRental(selectedRental.rentId, updatedRental);
                 fetchRentals();
                 setShowModal(false);
             } catch (err) {
@@ -133,7 +133,7 @@ const RentedTrucksList = () => {
                     rental: selectedCancelRental,
                     reason: cancellation.reason,
                 };
-                await cancelRental(cancelData);
+                // await cancelRental(cancelData);
                 console.log("Final cancellation object to send to backend:", cancelData);
                 fetchRentals();
                 setShowCancelModal(false);

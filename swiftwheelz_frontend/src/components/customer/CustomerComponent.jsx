@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { updateCustomer, getCustomerById } from "../../services/CustomerProfileService.js";
+import { updateCustomer, getCustomerById } from "../../services/CustomerService.js";
 import { useNavigate, useParams } from "react-router-dom";
 
 const CustomerComponent = () => {

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { deleteCustomerById, finalizePayment, getCustomerById } from "../../services/CustomerProfileService.js";
+import { deleteCustomerById, finalizePayment, getCustomerById } from "../../services/CustomerService.js";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext.jsx";
 import CustomerSidebar from "./CustomerSidebar.jsx";
