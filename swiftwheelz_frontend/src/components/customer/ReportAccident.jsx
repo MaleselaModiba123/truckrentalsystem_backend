@@ -84,6 +84,53 @@ const ReportAccident = ({ customerId }) => {
 
     // Inline styles for the form and table
     const styles = {
+        '@keyframes fadeIn': {
+            from: { opacity: 0, transform: 'translateY(-20px)' },
+            to: { opacity: 1, transform: 'translateY(0)' }
+        },
+        h1: {
+            animation: 'fadeIn 1s ease-out',
+            color: '#007bff', /* Blue color */
+            fontSize: '2.5rem', /* Font size */
+            fontWeight: 'bold' /* Font weight */
+        },
+        h2: {
+            animation: 'fadeIn 1s ease-out',
+            color: '#007bff', /* Blue color */
+            fontSize: '2.5rem', /* Font size */
+            fontWeight: 'bold' /* Font weight */
+        },
+        searchContainer: {
+            display: 'flex',
+            alignItems: 'center',
+            maxWidth: '600px',
+            marginBottom: '2rem',
+            border: '1px solid #ced4da',
+            borderRadius: '4px'
+        },
+
+        searchInput: {
+            flex: 1,
+            padding: '0.5rem 1rem',
+            border: 'none',
+            borderRadius: '4px',
+            fontSize: '1rem',
+            outline: 'none'
+        },
+
+        searchIcon: {
+            marginLeft: '10px',
+            color: '#007bff', /* Icon color */
+            fontSize: '1.2rem'
+        },
+
+        cardTitle: {
+            color: '#007bff' /* Text color */
+        },
+
+        cardTextStrong: {
+            color: '#004080' /* Text color */
+        },
         container: {
             padding: '20px',
             maxWidth: '800px',
@@ -95,6 +142,7 @@ const ReportAccident = ({ customerId }) => {
         label: {
             display: 'block',
             marginBottom: '5px',
+            color: '#004080',
             fontWeight: 'bold'
         },
         input: {
@@ -151,7 +199,7 @@ const ReportAccident = ({ customerId }) => {
 
     return (
         <div style={styles.container}>
-            <h1>Swiftwheelz is here to help you.</h1>
+            <h1 style={styles.h1}>Swiftwheelz is here to help you.</h1>
 
             {/* Form for creating/updating reports */}
             <form onSubmit={handleSubmit}>

@@ -83,7 +83,7 @@ const CustomerProfile = () => {
 
     return (
         <div style={styles.container}>
-            <CustomerSidebar handleSignOut={handleSignOut}/>
+            {/*<CustomerSidebar handleSignOut={handleSignOut}/>*/}
             <style>
                 {`
                     @keyframes fadeIn {
