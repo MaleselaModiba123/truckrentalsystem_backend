@@ -179,10 +179,13 @@ const RentedTrucksList = () => {
                                     <Card.Text>
                                         <strong>Vehicle Model:</strong> {rental.vin?.model || 'N/A'} <br />
                                         <strong>Payment Made:</strong> {rental.isPaymentMade ? 'Yes' : 'No'} <br />
+                                        <p><strong>Pickup Location:</strong> {rental.pickUp.branchName}</p>
+                                        <p><strong>Drop-off Location:</strong> {rental.dropOff.branchName}</p>
                                         <strong>Rent Date:</strong> {rental.rentDate ? new Date(rental.rentDate).toLocaleDateString() : 'N/A'} <br />
                                         <strong>Return Date:</strong> {rental.returnDate ? new Date(rental.returnDate).toLocaleDateString() : 'N/A'} <br />
                                         <strong>Total Cost:</strong> R {rental.totalCost?.toFixed(2) || '0.00'} <br />
                                         <strong>Customer:</strong> {thisUser?.firstName} {thisUser?.lastName} <br />
+                                        <p><strong>Status: </strong> {rental.status}</p>
                                     </Card.Text>
                                     <div className="d-flex justify-content-between">
                                         <Button onClick={() => handleEditRental(rental)} variant="primary">Edit Rental</Button>
@@ -213,7 +216,7 @@ const RentedTrucksList = () => {
                                 <option value="">Select Branch</option>
                                 {branches.map((branch) => (
                                     <option key={branch.branchId} value={branch.branchId}>
-                                        {branch.name}
+                                        {branch.branchName}
                                     </option>
                                 ))}
                             </Form.Control>
@@ -229,7 +232,7 @@ const RentedTrucksList = () => {
                                 <option value="">Select Branch</option>
                                 {branches.map((branch) => (
                                     <option key={branch.branchId} value={branch.branchId}>
-                                        {branch.name}
+                                        {branch.branchName}
                                     </option>
                                 ))}
                             </Form.Control>
