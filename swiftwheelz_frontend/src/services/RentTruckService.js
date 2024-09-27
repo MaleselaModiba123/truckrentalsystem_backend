@@ -14,3 +14,4 @@ export const markTruckAsReturned = (rentId) =>
     axios.patch(`${REST_API_BASE_URL}/markAsReturned/${rentId}`);
 
 export const getAvailableTrucks = () => axios.get(`${REST_API_BASE_URL}/not returned`);
+export const cancelRental = (cancellation) => axios.post(`${REST_API_BASE_URL}/cancel/cancel`, cancellation)
