@@ -83,7 +83,7 @@ public class RentTruckController {
 
         if (existingRentTruck != null) {
 
-            rentTruckService.update( rentTruck); // Assuming this method updates the fields
+            rentTruckService.update( rentTruck);
 
             // Save the updated entity back to the database
             RentTruck updatedRentTruck = rentTruckRepository.save(existingRentTruck);

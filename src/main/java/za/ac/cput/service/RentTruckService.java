@@ -21,7 +21,7 @@ public class RentTruckService implements IRentTruckService{ //implement the inte
 
     @Override
     public RentTruck update(RentTruck rentTruck) {
-        return null;
+        return rentTruckRepository.save(rentTruck);
     }
 
     @Override

@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Alert, Button, Card, Col, Container, Modal, Row, Spinner, Form } from 'react-bootstrap';
-// import { getRentalsList, updateRental, cancelRental } from "../../services/RentTruckService.js";
-import { getAllBranches } from '../../services/BranchService.js';
-import { getCustomerById } from '../../services/CustomerService.js';
-import { AuthContext } from "../AuthContext.jsx";
+import React, {useContext, useEffect, useState} from 'react';
+import {Alert, Button, Card, Col, Container, Form, Modal, Row, Spinner} from 'react-bootstrap';
+import {cancelRental, getRentalsByCustomerId, updateRentTruck} from "../../services/RentTruckService.js";
+import {getAllBranches} from '../../services/BranchService.js';
+import {getCustomerById} from '../../services/CustomerService.js';
+import {AuthContext} from "../AuthContext.jsx";
 
 const RentedTrucksList = () => {
     const [rentals, setRentals] = useState([]);
@@ -57,9 +57,10 @@ const RentedTrucksList = () => {
         setLoading(true);
         try {
             if (thisUser?.customerID) {
-                // const response = await getRentalsList(thisUser.customerID);
-                const rentalData = response; 
-                const activeRentals = rentalData.filter(rental => rental.status === 'ACTIVE');
+                const response = await getRentalsByCustomerId(thisUser.customerID);
+                const rentalData = Array.isArray(response.data) ? response.data : [];
+                console.log("rental: ",rentalData);
+                const activeRentals = rentalData.filter(rentalData => rentalData.status === 'ACTIVE');
                 setRentals(rentalData);
                 setActiveRentals(activeRentals);
             }
@@ -105,13 +106,16 @@ const RentedTrucksList = () => {
             try {
                 const updatedRental = {
                     ...selectedRental,
-                    pickUp: { branchId: editFormData.pickUp },
-                    dropOff: { branchId: editFormData.dropOff },
+                    pickUp: { branchId: parseInt(editFormData.pickUp, 10) },
+                    dropOff: { branchId: parseInt(editFormData.dropOff, 10) },
+
                     rentDate: editFormData.rentDate,
                     returnDate: editFormData.returnDate,
                 };
-                // await updateRental(selectedRental.rentId, updatedRental);
-                fetchRentals();
+                await updateRentTruck(selectedRental.rentId, updatedRental);
+                console.log("rentIT to be updated",selectedRental.rentId);
+                console.log("updated rental data", updatedRental);
+                await fetchRentals();
                 setShowModal(false);
             } catch (err) {
                 console.error('Error updating rental:', err);
@@ -130,10 +134,10 @@ const RentedTrucksList = () => {
         if (selectedCancelRental && cancellation.reason) {
             try {
                 const cancelData = {
-                    rental: selectedCancelRental,
-                    reason: cancellation.reason,
+                    cancelReason: cancellation.reason,
+                    rentTruck: selectedCancelRental,
                 };
-                // await cancelRental(cancelData);
+                await cancelRental(cancelData);
                 console.log("Final cancellation object to send to backend:", cancelData);
                 fetchRentals();
                 setShowCancelModal(false);
@@ -178,10 +182,13 @@ const RentedTrucksList = () => {
                                     <Card.Text>
                                         <strong>Vehicle Model:</strong> {rental.vin?.model || 'N/A'} <br />
                                         <strong>Payment Made:</strong> {rental.isPaymentMade ? 'Yes' : 'No'} <br />
+                                        <p><strong>Pickup Location:</strong> {rental.pickUp.branchName}</p>
+                                        <p><strong>Drop-off Location:</strong> {rental.dropOff.branchName}</p>
                                         <strong>Rent Date:</strong> {rental.rentDate ? new Date(rental.rentDate).toLocaleDateString() : 'N/A'} <br />
                                         <strong>Return Date:</strong> {rental.returnDate ? new Date(rental.returnDate).toLocaleDateString() : 'N/A'} <br />
                                         <strong>Total Cost:</strong> R {rental.totalCost?.toFixed(2) || '0.00'} <br />
                                         <strong>Customer:</strong> {thisUser?.firstName} {thisUser?.lastName} <br />
+                                        <p><strong>Status: </strong> {rental.status}</p>
                                     </Card.Text>
                                     <div className="d-flex justify-content-between">
                                         <Button onClick={() => handleEditRental(rental)} variant="primary">Edit Rental</Button>
@@ -212,7 +219,7 @@ const RentedTrucksList = () => {
                                 <option value="">Select Branch</option>
                                 {branches.map((branch) => (
                                     <option key={branch.branchId} value={branch.branchId}>
-                                        {branch.name}
+                                        {branch.branchName}
                                     </option>
                                 ))}
                             </Form.Control>
@@ -228,7 +235,7 @@ const RentedTrucksList = () => {
                                 <option value="">Select Branch</option>
                                 {branches.map((branch) => (
                                     <option key={branch.branchId} value={branch.branchId}>
-                                        {branch.name}
+                                        {branch.branchName}
                                     </option>
                                 ))}
                             </Form.Control>
