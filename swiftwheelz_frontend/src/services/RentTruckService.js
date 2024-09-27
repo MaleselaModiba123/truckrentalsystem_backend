@@ -15,3 +15,12 @@ export const markTruckAsReturned = (rentId) =>
 
 export const getAvailableTrucks = () => axios.get(`${REST_API_BASE_URL}/not returned`);
 export const cancelRental = (cancellation) => axios.post(`${REST_API_BASE_URL}/cancel/cancel`, cancellation)
+export const getRentalsList = async (customerID) => {
+    try {
+        const response = await axios.get(`${REST_API_BASE_URL}/history/${customerID}`);
+        return response.data; // Return the data from the response
+    } catch (error) {
+        console.error("Error fetching rental history:", error);
+        throw error;
+    }
+};

@@ -37,7 +37,7 @@ const CustomerSidebar = () => {
                     {/* Customer Home link */}
                 <li className="nav-item mb-2">
                     <Link
-                        to="/customer-landing"
+                        to="/"
                         className="nav-link d-flex align-items-center"
                         style={{ width: '100%', marginTop: '50px' }}
                     >

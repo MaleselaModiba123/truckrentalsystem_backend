@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Alert, Button, Card, Col, Container, Modal, Row, Spinner, Form } from 'react-bootstrap';
-import {getRentalsByCustomerId, cancelRental, updateRentTruck} from "../../services/RentTruckService.js";
-import { getAllBranches } from '../../services/BranchService.js';
-import { getCustomerById } from '../../services/CustomerService.js';
-import { AuthContext } from "../AuthContext.jsx";
+import React, {useContext, useEffect, useState} from 'react';
+import {Alert, Button, Card, Col, Container, Form, Modal, Row, Spinner} from 'react-bootstrap';
+import {cancelRental, getRentalsByCustomerId, updateRentTruck} from "../../services/RentTruckService.js";
+import {getAllBranches} from '../../services/BranchService.js';
+import {getCustomerById} from '../../services/CustomerService.js';
+import {AuthContext} from "../AuthContext.jsx";
 
 const RentedTrucksList = () => {
     const [rentals, setRentals] = useState([]);
@@ -57,9 +57,10 @@ const RentedTrucksList = () => {
         setLoading(true);
         try {
             if (thisUser?.customerID) {
-                 const response = await getRentalsByCustomerId(thisUser.customerID);
-                const rentalData = response; 
-                const activeRentals = rentalData.filter(rental => rental.status === 'ACTIVE');
+                const response = await getRentalsByCustomerId(thisUser.customerID);
+                const rentalData = Array.isArray(response.data) ? response.data : [];
+                console.log("rental: ",rentalData);
+                const activeRentals = rentalData.filter(rentalData => rentalData.status === 'ACTIVE');
                 setRentals(rentalData);
                 setActiveRentals(activeRentals);
             }
