@@ -106,12 +106,15 @@ const RentedTrucksList = () => {
             try {
                 const updatedRental = {
                     ...selectedRental,
-                    pickUp: { branchId: editFormData.pickUp },
-                    dropOff: { branchId: editFormData.dropOff },
+                    pickUp: { branchId: parseInt(editFormData.pickUp, 10) },
+                    dropOff: { branchId: parseInt(editFormData.dropOff, 10) },
+
                     rentDate: editFormData.rentDate,
                     returnDate: editFormData.returnDate,
                 };
                 await updateRentTruck(selectedRental.rentId, updatedRental);
+                console.log("rentIT to be updated",selectedRental.rentId);
+                console.log("updated rental data", updatedRental);
                 await fetchRentals();
                 setShowModal(false);
             } catch (err) {
