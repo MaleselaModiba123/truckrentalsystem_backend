@@ -66,7 +66,7 @@ const CustomerSidebar = () => {
                 </li>
                 <li className="nav-item mb-2">
                     <Link
-                        to="/customer/manageRentals"
+                        to="/customer/rentals"
                         className="nav-link d-flex align-items-center"
                         style={{width: '100%'}}
                     >
@@ -76,7 +76,7 @@ const CustomerSidebar = () => {
                 </li>
                 <li className="nav-item mb-2">
                     <Link
-                        to="/customer/rentals"
+                        to="/customer/history"
                         className="nav-link d-flex align-items-center"
                         style={{ width: '100%' }}
                     >
