@@ -134,8 +134,8 @@ const RentedTrucksList = () => {
         if (selectedCancelRental && cancellation.reason) {
             try {
                 const cancelData = {
-                    rental: selectedCancelRental,
-                    reason: cancellation.reason,
+                    cancelReason: cancellation.reason,
+                    rentTruck: selectedCancelRental,
                 };
                 await cancelRental(cancelData);
                 console.log("Final cancellation object to send to backend:", cancelData);
