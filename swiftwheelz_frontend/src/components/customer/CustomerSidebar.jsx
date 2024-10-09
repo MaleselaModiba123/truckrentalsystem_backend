@@ -8,7 +8,8 @@ import {
     faHome,
     faMoneyBillWave,
     faSignOutAlt,
-    faUser
+    faUser,
+    faCommentDots // New icon for the complaint section
 } from '@fortawesome/free-solid-svg-icons';
 
 const CustomerSidebar = () => {
@@ -83,6 +84,16 @@ const CustomerSidebar = () => {
                     >
                         <FontAwesomeIcon icon={faExclamationTriangle} style={{marginRight: '10px'}}/>
                         Report Accident
+                    </Link>
+                </li>
+                <li className="nav-item mb-2">
+                    <Link
+                        to="/customer/complaint"
+                        className="nav-link d-flex align-items-center"
+                        style={{fontSize: '20px', transition: 'all 0.3s ease'}}
+                    >
+                        <FontAwesomeIcon icon={faCommentDots} style={{marginRight: '10px'}} />
+                        Submit Complaint
                     </Link>
                 </li>
                 <li className="nav-item mt-auto">

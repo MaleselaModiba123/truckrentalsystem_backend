@@ -9,15 +9,9 @@ import za.ac.cput.repository.CustomerRepository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-
-/**
- * ComplaintService.java
- * This is the service class for handling complaints.
- */
 
 @Service
-public class ComplaintService  {
+public class ComplaintService {
 
     private final ComplaintRepository complaintRepository;
     private final CustomerRepository customerRepository;
@@ -28,8 +22,17 @@ public class ComplaintService  {
         this.customerRepository = customerRepository;
     }
 
+    public Complaint create(String description, Integer customerId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
 
-    public Complaint create(Complaint complaint) {
+        Complaint complaint = new Complaint.Builder()
+                .setDescription(description)
+                .setStatus("Pending") // Set an initial status
+                .setComplaintDate(LocalDate.now())
+                .setCustomer(customer).setResponse("None")
+                .build();
+
         return complaintRepository.save(complaint);
     }
 
@@ -48,6 +51,7 @@ public class ComplaintService  {
                     .setStatus(complaint.getStatus())
                     .setComplaintDate(complaint.getComplaintDate())
                     .setCustomer(complaint.getCustomer())
+                    .setResponse(complaint.getResponse())
                     .build();
             return complaintRepository.save(updatedComplaint);
         }
@@ -69,4 +73,23 @@ public class ComplaintService  {
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
         return complaintRepository.findByCustomer(customer);
     }
+
+    public Complaint respondToComplaint(int complaintId, String response) {
+        Complaint existingComplaint = read(complaintId);
+
+        if (existingComplaint != null) {
+
+            Complaint updatedComplaint = new Complaint.Builder()
+                    .copy(existingComplaint)
+                    .setResponse(response)
+                    .setStatus("Resolved")
+                    .build();
+
+
+            return complaintRepository.save(updatedComplaint);
+        } else {
+            throw new IllegalArgumentException("Complaint not found");
+        }
+    }
 }
+

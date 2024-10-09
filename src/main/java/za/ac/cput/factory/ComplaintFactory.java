@@ -7,11 +7,12 @@ import za.ac.cput.util.Helper;
 import java.time.LocalDate;
 
 public class ComplaintFactory {
-    public static Complaint buildComplaint(int complaintId, String description, LocalDate complaintDate, String status,Customer customer) {
+    public static Complaint buildComplaint(int complaintId, String description, LocalDate complaintDate, String status, String response,Customer customer) {
         if (Helper.isIntNotValid(complaintId)
                 || description == null
                 || complaintDate == null
                 || status == null
+                || response == null
                 || customer == null) {
             return null;
         }
@@ -21,7 +22,7 @@ public class ComplaintFactory {
                 .setDescription(description)
                 .setComplaintDate(complaintDate)
                 .setStatus(status)
-                .setCustomer(customer)
+                .setCustomer(customer).setResponse(response)
                 .build();
     }
 }
