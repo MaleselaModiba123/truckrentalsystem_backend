@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {getAllComplaints} from '../../services/ComplaintService.js';
+import { getAllComplaints, sendResponse } from '../../services/ComplaintService.js';
+
 const Complaints = () => {
     const [complaints, setComplaints] = useState([]);
     const [selectedComplaint, setSelectedComplaint] = useState(null);
+    const [responseText, setResponseText] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Fetch complaints on component mount
     useEffect(() => {
         const fetchComplaints = async () => {
             try {
@@ -21,6 +24,25 @@ const Complaints = () => {
 
         fetchComplaints();
     }, []);
+
+
+    const handleResponseSubmit = async (event) => {
+        event.preventDefault();
+
+        if (!selectedComplaint) return;
+
+        try {
+            const response = await sendResponse(selectedComplaint.complaintId, responseText);
+            console.log('Response from server:', response.data);
+
+            alert('Response submitted successfully!');
+            setSelectedComplaint(null);
+            setResponseText('');
+        } catch (error) {
+            console.error('Error submitting response:', error);
+            alert('There was an error submitting your response.');
+        }
+    };
 
     if (loading) {
         return <p>Loading complaints...</p>;
@@ -47,51 +69,23 @@ const Complaints = () => {
                     <p>No complaints available.</p>
                 )}
             </ul>
-            {selectedComplaint && <ComplaintResponse complaint={selectedComplaint} onClose={() => setSelectedComplaint(null)} />}
-        </div>
-    );
-};
 
-const ComplaintResponse = ({ complaint, onClose }) => {
-    const [response, setResponse] = useState('');
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        try {
-            const response = await fetch(`/api/complaints/${complaint.complaintId}/respond`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ response }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            alert('Response submitted successfully!');
-            onClose();
-        } catch (error) {
-            console.error('Error:', error);
-            alert('There was an error submitting your response.');
-        }
-    };
-
-    return (
-        <div className="complaint-response">
-            <h3>Respond to Complaint ID: {complaint.complaintId}</h3>
-            <form onSubmit={handleSubmit}>
-                <textarea
-                    value={response}
-                    onChange={(e) => setResponse(e.target.value)}
-                    placeholder="Your response"
-                    required
-                ></textarea>
-                <button type="submit">Send Response</button>
-                <button type="button" onClick={onClose}>Cancel</button>
-            </form>
+            {/* Display the response form when a complaint is selected */}
+            {selectedComplaint && (
+                <div className="complaint-response">
+                    <h3>Respond to Complaint ID: {selectedComplaint.complaintId}</h3>
+                    <form onSubmit={handleResponseSubmit}>
+                        <textarea
+                            value={responseText}
+                            onChange={(e) => setResponseText(e.target.value)}
+                            placeholder="Your response"
+                            required
+                        ></textarea>
+                        <button type="submit">Send Response</button>
+                        <button type="button" onClick={() => setSelectedComplaint(null)}>Cancel</button>
+                    </form>
+                </div>
+            )}
         </div>
     );
 };

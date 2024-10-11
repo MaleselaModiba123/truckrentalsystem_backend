@@ -37,7 +37,7 @@ class RentTruckFactoryTest {
 
         RentTruck rentTruck = RentTruckFactory.buildRentTruck(
                 rentId, rentDate, returnDate, totalCost, isPaymentMade,isReturned,
-                customer, truck, pickUp, dropOff);
+                customer, truck, pickUp, dropOff,RentalStatus.ACTIVE);
 
         Assertions.assertNotNull(rentTruck);
         Assertions.assertEquals(rentId, rentTruck.getRentId());

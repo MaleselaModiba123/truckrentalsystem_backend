@@ -1,7 +1,7 @@
 import React, {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {authenticateUser} from "../../services/AuthenticationService.js";
-import {signIn as customerSignIn} from "../../services/CustomerProfileService.js";
+import {signIn as customerSignIn} from "../../services/CustomerService.js";
 import {AuthContext} from "../AuthContext.jsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
@@ -27,21 +27,24 @@ const SignInComponent = () => {
                 // Save email to local storage or context
                 localStorage.setItem('adminEmail', email);
 
-                if (role === "ADMIN") {
-                    navigate("/admin-portal/dashboard");
-                } else if (role === "HELP_DESK") {
-                    navigate("/help-desk/dashboard");
-                } else if (role === "CUSTOMER") {
-                    await handleCustomerSignIn(email, password);
-                } else {
-                    setError('Unknown employee role');
+                switch (role) {
+                    case "ADMIN":
+                        navigate("/admin-portal/dashboard");
+                        break;
+                    case "HELP_DESK":
+                        navigate("/help-desk/dashboard");
+                        break;
+                    case "CUSTOMER":
+                        await handleCustomerSignIn(email, password);
+                        break;
+                    default:
+                        setError('Unknown employee role');
                 }
                 return;
             }
         } catch (error) {
             console.error("Employee authentication error:", error);
         }
-        // Handle customer sign-in
         await handleCustomerSignIn(email, password);
     };
 
@@ -52,21 +55,10 @@ const SignInComponent = () => {
 
             if (customerResponse.status === 200 && customerResponse.data) {
                 setAuth(customerResponse.data);
-                // Save customer ID in localStorage or context
-                const customerID = customerResponse.data.customerID;
-                localStorage.setItem('customerID', customerID);
+                localStorage.setItem('customerID', customerResponse.data.customerID);
                 // Check if there is payment data in localStorage
                 const paymentInfo = JSON.parse(localStorage.getItem('paymentInfo'));
-
-                if (paymentInfo) {
-                    // Redirect to the PendingPayments component
-                    navigate("/customer/pending-payments");
-                    // navigate("/customer/profile");
-
-                    // navigate("/pending-payments");
-                } else {
-                    navigate("/customer/profile");
-                }
+                navigate(paymentInfo ? "/customer/pending-payments" : "/customer/profile");
             } else {
                 setError('Invalid email or password');
             }

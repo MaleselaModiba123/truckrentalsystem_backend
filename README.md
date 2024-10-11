@@ -1,3 +1,2 @@
-![Truck Rental Class Diagram](https://github.com/Asimbong/truckrentalsystem_backend/assets/101199833/21d3a246-e7ff-4ac1-bdbc-7b1db70890df)
-
+![class_diagram](https://github.com/user-attachments/assets/56dcadad-6945-437f-a1f2-ab8f9064b9c3)
 

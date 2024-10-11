@@ -29,7 +29,8 @@ import HelpDeskDashboard from "./components/helpdesk/HelpDeskDashboard.jsx";
 import Complaints from "./components/helpdesk/Complaints.jsx";
 import ReportAccident from "./components/customer/ReportAccident.jsx";
 import AdminAccidentReports from "./components/admin/AdminAccidentReports.jsx";
-
+import RentalHistory from './components/customer/RentalHistory.jsx';
+import CustomerComplaint from './components/customer/CustomerComplaint.jsx';
 
 function App() {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -92,6 +93,8 @@ function App() {
                             <Route path="profile" element={<CustomerProfile />} />
                             <Route path="pending-payments" element={<PendingPayments />} />
                             <Route path="report-accident" element={<ReportAccident />} />
+                            <Route path="history" element={<RentalHistory/>}/>
+                            <Route path="complaint"element={<CustomerComplaint/>}/>
                             <Route path="rentals" element={<RentalsList/>}/>
                         </Route>
 

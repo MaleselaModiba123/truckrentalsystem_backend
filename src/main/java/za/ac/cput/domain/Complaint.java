@@ -13,6 +13,7 @@ public class Complaint {
     private String description;
     private LocalDate complaintDate;
     private String status;
+    private String response;
 
     @ManyToOne
     @JoinColumn(name = "customerID")
@@ -26,6 +27,7 @@ public class Complaint {
         this.description = builder.description;
         this.complaintDate = builder.complaintDate;
         this.status = builder.status;
+        this.response = builder.response;
         this.customer = builder.customer;
     }
 
@@ -44,6 +46,7 @@ public class Complaint {
     public String getStatus() {
         return status;
     }
+    public String getResponse(){return response;}
 
     public Customer getCustomer() {
         return customer;
@@ -53,12 +56,12 @@ public class Complaint {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Complaint complaint)) return false;
-        return complaintId == complaint.complaintId && Objects.equals(description, complaint.description) && Objects.equals(complaintDate, complaint.complaintDate) && Objects.equals(status, complaint.status) && Objects.equals(customer, complaint.customer);
+        return complaintId == complaint.complaintId && Objects.equals(description, complaint.description) && Objects.equals(complaintDate, complaint.complaintDate) && Objects.equals(status, complaint.status) && Objects.equals(response, complaint.response) && Objects.equals(customer, complaint.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(complaintId, description, complaintDate, status, customer);
+        return Objects.hash(complaintId, description, complaintDate, status,response, customer);
     }
 
     @Override
@@ -68,6 +71,7 @@ public class Complaint {
                 ", description='" + description + '\'' +
                 ", complaintDate=" + complaintDate +
                 ", status='" + status + '\'' +
+                ", response='" + response + '\''+
                 ", customer=" + customer +
                 '}';
     }
@@ -77,6 +81,7 @@ public class Complaint {
         private String description;
         private LocalDate complaintDate;
         private String status;
+        private String response;
         private Customer customer;
 
 
@@ -99,6 +104,10 @@ public class Complaint {
             this.status = status;
             return this;
         }
+        public Builder setResponse(String response){
+            this.response = response;
+            return this;
+        }
 
         public Builder setCustomer(Customer customer) {
             this.customer = customer;
@@ -110,6 +119,7 @@ public class Complaint {
             this.description = complaint.description;
             this.complaintDate = complaint.complaintDate;
             this.status = complaint.status;
+            this.response = complaint.response;
             this.customer = complaint.customer;
             return this;
         }

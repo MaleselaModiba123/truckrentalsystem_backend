@@ -40,7 +40,7 @@ public class ComplaintControllerTest {
     @BeforeAll
     public static void setUp() {
         customer1 = customerRepository.findById(3245).orElseThrow();
-        complaint = ComplaintFactory.buildComplaint(1234, "Damaged truck", LocalDate.of(2024, 9, 15), "Pending", customer1);
+        complaint = ComplaintFactory.buildComplaint(1234, "Damaged truck", LocalDate.of(2024, 9, 15), "Pending", "Insurance claim processing",customer1);
     }
 
     @Test

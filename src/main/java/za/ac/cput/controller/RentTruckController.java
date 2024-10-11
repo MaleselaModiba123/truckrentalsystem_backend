@@ -1,10 +1,12 @@
 package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.RentTruck;
 import za.ac.cput.domain.RentTruckRequest;
+import za.ac.cput.repository.RentTruckRepository;
 import za.ac.cput.service.RentTruckService;
 
 import java.util.List;
@@ -21,10 +23,12 @@ import java.util.Optional;
 @RequestMapping("/rentTruck")
 public class RentTruckController {
     private final RentTruckService rentTruckService;
+    private final RentTruckRepository rentTruckRepository;
 
     @Autowired
-    public RentTruckController(RentTruckService rentTruckService) {
+    public RentTruckController(RentTruckService rentTruckService, RentTruckRepository rentTruckRepository) {
         this.rentTruckService = rentTruckService;
+        this.rentTruckRepository = rentTruckRepository;
     }
 
     @PostMapping("/create")
@@ -39,7 +43,9 @@ public class RentTruckController {
                     request.getCustomerID(),
                     request.getVin(),
                     request.getPickUpBranchId(),
-                    request.getDropOffBranchId()
+                    request.getDropOffBranchId(),
+                    request.getStatus()
+
             );
             return ResponseEntity.ok("RentTruck created successfully:" + rentTruck);
         } catch (IllegalArgumentException e) {
@@ -66,23 +72,25 @@ public class RentTruckController {
 
 
     @PutMapping("/update/{rentId}")
-    public ResponseEntity<RentTruck> update(@PathVariable int rentId, @RequestBody RentTruckRequest request) {
-        try {
-            RentTruck updatedRentTruck = rentTruckService.updateRentTruck(
-                    rentId,
-                    request.getRentDate(),
-                    request.getReturnDate(),
-                    request.getTotalCost(),
-                    request.isPaymentMade(),
-                    request.isReturned(),
-                    request.getCustomerID(),
-                    request.getVin(),
-                    request.getPickUpBranchId(),
-                    request.getDropOffBranchId()
-            );
+    public ResponseEntity<RentTruck> update(@PathVariable int rentId, @RequestBody RentTruck rentTruck) {
+        // Check if the RentTruck exists
+        if (!rentTruckRepository.existsById(rentId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        // Set the ID of the incoming rentTruck to update the existing entity
+        RentTruck existingRentTruck = rentTruckRepository.findById(rentId).orElse(null);
+
+        if (existingRentTruck != null) {
+
+            rentTruckService.update( rentTruck);
+
+            // Save the updated entity back to the database
+            RentTruck updatedRentTruck = rentTruckRepository.save(existingRentTruck);
+
             return ResponseEntity.ok(updatedRentTruck);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 

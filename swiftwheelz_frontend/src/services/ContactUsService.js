@@ -2,7 +2,6 @@ import axios from 'axios';
 
 const REST_API_BASE_URL = "http://localhost:8080/swiftwheelzdb/contactUs";
 
-// Function to fetch contact us data
 export const getContactUsId = async () => {
     try {
         console.info(`Fetching contactUs data from ${REST_API_BASE_URL}/getAll`);
@@ -15,7 +14,6 @@ export const getContactUsId = async () => {
         return response.data;  // Return the actual data
     } catch (error) {
         console.error('Error fetching contact info:', error);
-        throw error;  // Rethrow the error for potential handling upstream
     }
 };
 

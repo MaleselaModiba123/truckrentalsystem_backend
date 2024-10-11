@@ -31,30 +31,32 @@ class ComplaintServiceTest {
     private Complaint complaint;
     private Customer customer;
 
-    //@BeforeEach
+    @BeforeEach
     void setUp() {
         // Creating a new customer and saving it
         customer = new Customer.Builder()
-                .setFirstName("John")
-                .setLastName("Doe")
-                .setEmail("john.doe@example.com")
-                .setCellNo("1234567890")
-                .setLicense("ABCD1234")
-                .setPassword("securepassword")
+                .setFirstName("Thato")
+                .setLastName("Modiba")
+                .setEmail("Thato@email.com")
+                .setCellNo("0730735678")
+                .setLicense("1287jhgy")
+                .setPassword("Password?123")
                 .build();
 
         customer = customerRepository.save(customer);
 
         // Creating a complaint associated with the customer
         complaint = new Complaint.Builder()
-                .setDescription("Damaged truck")
+                .setDescription("Right rear tire puncture")
                 .setComplaintDate(LocalDate.now())
                 .setStatus("Pending")
+                .setResponse("None")
                 .setCustomer(customer)
                 .build();
 
         // Pass the entire Complaint object
-        complaint = complaintService.create(complaint);
+        String description = "Truck wheel not aligned properly";
+        complaint = complaintService.create(description, customer.getCustomerID());
         assertNotNull(complaint, "Complaint should be created and not null");
     }
 
@@ -100,7 +102,6 @@ class ComplaintServiceTest {
 
     @Test
     void d_getAll() {
-        // Get all complaints and verify that there are complaints present
         List<Complaint> allComplaints = complaintService.getAll();
         assertNotNull(allComplaints, "All complaints list should not be null");
         assertFalse(allComplaints.isEmpty(), "There should be at least one complaint present");
@@ -114,5 +115,19 @@ class ComplaintServiceTest {
         assertNotNull(customerComplaints, "Customer complaints list should not be null");
         assertFalse(customerComplaints.isEmpty(), "Customer should have at least one complaint");
         System.out.println("Complaints for Customer: " + customerComplaints);
+    }
+    @Test
+    void respondToComplaintTest() {
+        // Assume a complaint with ID 1 exists
+        int complaintId = 4;
+        String responseText = "Please return truck to your nearest Swift Wheels branch. ";
+
+        Complaint updatedComplaint = complaintService.respondToComplaint(complaintId, responseText);
+
+        assertNotNull(updatedComplaint, "Complaint should not be null after update");
+        assertEquals("Resolved", updatedComplaint.getStatus(), "Status should be updated to 'Resolved'");
+        assertEquals(responseText, updatedComplaint.getResponse(), "Response should match the admin's response");
+
+        System.out.println("Updated Complaint: " + updatedComplaint);
     }
 }

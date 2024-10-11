@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import {createRentTruck} from "../../services/RentTructService.js";
+import React, {useEffect, useState} from 'react';
+import {createRentTruck} from "../../services/RentTruckService.js";
 
 
 const PendingPayments = () => {
     const [pendingPayment, setPendingPayment] = useState(null);
-
+    // const [customerRentalCount, setCustomerRentalCount] = useState(0);
     useEffect(() => {
         const storedPayment = localStorage.getItem('paymentInfo');
         if (storedPayment) {
@@ -59,7 +59,23 @@ const PendingPayments = () => {
     };
 
     return (
+
         <div>
+            <style>
+                {`
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(-20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+
+                    h1, h2 {
+                        animation: fadeIn 1s ease-out;
+                        color: #007bff;
+                        font-size: 2.5rem;
+                        font-weight: bold;
+                    }
+                `}
+            </style>
             <h2>Pending Payment</h2>
             {!pendingPayment ? (
                 <p>No pending payment.</p>
