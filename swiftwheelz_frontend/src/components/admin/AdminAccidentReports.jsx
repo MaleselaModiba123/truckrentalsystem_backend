@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllAccidentReport } from "../../services/AccidentReportService.js";
+import { getAllAccidentReport, updateAccidentReport } from "../../services/AccidentReportService.js";
 
 const AdminAccidentReports = () => {
     const [accidentReports, setAccidentReports] = useState([]);
@@ -11,7 +11,7 @@ const AdminAccidentReports = () => {
     useEffect(() => {
         const fetchReports = async () => {
             try {
-                const result = await getAllAccidentReport(); // Use the imported function
+                const result = await getAllAccidentReport();
                 setAccidentReports(result.data);
                 setLoading(false);
             } catch (error) {
@@ -36,10 +36,10 @@ const AdminAccidentReports = () => {
         try {
             const updatedReport = {
                 ...accidentReports.find((report) => report.reportId === reportId),
-                adminResponse: responseText[reportId] // Assuming the backend supports this field
+                adminResponse: responseText[reportId]
             };
 
-            await updateAccidentReport(reportId, updatedReport); // Update to use the imported update function
+            await updateAccidentReport(reportId, updatedReport); // Update the report with admin response
             alert('Response submitted successfully.');
         } catch (error) {
             alert('Error submitting response.');
@@ -117,8 +117,6 @@ const AdminAccidentReports = () => {
                     <th style={styles.th}>Accident Date</th>
                     <th style={styles.th}>Description</th>
                     <th style={styles.th}>Location</th>
-                    <th style={styles.th}>Damage Cost</th>
-                    <th style={styles.th}>Truck ID</th>
                     <th style={styles.th}>Admin Response</th>
                 </tr>
                 </thead>
@@ -126,22 +124,18 @@ const AdminAccidentReports = () => {
                 {accidentReports.map((report) => (
                     <tr key={report.reportId}>
                         <td style={styles.td}>{report.reportId}</td>
-                        <td style={styles.td}>{report.customer ? report.customer.customerId : 'N/A'}</td>
+                        <td style={styles.td}>{report.customer ? report.customer.customerID : 'N/A'}</td>
                         <td style={styles.td}>{report.accidentDate}</td>
                         <td style={styles.td}>{report.description}</td>
                         <td style={styles.td}>{report.location}</td>
-                        <td style={styles.td}>{report.damageCost}</td>
-                        <td style={styles.td}>{report.truck ? report.truck.vin : 'N/A'}</td>
                         <td style={styles.td}>
-                <textarea
-                    style={styles.textarea}
-                    rows="3"
-                    placeholder="Enter your response"
-                    value={responseText[report.reportId] || ''}
-                    onChange={(e) =>
-                        handleResponseChange(report.reportId, e.target.value)
-                    }
-                />
+                                <textarea
+                                    style={styles.textarea}
+                                    rows="3"
+                                    placeholder="Enter your response"
+                                    value={responseText[report.reportId] || ''}
+                                    onChange={(e) => handleResponseChange(report.reportId, e.target.value)}
+                                />
                             <button
                                 style={styles.submitButton}
                                 onClick={() => handleResponseSubmit(report.reportId)}

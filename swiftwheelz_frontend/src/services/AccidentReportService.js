@@ -18,4 +18,4 @@ export const updateAccidentReport = (reportId, accidentReport) => axios.put(`${R
 export const deleteAccidentReportById = (reportId) => axios.delete(`${REST_API_BASE_URL}/delete/${reportId}`);
 
 // Fetch reports by customer ID
-export const getReportsByCustomerId = (customerId) => axios.get(`${REST_API_BASE_URL}/customer/${customerId}`);
+export const findReportsByCustomerId = async (customerId) => axios.get(`${REST_API_BASE_URL}/customer/${customerId}`);

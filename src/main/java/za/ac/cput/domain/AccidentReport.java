@@ -13,14 +13,9 @@ public class AccidentReport {
     private LocalDate accidentDate;
     private String description;
     private String location;
-    private double damageCost;
 
     @ManyToOne
-    @JoinColumn(name = "Vin")
-    private Truck truck;
-
-    @ManyToOne
-    @JoinColumn(name = "customerID")
+    @JoinColumn(name = "customerID", nullable = false)
     private Customer customer;
 
     protected AccidentReport() {
@@ -31,8 +26,6 @@ public class AccidentReport {
         this.accidentDate = builder.accidentDate;
         this.description = builder.description;
         this.location = builder.location;
-        this.damageCost = builder.damageCost;
-        this.truck = builder.truck;
         this.customer = builder.customer;
     }
 
@@ -52,14 +45,6 @@ public class AccidentReport {
         return location;
     }
 
-    public double getDamageCost() {
-        return damageCost;
-    }
-
-    public Truck getTruck() {
-        return truck;
-    }
-
     public Customer getCustomer() {
         return customer;
     }
@@ -69,12 +54,12 @@ public class AccidentReport {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AccidentReport that = (AccidentReport) o;
-        return reportId == that.reportId && Double.compare(damageCost, that.damageCost) == 0 && Objects.equals(accidentDate, that.accidentDate) && Objects.equals(description, that.description) && Objects.equals(location, that.location) && Objects.equals(truck, that.truck) && Objects.equals(customer, that.customer);
+        return reportId == that.reportId && Objects.equals(accidentDate, that.accidentDate) && Objects.equals(description, that.description) && Objects.equals(location, that.location) && Objects.equals(customer, that.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(reportId, accidentDate, description, location, damageCost, truck, customer);
+        return Objects.hash(reportId, accidentDate, description, location, customer);
     }
 
     @Override
@@ -84,8 +69,6 @@ public class AccidentReport {
                 ", accidentDate=" + accidentDate +
                 ", description='" + description + '\'' +
                 ", location='" + location + '\'' +
-                ", damageCost=" + damageCost +
-                ", truck=" + truck +
                 ", customer=" + customer +
                 '}';
     }
@@ -95,8 +78,6 @@ public class AccidentReport {
         private LocalDate accidentDate;
         private String description;
         private String location;
-        private double damageCost;
-        private Truck truck;
         private Customer customer;
 
         public Builder setReportId(int reportId) {
@@ -119,16 +100,6 @@ public class AccidentReport {
             return this;
         }
 
-        public Builder setDamageCost(double damageCost) {
-            this.damageCost = damageCost;
-            return this;
-        }
-
-        public Builder setTruck(Truck truck) {
-            this.truck = truck;
-            return this;
-        }
-
         public Builder setCustomer(Customer customer) {
             this.customer = customer;
             return this;
@@ -139,8 +110,6 @@ public class AccidentReport {
             this.accidentDate = accidentReport.accidentDate;
             this.description = accidentReport.description;
             this.location = accidentReport.location;
-            this.damageCost = accidentReport.damageCost;
-            this.truck = accidentReport.truck;
             this.customer = accidentReport.customer;
             return this;
         }
