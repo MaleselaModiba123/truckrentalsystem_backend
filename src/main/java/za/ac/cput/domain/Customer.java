@@ -23,7 +23,7 @@ public class Customer {
     private int rentalCount = 0;
     @OneToMany(mappedBy = "rentId",cascade = CascadeType.ALL)
     private List<RentTruck> rentedTruck;
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reportId", cascade = CascadeType.ALL)
     private List<AccidentReport> accidentReports;
 //    @ManyToOne
 //    @JoinColumn(name = "rentalAgentEmpNo", updatable = false)
