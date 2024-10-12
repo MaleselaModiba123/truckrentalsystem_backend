@@ -1,4 +1,9 @@
-package za.ac.cput.domain;
+package za.ac.cput.dto;
+
+import za.ac.cput.domain.Address;
+import za.ac.cput.domain.Contact;
+import za.ac.cput.domain.Name;
+import za.ac.cput.domain.Role;
 
 public class EmployeeRequest {
     private Name name;

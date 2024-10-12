@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom';
 import {getAdminDetails} from "../../services/EmployeesService.js";
+import {AuthContext} from "../AuthContext.jsx";
 
 const AdminPortal = () => {
     const location = useLocation();
@@ -8,30 +9,35 @@ const AdminPortal = () => {
     const path = location.pathname;
     const [admin, setAdmin] = useState(null);
     const [loading, setLoading] = useState(true);
-
+    const { auth, setAuth } = useContext(AuthContext);
     useEffect(() => {
         const fetchAdmin = async () => {
-            const email = localStorage.getItem('adminEmail');
-            if (email) {
+            if (auth) {
                 try {
-                    const response = await getAdminDetails(email);
-                    setAdmin(response.data);
+                    const response = await getAdminDetails(auth.contact.email);
+                    console.log("Admin details response:", response.data);
+                    setAdmin(response);
                 } catch (error) {
                     console.error('Error fetching admin details:', error);
+                    if (error.response && error.response.status === 401) {
+                        navigate('/sign-in'); // Redirect to sign-in if unauthorized
+                    }
                 } finally {
                     setLoading(false);
                 }
             } else {
                 console.error('No admin email found');
                 setLoading(false);
+                navigate('/sign-in');
             }
         };
         fetchAdmin();
-    }, []);
+    }, [auth,navigate]);
 
     const handleSignOut = () => {
-        localStorage.removeItem('authToken');
+        localStorage.removeItem('token');
         localStorage.removeItem('adminEmail');
+        setAuth(null);
         navigate('/home');
     };
 

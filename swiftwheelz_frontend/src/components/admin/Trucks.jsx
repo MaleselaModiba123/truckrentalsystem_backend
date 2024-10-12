@@ -370,11 +370,16 @@ const Trucks = () => {
                                 required
                             >
                                 <option value="">Select Truck Type</option>
-                                {truckTypes.map(type => (
-                                    <option key={type.truckTypeId} value={type.truckTypeId}>
-                                        {type.typeName}
-                                    </option>
-                                ))}
+                                {truckTypes?.length > 0 ? (
+                                    truckTypes.map(type => (
+                                        <option key={type.truckTypeId} value={type.truckTypeId}>
+                                            {type.typeName}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option value="" disabled>Loading truck types...</option>
+                                )}
+
                             </select>
                         </div>
                         <div className="form-group">
@@ -388,11 +393,20 @@ const Trucks = () => {
                                 required
                             >
                                 <option value="">Select Insurance</option>
-                                {insurances.map(ins => (
-                                    <option key={ins.insuranceID} value={ins.insuranceID}>
-                                        {ins.provider} - {ins.policyNumber}
-                                    </option>
-                                ))}
+                                {insurances?.length > 0 ? (
+                                    insurances.map(ins => (
+                                        <option key={ins.insuranceID} value={ins.insuranceID}>
+                                            {ins.provider} - {ins.policyNumber}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option value="" disabled>Loading truck types...</option>
+                                )}
+                                {/*{insurances.map(ins => (*/}
+                                {/*    <option key={ins.insuranceID} value={ins.insuranceID}>*/}
+                                {/*        {ins.provider} - {ins.policyNumber}*/}
+                                {/*    </option>*/}
+                                {/*))}*/}
                             </select>
                         </div>
                         <button type="submit" className="btn btn-primary">

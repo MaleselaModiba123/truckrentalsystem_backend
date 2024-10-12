@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.RentTruck;
-import za.ac.cput.domain.RentTruckRequest;
+import za.ac.cput.dto.RentTruckRequest;
 import za.ac.cput.repository.RentTruckRepository;
 import za.ac.cput.service.RentTruckService;
 
@@ -119,6 +119,17 @@ public class RentTruckController {
     public ResponseEntity<List<RentTruck>> getRentalsByCustomerId(@PathVariable int customerID) {
         try {
             List<RentTruck> rentals = rentTruckService.getRentalsByCustomerId(customerID);
+            return ResponseEntity.ok(rentals);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+    @GetMapping("/getRentalsByCustomerEmail")
+    public ResponseEntity<List<RentTruck>> getRentalsByCustomerEmail(@RequestParam String email) {
+        try {
+            List<RentTruck> rentals = rentTruckService.getRentalsByCustomerEmail(email);
             return ResponseEntity.ok(rentals);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);

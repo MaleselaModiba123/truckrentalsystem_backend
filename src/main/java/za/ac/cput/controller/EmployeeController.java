@@ -2,15 +2,17 @@ package za.ac.cput.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.Employee;
-import za.ac.cput.domain.EmployeeRequest;
+import za.ac.cput.dto.EmployeeRequest;
 import za.ac.cput.service.EmployeeService;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", exposedHeaders = "token")
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -89,7 +91,31 @@ public class EmployeeController {
             Employee employee = employeeService.getEmployeeByEmail(email);
             return ResponseEntity.ok(employee);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null);
+        }
+
+    }
+
+
+    @PostMapping("/authenticate")
+    public String authenticateEmployee(@RequestBody Employee employee) {
+        return employeeService.authenticateEmpUser(employee);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<Employee> getEmployeeProfile(Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        String email = authentication.getName(); // Get email from the authentication object
+        Employee employee = employeeService.getEmployeeByEmail(email);
+
+        if (employee != null) {
+            return ResponseEntity.ok(employee); // Return the customer profile
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Customer not found
         }
     }
 }

@@ -61,7 +61,11 @@ public class RentTruckService implements IRentTruckService{ //implement the inte
         if (!truck.isAvailability()) {
             throw new IllegalStateException("Truck is not available for rent");
         }
-
+        // Check for discount
+        customer.incrementRentalCount();
+        if (customer.getRentalCount() % 5 == 0) {
+            totalCost *= 0.90; // Apply 10% discount
+        }
         // Create RentTruck instance
         RentTruck rentTruck = new RentTruck.Builder()
                 .setRentDate(rentDate)
@@ -161,7 +165,17 @@ public class RentTruckService implements IRentTruckService{ //implement the inte
         return rentTruckRepository.findByCustomerID(customer);
     }
 
+    @Transactional
+    public List<RentTruck> getRentalsByCustomerEmail(String email) {
+        Customer customer = customerRepository.findByEmail(email);
 
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer not found with email: " + email);
+        }
+
+        // Fetching rentals associated with the customer
+        return rentTruckRepository.findByCustomerID(customer);
+    }
     @Transactional
     public RentTruck markAsReturned(int rentId) {
         RentTruck rentTruck = rentTruckRepository.findById(rentId)

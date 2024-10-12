@@ -1,4 +1,6 @@
-package za.ac.cput.domain;
+package za.ac.cput.dto;
+
+import za.ac.cput.domain.RentalStatus;
 
 import java.time.LocalDate;
 

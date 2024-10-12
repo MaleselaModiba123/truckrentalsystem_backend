@@ -1,13 +1,15 @@
 package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import za.ac.cput.domain.Customer;
 import za.ac.cput.service.CustomerService;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * CustomerController.java
@@ -16,13 +18,17 @@ import java.util.Map;
  * Date: 25 May 2024
  */
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins="*",exposedHeaders = "token")
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
-    @Autowired
-    private CustomerService customerService;
 
+    private final CustomerService customerService;
+
+    @Autowired
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
     @PostMapping("/create")
     public Customer create(@RequestBody Customer customer){
         return customerService.create(customer);
@@ -48,15 +54,28 @@ public class CustomerController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(@RequestBody Map<String, String> credentials) {
-        String email = credentials.get("email");
-        String password = credentials.get("password");
+    public String authenticateUser(@RequestBody Customer customer) {
+        return customerService.authenticateUser(customer);
+    }
+    @GetMapping("/findByEmail")
+    public ResponseEntity<Customer> getCustomerByEmail(@RequestParam String email) {
+        Customer customer = customerService.findByEmail(email);
+        return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
+    }
+    @GetMapping("/profile")
+    public ResponseEntity<Customer> getCustomerProfile(Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
 
-        Customer authenticatedCustomer = customerService.authenticate(email, password);
-        if (authenticatedCustomer != null) {
-            return ResponseEntity.ok(authenticatedCustomer);
+        String email = authentication.getName(); // Get email from the authentication object
+        Customer customer = customerService.findByEmail(email);
+
+        if (customer != null) {
+            return ResponseEntity.ok(customer); // Return the customer profile
         } else {
-            return ResponseEntity.status(401).body("Invalid email or password");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Customer not found
         }
     }
+
 }

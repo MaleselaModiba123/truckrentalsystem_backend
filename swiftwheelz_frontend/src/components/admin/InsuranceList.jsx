@@ -52,10 +52,11 @@ const InsuranceList = () => {
         setFilter(e.target.value);
     };
 
-    const filteredInsurances = insurances.filter((insurance) =>
+    const filteredInsurances = (insurances || []).filter((insurance) =>
         insurance.insuranceType.toLowerCase().includes(filter.toLowerCase()) ||
         insurance.policyNumber.toLowerCase().includes(filter.toLowerCase())
     );
+
 
     const handleEdit = (insurance) => {
         setFormData(insurance);

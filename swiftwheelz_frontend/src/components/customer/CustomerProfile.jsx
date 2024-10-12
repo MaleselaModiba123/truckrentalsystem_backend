@@ -1,22 +1,33 @@
-import React, { useContext, useEffect, useState } from "react";
-import { deleteCustomerById, finalizePayment, getCustomerById } from "../../services/CustomerService.js";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../AuthContext.jsx";
-import CustomerSidebar from "./CustomerSidebar.jsx";
+import React, {useContext, useEffect, useState} from "react";
+import {
+    deleteCustomerById,
+    finalizePayment,
+    getCustomerProfile,
+    updateCustomerProfile
+} from "../../services/CustomerService.js";
+import {useNavigate} from "react-router-dom";
+import {AuthContext} from "../AuthContext.jsx";
 
 const CustomerProfile = () => {
     const [customer, setCustomer] = useState(null);
     const [loading, setLoading] = useState(true);
     const [pendingPayment, setPendingPayment] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [updatedCustomer, setUpdatedCustomer] = useState({});
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [showUpdateConfirm, setShowUpdateConfirm] = useState(false);
     const { auth, setAuth } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCustomerData = async () => {
-            if (auth && auth.customerID !== undefined) {
+            if (auth) {
                 try {
-                    const response = await getCustomerById(auth.customerID);
-                    setCustomer(response.data);
+                    const customerData = await getCustomerProfile();
+                    setCustomer(customerData);
+                    setUpdatedCustomer(customerData);
                 } catch (error) {
                     console.error("Error retrieving customer data:", error);
                 } finally {
@@ -38,40 +49,73 @@ const CustomerProfile = () => {
         fetchCustomerData();
     }, [auth]);
 
-    const updateCustomer = (customerID) => {
-        navigate(`/update-customer/${customerID}`);
+    const toggleEdit = () => {
+        setIsEditing(!isEditing);
+        setSuccessMessage(''); // Reset messages when toggling edit
+        setErrorMessage('');
     };
 
-    const deleteAccount = async (customerID) => {
+    const handleInputChange = (e) => {
+        const {name, value} = e.target;
+        setUpdatedCustomer({...updatedCustomer, [name]: value});
+    };
+
+    const confirmUpdate = () => {
+        setShowUpdateConfirm(true);
+    };
+
+    const handleUpdate = async () => {
         try {
-            await deleteCustomerById(customerID);
+            await updateCustomerProfile(updatedCustomer);
+            setCustomer(updatedCustomer);
+            toggleEdit(); // Hide the edit form
+            setSuccessMessage("Profile updated successfully.");
+            setTimeout(() => setSuccessMessage(''), 2000);
+        } catch (error) {
+            console.error("Error updating customer profile:", error);
+            setErrorMessage("Failed to update profile.");
+            setTimeout(() => setErrorMessage(''), 2000);
+        } finally {
+            setShowUpdateConfirm(false);
+        }
+    };
+
+    const confirmDeleteAccount = () => {
+        setShowDeleteConfirm(true);
+    };
+
+    const deleteAccount = async () => {
+        try {
+            await deleteCustomerById(customer.customerID);
             setAuth(null);
             localStorage.removeItem('auth');
-            navigate('/');
+            setSuccessMessage("Account deleted successfully.");
+            setTimeout(() => setSuccessMessage(''), 2000);
+            navigate('/'); // Redirect to home page after deletion
         } catch (error) {
             console.error("Error deleting customer:", error);
+            setErrorMessage("Failed to delete account.");
+            setTimeout(() => setErrorMessage(''), 2000);
+        } finally {
+            setShowDeleteConfirm(false);
         }
     };
 
-    const handleFinalizePayment = async () => {
-        if (pendingPayment) {
-            try {
-                await finalizePayment(pendingPayment);
-                localStorage.removeItem('paymentInfo');
-                setPendingPayment(null);
-                alert('Payment successfully finalized.');
-            } catch (error) {
-                console.error('Error finalizing payment:', error);
-                alert('Failed to finalize payment.');
-            }
-        }
-    };
-
-    const handleSignOut = () => {
-        setAuth(null);
-        localStorage.removeItem('auth');
-        navigate('/');
-    };
+    // const handleFinalizePayment = async () => {
+    //     if (pendingPayment) {
+    //         try {
+    //             await finalizePayment(pendingPayment);
+    //             localStorage.removeItem('paymentInfo');
+    //             setPendingPayment(null);
+    //             setSuccessMessage('Payment successfully finalized.');
+    //             setTimeout(() => setSuccessMessage(''), 2000);
+    //         } catch (error) {
+    //             console.error('Error finalizing payment:', error);
+    //             setErrorMessage('Failed to finalize payment.');
+    //             setTimeout(() => setErrorMessage(''), 2000);
+    //         }
+    //     }
+    // };
 
     if (loading) {
         return <div style={styles.loading}>Loading...</div>;
@@ -83,7 +127,6 @@ const CustomerProfile = () => {
 
     return (
         <div style={styles.container}>
-            {/*<CustomerSidebar handleSignOut={handleSignOut}/>*/}
             <style>
                 {`
                     @keyframes fadeIn {
@@ -93,9 +136,9 @@ const CustomerProfile = () => {
 
                     h1, h2 {
                         animation: fadeIn 1s ease-out;
-                        color: #007bff;
-                        font-size: 2.5rem;
-                        font-weight: bold;
+                        color: #007bff; /* Blue color */
+                        font-size: 2.5rem; /* Font size */
+                        font-weight: bold; /* Font weight */
                     }
                 `}
             </style>
@@ -106,75 +149,111 @@ const CustomerProfile = () => {
                         <div style={styles.card}>
                             <div style={styles.cardBody}>
                                 <h4>Customer Details</h4>
+                                {(successMessage || errorMessage) && (
+                                    <div style={styles.message}>
+                                        {successMessage || errorMessage}
+                                    </div>
+                                )}
                                 <div style={styles.details}>
-                                    {[
-                                        {label: "Customer ID", value: customer.customerID},
-                                        {label: "First Name", value: customer.firstName},
-                                        {label: "Last Name", value: customer.lastName},
-                                        {label: "Email", value: customer.email},
-                                        {label: "Password", value: "••••••••"},
-                                        {label: "License", value: customer.license},
-                                        {label: "Cell Number", value: customer.cellNo}
-                                    ].map(({label, value}) => (
-                                        <div style={styles.detailItem} key={label}>
-                                            <span style={styles.detailLabel}>{label}:</span>
-                                            <span style={styles.detailValue}>{value}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                                <div style={styles.actionButtons}>
-                                    <button
-                                        style={styles.btnSuccess}
-                                        onClick={() => updateCustomer(customer.customerID)}
-                                    >
-                                        Update
-                                    </button>
-                                    <button
-                                        style={styles.btnDanger}
-                                        onClick={() => deleteAccount(customer.customerID)}
-                                    >
-                                        Delete
-                                    </button>
+                                    {isEditing ? (
+                                        <>
+                                            <input type="text" name="firstName" value={updatedCustomer.firstName}
+                                                   onChange={handleInputChange} placeholder="First Name"/>
+                                            <input type="text" name="lastName" value={updatedCustomer.lastName}
+                                                   onChange={handleInputChange} placeholder="Last Name"/>
+                                            <input type="email" name="email" value={updatedCustomer.email}
+                                                   onChange={handleInputChange} placeholder="Email"/>
+                                            <input type="text" name="cellNo" value={updatedCustomer.cellNo}
+                                                   onChange={handleInputChange} placeholder="Cell Number"/>
+                                            <div style={styles.actionButtons}>
+                                                <button style={styles.btnSuccess} onClick={confirmUpdate}>Save</button>
+                                                <button style={styles.btnCancel} onClick={toggleEdit}>Cancel</button>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {[{label: "Customer ID", value: customer.customerID},
+                                                {label: "First Name", value: customer.firstName},
+                                                {label: "Last Name", value: customer.lastName},
+                                                {label: "Email", value: customer.email},
+                                                {label: "Password", value: "**************"},
+                                                {label: "License", value: customer.license},
+                                                {label: "Cell Number", value: customer.cellNo}].map(({label, value}) => (
+                                                <div style={styles.detailItem} key={label}>
+                                                    <span style={styles.detailLabel}>{label}:</span>
+                                                    <span style={styles.detailValue}>{value}</span>
+                                                </div>
+                                            ))}
+                                            <div style={styles.actionButtons}>
+                                                <button style={styles.btnSuccess} onClick={toggleEdit}>Update</button>
+                                                <button style={styles.btnDanger} onClick={confirmDeleteAccount}>Delete
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </section>
 
-                    {pendingPayment && (
-                        <section style={styles.pendingPaymentSection}>
-                            <div style={styles.card}>
-                                <div style={styles.cardBody}>
-                                    <h4>Pending Payment</h4>
-                                    <div style={styles.details}>
-                                        {[
-                                            {label: "Model", value: pendingPayment.vin.model},
-                                            {label: "Pickup Location", value: pendingPayment.pickUp.branchName},
-                                            {label: "Drop-off Location", value: pendingPayment.dropOff.branchName},
-                                            {label: "Rental Date", value: pendingPayment.rentDate},
-                                            {label: "Return Date", value: pendingPayment.returnDate},
-                                            {label: "Total Cost", value: `R${pendingPayment.totalCost}`},
-                                            {label: "Payment Amount", value: `R${pendingPayment.paymentAmount}`}
-                                        ].map(({label, value}) => (
-                                            <div style={styles.detailItem} key={label}>
-                                                <span style={styles.detailLabel}>{label}:</span>
-                                                <span style={styles.detailValue}>{value}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <div style={styles.actionButtons}>
-                                        <button
-                                            style={styles.btnPrimary}
-                                            onClick={handleFinalizePayment}
-                                        >
-                                            Finalize Payment
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    )}
+                    {/*{pendingPayment && (*/}
+                    {/*    <section style={styles.pendingPaymentSection}>*/}
+                    {/*        <div style={styles.card}>*/}
+                    {/*            <div style={styles.cardBody}>*/}
+                    {/*                <h4>Pending Payment</h4>*/}
+                    {/*                <div style={styles.details}>*/}
+                    {/*                    {[{ label: "Model", value: pendingPayment.vin.model },*/}
+                    {/*                        { label: "Pickup Location", value: pendingPayment.pickUp.branchName },*/}
+                    {/*                        { label: "Drop-off Location", value: pendingPayment.dropOff.branchName },*/}
+                    {/*                        { label: "Rental Date", value: pendingPayment.rentDate },*/}
+                    {/*                        { label: "Return Date", value: pendingPayment.returnDate },*/}
+                    {/*                        { label: "Total Cost", value: `R${pendingPayment.totalCost}` },*/}
+                    {/*                        { label: "Payment Amount", value: `R${pendingPayment.paymentAmount}` }].map(({ label, value }) => (*/}
+                    {/*                        <div style={styles.detailItem} key={label}>*/}
+                    {/*                            <span style={styles.detailLabel}>{label}:</span>*/}
+                    {/*                            <span style={styles.detailValue}>{value}</span>*/}
+                    {/*                        </div>*/}
+                    {/*                    ))}*/}
+                    {/*                </div>*/}
+                    {/*                <div style={styles.actionButtons}>*/}
+                    {/*                    <button style={styles.btnPrimary} onClick={handleFinalizePayment}>Finalize Payment</button>*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </section>*/}
+                    {/*)}*/}
                 </div>
             </main>
+
+            {/* Confirmation dialog for delete */}
+            {showDeleteConfirm && (
+                <div style={styles.confirmDialog}>
+                    <div style={styles.confirmDialogContent}>
+                        <h4>Confirm Account Deletion</h4>
+                        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                        <div style={styles.confirmDialogActions}>
+                            <button style={styles.btnDanger} onClick={deleteAccount}>Yes, Delete</button>
+                            <button style={styles.btnCancel} onClick={() => setShowDeleteConfirm(false)}>No, Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Confirmation dialog for update */}
+            {showUpdateConfirm && (
+                <div style={styles.confirmDialog}>
+                    <div style={styles.confirmDialogContent}>
+                        <h4>Confirm Profile Update</h4>
+                        <p>Are you sure you want to save the changes to your profile?</p>
+                        <div style={styles.confirmDialogActions}>
+                            <button style={styles.btnSuccess} onClick={handleUpdate}>Yes, Save</button>
+                            <button style={styles.btnCancel} onClick={() => setShowUpdateConfirm(false)}>No, Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
@@ -215,23 +294,23 @@ const styles = {
     },
     detailItem: {
         display: 'flex',
-        alignItems: 'center',  // Align labels and values vertically in the middle
+        alignItems: 'center',
     },
     detailLabel: {
         fontWeight: 'bold',
         marginRight: '10px',
-        width: '150px',  // Fixed width to align labels vertically
+        width: '150px',
     },
     detailValue: {
         color: '#6c757d',
-        flex: 1,  // Allow the value to take up remaining space
+        flex: 1,
     },
     actionButtons: {
         display: 'flex',
         justifyContent: 'space-between',
     },
     btnSuccess: {
-        padding: '10px 20px',
+        padding: '10px 5px',
         border: 'none',
         borderRadius: '5px',
         backgroundColor: '#28a745',
@@ -242,10 +321,20 @@ const styles = {
         marginRight: '10px',
     },
     btnDanger: {
-        padding: '10px 20px',
+        padding: '10px 5px',
         border: 'none',
         borderRadius: '5px',
         backgroundColor: '#dc3545',
+        color: '#fff',
+        cursor: 'pointer',
+        fontSize: '16px',
+        flex: 1,
+    },
+    btnCancel: {
+        padding: '10px 5px',
+        border: 'none',
+        borderRadius: '5px',
+        backgroundColor: '#6c757d',
         color: '#fff',
         cursor: 'pointer',
         fontSize: '16px',
@@ -259,10 +348,35 @@ const styles = {
         textAlign: 'center',
         fontSize: '18px',
     },
+    message: {
+        color: '#28a745',
+        marginBottom: '15px',
+        textAlign: 'center',
+    },
+    confirmDialog: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+    },
+    confirmDialogContent: {
+        backgroundColor: '#fff',
+        padding: '20px',
+        borderRadius: '5px',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
+        textAlign: 'center',
+    },
+    confirmDialogActions: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginTop: '20px',
+    },
 };
-
-
-
-
 
 export default CustomerProfile;

@@ -286,35 +286,41 @@ function TruckTypes() {
                     </Typography>
                     <div style={{maxHeight: '600px', overflowY: 'auto'}}>
                         <List>
-                            {filteredTruckTypes.map((truckType) => (
-                                <ListItem
-                                    key={truckType.truckTypeId}
-                                    secondaryAction={
-                                        <>
-                                            <IconButton edge="end" onClick={() => handleEdit(truckType)}>
-                                                <EditIcon sx={{ color: '#ffc107' }} />
-                                            </IconButton>
-                                            <IconButton edge="end" onClick={() => handleDelete(truckType)}>
-                                                <DeleteIcon sx={{ color: '#dc3545' }} />
-                                            </IconButton>
-                                        </>
-                                    }
-                                >
-                                    <ListItemText
-                                        primary={truckType.typeName}
-                                        secondary={
+                            {filteredTruckTypes && filteredTruckTypes.length > 0 ? (
+                                filteredTruckTypes.map((truckType) => (
+                                    <ListItem
+                                        key={truckType.truckTypeId}
+                                        secondaryAction={
                                             <>
-                                                <span>Description: {truckType.description}</span><br/>
-                                                <span>Dimensions: {truckType.dimensions}</span><br/>
-                                                <span>Capacity: {truckType.capacity} tons</span><br/>
-                                                <span>Fuel Type: {truckType.fuelType}</span><br/>
-                                                <span>Transmission: {truckType.transmission}</span><br/>
-                                                <span>Fuel Consumption: {truckType.fuelConsumption} km/liter</span>
+                                                <IconButton edge="end" onClick={() => handleEdit(truckType)}>
+                                                    <EditIcon sx={{ color: '#ffc107' }} />
+                                                </IconButton>
+                                                <IconButton edge="end" onClick={() => handleDelete(truckType)}>
+                                                    <DeleteIcon sx={{ color: '#dc3545' }} />
+                                                </IconButton>
                                             </>
                                         }
-                                    />
+                                    >
+                                        <ListItemText
+                                            primary={truckType.typeName}
+                                            secondary={
+                                                <>
+                                                    <span>Description: {truckType.description}</span><br/>
+                                                    <span>Dimensions: {truckType.dimensions}</span><br/>
+                                                    <span>Capacity: {truckType.capacity} tons</span><br/>
+                                                    <span>Fuel Type: {truckType.fuelType}</span><br/>
+                                                    <span>Transmission: {truckType.transmission}</span><br/>
+                                                    <span>Fuel Consumption: {truckType.fuelConsumption} km/liter</span>
+                                                </>
+                                            }
+                                        />
+                                    </ListItem>
+                                ))
+                            ) : (
+                                <ListItem>
+                                    <ListItemText primary="No truck types found." />
                                 </ListItem>
-                            ))}
+                            )}
                         </List>
                     </div>
                 </Grid>

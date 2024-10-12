@@ -1,62 +1,72 @@
 import React, {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {authenticateUser} from "../../services/AuthenticationService.js";
-import {signIn as customerSignIn} from "../../services/CustomerService.js";
-import {AuthContext} from "../AuthContext.jsx";
+import {customerSignIn} from "../services/CustomerService.js";
+import {AuthContext} from "./AuthContext.jsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
+import {authenticateEmployee, getAdminDetails} from "../services/EmployeesService.js";
 
 const SignInComponent = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [user, setUser] = useState({email: '', password: ''});
     const [error, setError] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
     const navigate = useNavigate();
     const { setAuth } = useContext(AuthContext);
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setUser((prevUser) => ({...prevUser, [name]: value}));
+    };
 
     const handleSignIn = async (e) => {
         e.preventDefault();
         setError('');
 
         try {
-            const employeeResponse = await authenticateUser(email, password);
+            const employeeResponse = await authenticateEmployee(user.email, user.password);
 
-            if (employeeResponse.status === 200 && employeeResponse.data) {
-                const { role } = employeeResponse.data;
-                setAuth(employeeResponse.data);
-                // Save email to local storage or context
-                localStorage.setItem('adminEmail', email);
+            // Assuming the token is returned in the response directly
+            if (employeeResponse) {
+                const token = employeeResponse; // Adjust based on your backend response
+                localStorage.setItem('token', token);
+
+                const employeeDetails = await getAdminDetails(user.email); // Get employee details to determine role
+                const { role } = employeeDetails;
+                console.log("Emp role: ",role)
+                setAuth(employeeDetails);
 
                 switch (role) {
                     case "ADMIN":
                         navigate("/admin-portal/dashboard");
-                        break;
+                        return;
                     case "HELP_DESK":
                         navigate("/help-desk/dashboard");
-                        break;
+                        return;
                     case "CUSTOMER":
-                        await handleCustomerSignIn(email, password);
-                        break;
+                        // If the user is a customer, handle customer sign-in
+                        await handleCustomerSignIn();
+                        return;
                     default:
-                        setError('Unknown employee role');
+                        setError('Unknown role');
+                        return;
                 }
-                return;
             }
         } catch (error) {
             console.error("Employee authentication error:", error);
+            // setError('Invalid email or password');
         }
-        await handleCustomerSignIn(email, password);
+        // If the employee authentication fails, try customer sign-in
+        await handleCustomerSignIn();
     };
 
+    const handleCustomerSignIn = async () => {
+        try {
+            const customerResponse = await customerSignIn(user);
 
-    const handleCustomerSignIn = async (email, password) => {
-    try {
-            const customerResponse = await customerSignIn(email, password);
-
-            if (customerResponse.status === 200 && customerResponse.data) {
-                setAuth(customerResponse.data);
-                localStorage.setItem('customerID', customerResponse.data.customerID);
-                // Check if there is payment data in localStorage
+            if (customerResponse.status === 200) {
+                const token = customerResponse.data;
+                setAuth({email: user.email, token});
+                localStorage.setItem('token', token);
                 const paymentInfo = JSON.parse(localStorage.getItem('paymentInfo'));
                 navigate(paymentInfo ? "/customer/pending-payments" : "/customer/profile");
             } else {
@@ -74,10 +84,10 @@ const SignInComponent = () => {
                 <div className="col-md-8 col-lg-6">
                     <div
                         className="card shadow-sm border-light rounded-lg"
-                        style={{ backgroundColor: '#e0f7fa' }} // Very light blue background
+                        style={{backgroundColor: '#e0f7fa'}}
                     >
                         <div className="card-body">
-                            <h2 className="text-center mb-4" style={{ color: '#007bff' }}>Sign In</h2> {/* Match button color */}
+                            <h2 className="text-center mb-4" style={{color: '#007bff'}}>Sign In</h2>
                             <form onSubmit={handleSignIn}>
                                 <div className="form-group mb-3">
                                     <label className="form-label">Email</label>
@@ -85,8 +95,8 @@ const SignInComponent = () => {
                                         type="email"
                                         name="email"
                                         className="form-control"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        value={user.email}
+                                        onChange={handleChange}
                                         placeholder="Enter your email"
                                         required
                                     />
@@ -98,8 +108,8 @@ const SignInComponent = () => {
                                             type={passwordVisible ? 'text' : 'password'}
                                             name="password"
                                             className="form-control"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
+                                            value={user.password}
+                                            onChange={handleChange}
                                             placeholder="Enter your password"
                                             required
                                             style={{paddingRight: '40px'}}

@@ -1,23 +1,76 @@
- import axios from 'axios';
+import axios from 'axios';
 const REST_API_BASE_URL = "http://localhost:8080/swiftwheelzdb/rentTruck";
 
-export const getRentTrucks = () => axios.get(`${REST_API_BASE_URL}/getAll`);
-export const getRentTruckById = (rentTruckNumber) => axios.get(`${REST_API_BASE_URL}/read/${rentTruckNumber}`);
-export const createRentTruck = (rentTruck) => axios.post(`${REST_API_BASE_URL}/create`, rentTruck);
-export const deleteRentTruckById = (rentTruckNumber) => axios.delete(`${REST_API_BASE_URL}/delete/${rentTruckNumber}`);
-export const updateRentTruck = (rentId, rentTruck) => axios.put(`${REST_API_BASE_URL}/update/${rentId}`, rentTruck);
+// Function to set up axios with an authorization token
+const createAxiosInstance = (token) => {
+    return axios.create({
+        baseURL: REST_API_BASE_URL,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+};
 
-export const getRentalsByCustomerId = async (customerId) => axios.get(`${REST_API_BASE_URL}/getRentalsByCustomerId/${customerId}`);
+export const getRentTrucks = async (token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.get(`/getAll`);
+};
 
+export const getRentTruckById = async (rentTruckNumber, token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.get(`/read/${rentTruckNumber}`);
+};
 
-export const markTruckAsReturned = (rentId) =>
-    axios.patch(`${REST_API_BASE_URL}/markAsReturned/${rentId}`);
+export const createRentTruck = async (rentTruck, token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.post(`/create`, rentTruck);
+};
 
-export const getAvailableTrucks = () => axios.get(`${REST_API_BASE_URL}/not returned`);
-export const cancelRental = (cancellation) => axios.post(`${REST_API_BASE_URL}/cancel/cancel`, cancellation)
-export const getRentalsList = async (customerID) => {
+export const deleteRentTruckById = async (rentTruckNumber, token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.delete(`/delete/${rentTruckNumber}`);
+};
+
+export const updateRentTruck = async (rentId, rentTruck, token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.put(`/update/${rentId}`, rentTruck);
+};
+
+export const getRentalsByCustomerId = async (customerId, token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.get(`/getRentalsByCustomerId/${customerId}`);
+};
+
+export const getRentalsByCustomerEmail = async (customerEmail, token) => {
     try {
-        const response = await axios.get(`${REST_API_BASE_URL}/history/${customerID}`);
+        const axiosInstance = createAxiosInstance(token);
+        const response = await axiosInstance.get(`/getRentalsByCustomerEmail`, { params: { email: customerEmail } });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching rentals by customer email:", error);
+        throw error;
+    }
+};
+
+export const markTruckAsReturned = async (rentId, token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.patch(`/markAsReturned/${rentId}`);
+};
+
+export const getAvailableTrucks = async (token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.get(`/not returned`);
+};
+
+export const cancelRental = async (cancellation, token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.post(`/cancel/cancel`, cancellation);
+};
+
+export const getRentalsList = async (customerID, token) => {
+    try {
+        const axiosInstance = createAxiosInstance(token);
+        const response = await axiosInstance.get(`/history/${customerID}`);
         return response.data; // Return the data from the response
     } catch (error) {
         console.error("Error fetching rental history:", error);

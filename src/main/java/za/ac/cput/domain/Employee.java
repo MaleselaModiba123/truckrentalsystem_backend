@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 @Entity
 @Table(name = "employees")
-public class Employee {
+public class Employee{
     @Id
     @Column(name = "employee_number", length = 10)
     private String employeeNumber;
@@ -57,6 +57,11 @@ public class Employee {
 
     public String getPassword() {
         return password;
+    }
+
+//    @Override
+    public String getEmail() {
+        return contact.getEmail();
     }
 
     public Role getRole() {

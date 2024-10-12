@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Alert, Card, Col, Container, Row, Spinner} from 'react-bootstrap';
-import { getRentalsByCustomerId} from "../../services/RentTruckService.js";
+import {Alert, Button, Card, Col, Container, Row, Spinner} from 'react-bootstrap';
+import {getRentalsByCustomerEmail} from "../../services/RentTruckService.js";
 import {getAllBranches} from '../../services/BranchService.js';
-import {getCustomerById} from '../../services/CustomerService.js';
+import {getCustomerByEmail} from '../../services/CustomerService.js';
 import {AuthContext} from "../AuthContext.jsx";
 
 const RentalHistory = () => {
@@ -12,13 +12,16 @@ const RentalHistory = () => {
     const { auth } = useContext(AuthContext);
     const [error, setError] = useState(null);
     const [branches, setBranches] = useState([]);
-
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const rowsPerPage = 6;
     useEffect(() => {
         const fetchCustomerData = async () => {
-            if (auth?.customerID) {
+            if (auth?.email) {
                 try {
-                    const response = await getCustomerById(auth.customerID);
-                    setCustomer(response.data);
+                    const response = await getCustomerByEmail(auth.email);
+                    console.log("Customer email: ", auth.email)
+                    setCustomer(response);
                 } catch (error) {
                     console.error("Error retrieving customer data:", error);
                     setError(error);
@@ -43,11 +46,12 @@ const RentalHistory = () => {
     const fetchRentals = async () => {
         setLoading(true);
         try {
-            if (thisUser?.customerID) {
-                const response = await getRentalsByCustomerId(thisUser.customerID);
-                const rental = Array.isArray(response.data) ? response.data : [];
+            if (thisUser?.email) {
+                const token = auth?.token;
+                const response = await getRentalsByCustomerEmail(thisUser.email, token);
+                const rental = Array.isArray(response) ? response : [];
                 console.log("rental: ",rental);
-                setRentals(rental);;
+                setRentals(rental);
             }
         } catch (err) {
             console.error('Error fetching rentals:', err);
@@ -85,6 +89,13 @@ const RentalHistory = () => {
         );
     }
     const sortedRentals = rentals.sort((a, b) => new Date(b.rentDate) - new Date(a.rentDate));
+    const totalPages = Math.ceil(sortedRentals.length / rowsPerPage);
+
+    // Get current rentals based on pagination
+    const indexOfLastRental = currentPage * rowsPerPage;
+    const indexOfFirstRental = indexOfLastRental - rowsPerPage;
+    const currentRentals = sortedRentals.slice(indexOfFirstRental, indexOfLastRental);
+
     return (
         <Container className="my-5">
             <style>
@@ -134,11 +145,11 @@ const RentalHistory = () => {
                 `}
             </style>
             <h1 className="mb-4">Rental History</h1>
-            {sortedRentals.length === 0 ? (
+            {currentRentals.length === 0 ? (
                 <Alert variant="danger">No rentals found.</Alert>
             ) : (
                 <Row>
-                    {sortedRentals.map((rental) => (
+                    {currentRentals.map((rental) => (
                         <Col md={6} lg={4} className="mb-4" key={rental.rentId}>
                             <Card className="shadow-sm">
                                 <Card.Body>
@@ -156,7 +167,9 @@ const RentalHistory = () => {
                                         <br/>
                                         <strong>Total Cost:</strong> R {rental.totalCost?.toFixed(2) || '0.00'} <br/>
                                         <strong>Customer:</strong> {thisUser?.firstName} {thisUser?.lastName} <br/>
-                                        <p><strong>Status: </strong> {rental.status}</p>
+                                        <p style={{color: rental.status === 'ACTIVE' ? 'green' : 'red'}}>
+                                            <strong>Status: </strong> {rental.status}
+                                        </p>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
@@ -164,6 +177,25 @@ const RentalHistory = () => {
                     ))}
                 </Row>
             )}
+
+            {/* Pagination Controls */}
+            <div className="d-flex justify-content-between mt-4 mb-4">
+                <Button
+                    variant="secondary"
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                >
+                    Previous
+                </Button>
+                <span>Page {currentPage} of {totalPages}</span>
+                <Button
+                    variant="success"
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                >
+                    Next
+                </Button>
+            </div>
         </Container>
     );
 };

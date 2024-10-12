@@ -2,10 +2,15 @@ package za.ac.cput.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.*;
 import za.ac.cput.factory.EmployeeFactory;
 import za.ac.cput.repository.EmployeeRepository;
+import za.ac.cput.service.jwt.JwtService;
 
 import java.util.List;
 
@@ -14,16 +19,21 @@ public class EmployeeService implements IEmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeFactory employeeFactory;
-
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository, EmployeeFactory employeeFactory) {
+    public EmployeeService(EmployeeRepository employeeRepository, EmployeeFactory employeeFactory, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.employeeRepository = employeeRepository;
         this.employeeFactory = employeeFactory;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
     public Employee createEmployee(Name name, Contact contact, Address address, String password, Role role) {
-        Employee employee = employeeFactory.createEmployee(name, contact, address, password, role);
+        String encodedPassword = passwordEncoder.encode(password);
+        Employee employee = employeeFactory.createEmployee(name, contact, address, encodedPassword, role);
         return employeeRepository.save(employee);
     }
 
@@ -36,12 +46,15 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public Employee updateEmployee(String employeeNumber, Name name, Contact contact, Address address, String password, Role role) {
         Employee employee = read(employeeNumber);
+        // If a new password is provided, encrypt it; otherwise, retain the existing password
+        String encodedPassword = (password != null && !password.isEmpty()) ? passwordEncoder.encode(password) : employee.getPassword();
+
         employee = new Employee.Builder()
-                .setEmployeeNumber(employeeNumber)
+                .copy(employee)
                 .setName(name)
                 .setContact(contact)
                 .setAddress(address)
-                .setPassword(password)
+                .setPassword(encodedPassword)
                 .setRole(role)
                 .build();
         return employeeRepository.save(employee);
@@ -60,7 +73,28 @@ public class EmployeeService implements IEmployeeService {
 
 
     public Employee getEmployeeByEmail(String email) {
-        return employeeRepository.findByContactEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+        Employee employee = employeeRepository.findByContactEmail(email);
+        if (employee == null) {
+            throw new EntityNotFoundException("Employee not found for email: " + email);
+        }
+        return employee;
     }
+
+
+    public String authenticateEmpUser(Employee employee) {
+        System.out.println("Attempting to authenticate user: " + employee.getContact().getEmail());
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(employee.getContact().getEmail(), employee.getPassword())
+        );
+
+        if (authentication.isAuthenticated()) {
+            System.out.println("Attempting to authenticate user again: " + employee.getContact().getEmail() + "Password: " + employee.getPassword());
+
+            return jwtService.generateToken(employee.getContact().getEmail());
+    }
+
+        return "Failed to log in";
+    }
+
 }

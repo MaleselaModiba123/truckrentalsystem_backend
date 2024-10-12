@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Alert, Button, Card, Col, Container, Form, Modal, Row, Spinner} from 'react-bootstrap';
-import {cancelRental, getRentalsByCustomerId, updateRentTruck} from "../../services/RentTruckService.js";
+import {cancelRental, getRentalsByCustomerEmail, updateRentTruck} from "../../services/RentTruckService.js";
 import {getAllBranches} from '../../services/BranchService.js';
-import {getCustomerById} from '../../services/CustomerService.js';
+import {getCustomerByEmail} from '../../services/CustomerService.js';
 import {AuthContext} from "../AuthContext.jsx";
 
 const RentedTrucksList = () => {
@@ -10,7 +10,7 @@ const RentedTrucksList = () => {
     const [activeRentals, setActiveRentals] = useState([]);
     const [thisUser, setCustomer] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { auth } = useContext(AuthContext); 
+    const {auth} = useContext(AuthContext);
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [selectedRental, setSelectedRental] = useState(null);
@@ -24,14 +24,16 @@ const RentedTrucksList = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [cancellation, setCancellation] = useState({ reason: '' });
     const [selectedCancelRental, setSelectedCancelRental] = useState(null);
-
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const rowsPerPage = 6; // 2 rows with 3 columns
     // Fetch customer data based on authenticated user
     useEffect(() => {
         const fetchCustomerData = async () => {
-            if (auth?.customerID) {
+            if (auth?.email) {
                 try {
-                    const response = await getCustomerById(auth.customerID);
-                    setCustomer(response.data);
+                    const response = await getCustomerByEmail(auth.email);
+                    setCustomer(response);
                 } catch (error) {
                     console.error("Error retrieving customer data:", error);
                     setError(error);
@@ -56,9 +58,10 @@ const RentedTrucksList = () => {
     const fetchRentals = async () => {
         setLoading(true);
         try {
-            if (thisUser?.customerID) {
-                const response = await getRentalsByCustomerId(thisUser.customerID);
-                const rentalData = Array.isArray(response.data) ? response.data : [];
+            if (thisUser?.email) {
+                const token = auth?.token;
+                const response = await getRentalsByCustomerEmail(thisUser.email, token);
+                const rentalData = Array.isArray(response) ? response : [];
                 console.log("rental: ",rentalData);
                 const activeRentals = rentalData.filter(rentalData => rentalData.status === 'ACTIVE');
                 setRentals(rentalData);
@@ -74,8 +77,9 @@ const RentedTrucksList = () => {
 
     const fetchBranches = async () => {
         try {
-            const response = await getAllBranches();
-            setBranches(response.data); 
+            const token = auth?.token;
+            const response = await getAllBranches(token);
+            setBranches(response.data);
         } catch (err) {
             console.error('Error fetching branches:', err);
             setError(err);
@@ -112,7 +116,8 @@ const RentedTrucksList = () => {
                     rentDate: editFormData.rentDate,
                     returnDate: editFormData.returnDate,
                 };
-                await updateRentTruck(selectedRental.rentId, updatedRental);
+                const token = auth?.token;
+                await updateRentTruck(selectedRental.rentId, updatedRental, token);
                 console.log("rentIT to be updated",selectedRental.rentId);
                 console.log("updated rental data", updatedRental);
                 await fetchRentals();
@@ -125,9 +130,9 @@ const RentedTrucksList = () => {
     };
 
     const handleCancelRental = (rental) => {
-        setSelectedCancelRental(rental); 
-        setCancellation({ reason: "" });  
-        setShowCancelModal(true);  
+        setSelectedCancelRental(rental);
+        setCancellation({reason: ""});
+        setShowCancelModal(true);
     };
 
     const confirmCancelRental = async () => {
@@ -137,7 +142,8 @@ const RentedTrucksList = () => {
                     cancelReason: cancellation.reason,
                     rentTruck: selectedCancelRental,
                 };
-                await cancelRental(cancelData);
+                const token = auth?.token;
+                await cancelRental(cancelData, token);
                 console.log("Final cancellation object to send to backend:", cancelData);
                 fetchRentals();
                 setShowCancelModal(false);
@@ -167,6 +173,12 @@ const RentedTrucksList = () => {
         );
     }
     const sortedRentals = activeRentals.sort((a, b) => new Date(b.rentDate) - new Date(a.rentDate));
+    const totalPages = Math.ceil(sortedRentals.length / rowsPerPage);
+
+    // Get current rentals based on pagination
+    const indexOfLastRental = currentPage * rowsPerPage;
+    const indexOfFirstRental = indexOfLastRental - rowsPerPage;
+    const currentRentals = sortedRentals.slice(indexOfFirstRental, indexOfLastRental)
     return (
         <Container className="my-5">
             <style>
@@ -216,11 +228,11 @@ const RentedTrucksList = () => {
                 `}
             </style>
             <h1 className="mb-4">Rented Trucks</h1>
-            {sortedRentals.length === 0 ? (
+            {currentRentals.length === 0 ? (
                 <Alert variant="danger">No rentals found.</Alert>
             ) : (
                 <Row>
-                    {sortedRentals.map((rental) => (
+                    {currentRentals.map((rental) => (
                         <Col md={6} lg={4} className="mb-4" key={rental.rentId}>
                             <Card className="shadow-sm">
                                 <Card.Body>
@@ -238,7 +250,9 @@ const RentedTrucksList = () => {
                                         <br/>
                                         <strong>Total Cost:</strong> R {rental.totalCost?.toFixed(2) || '0.00'} <br/>
                                         <strong>Customer:</strong> {thisUser?.firstName} {thisUser?.lastName} <br/>
-                                        <p><strong>Status: </strong> {rental.status}</p>
+                                        <p style={{color: rental.status === 'ACTIVE' ? 'green' : 'red'}}>
+                                            <strong>Status: </strong> {rental.status}
+                                        </p>
                                     </Card.Text>
                                     <div className="d-flex justify-content-between">
                                         <Button onClick={() => handleEditRental(rental)} variant="primary">Edit
@@ -252,7 +266,24 @@ const RentedTrucksList = () => {
                     ))}
                 </Row>
             )}
-
+            {/* Pagination Controls */}
+            <div className="d-flex justify-content-between mt-4">
+                <Button
+                    variant="secondary"
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                >
+                    Previous
+                </Button>
+                <span>Page {currentPage} of {totalPages}</span>
+                <Button
+                    variant="success"
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                >
+                    Next
+                </Button>
+            </div>
             {/* Edit Rental Modal */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>

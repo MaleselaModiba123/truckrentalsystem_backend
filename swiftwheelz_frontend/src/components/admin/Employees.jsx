@@ -345,33 +345,40 @@ function Employees() {
                 </tr>
                 </thead>
                 <tbody>
-                {filteredEmployees.map((employee) => (
-                    <tr key={employee.employeeNumber}>
-                        <th scope="row">{employee.employeeNumber}</th>
-                        <td>{employee.name.firstName}</td>
-                        <td>{employee.name.lastName}</td>
-                        <td>{employee.contact.email}</td>
-                        <td>{employee.role}</td>
-                        <td>
-                            <Button
-                                variant="contained"
-                                color="warning"
-                                onClick={() => handleEdit(employee)} className="me-2"
-                            >
-                                <FontAwesomeIcon icon={faEdit}/>
-                            </Button>
+                {filteredEmployees && filteredEmployees.length > 0 ? (
+                    filteredEmployees.map((employee) => (
+                        <tr key={employee.employeeNumber}>
+                            <th scope="row">{employee.employeeNumber}</th>
+                            <td>{employee.name.firstName}</td>
+                            <td>{employee.name.lastName}</td>
+                            <td>{employee.contact.email}</td>
+                            <td>{employee.role}</td>
+                            <td>
+                                <Button
+                                    variant="contained"
+                                    color="warning"
+                                    onClick={() => handleEdit(employee)} className="me-2"
+                                >
+                                    <FontAwesomeIcon icon={faEdit}/>
+                                </Button>
 
-                            <Button
-                                variant="contained"
-                                color="error"
-                                onClick={() => handleDelete(employee.employeeNumber)}
-                            >
-                                <FontAwesomeIcon icon={faTrashAlt}/>
-                            </Button>
-                        </td>
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => handleDelete(employee.employeeNumber)}
+                                >
+                                    <FontAwesomeIcon icon={faTrashAlt}/>
+                                </Button>
+                            </td>
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan="6">No employees found</td>
                     </tr>
-                ))}
+                )}
                 </tbody>
+
             </Table>
         </div>
     );

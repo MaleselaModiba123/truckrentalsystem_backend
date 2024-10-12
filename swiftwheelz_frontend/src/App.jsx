@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import {BrowserRouter as Router, Navigate, Route, Routes,useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 import Home from './components/Home';
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
 import Branches from './components/Branches';
 import GetQuote from './components/GetQuote';
 import CustomerProfile from './components/customer/CustomerProfile';
-import CustomerComponent from './components/customer/CustomerComponent';
 import HeaderComponent from './components/HeaderComponent';
 import SignUpComponent from './components/customer/SignUpComponent';
-import SignInComponent from './components/customer/SignInComponent';
-import ConfirmDetails from './components/ConfirmDetails';
+import SignInComponent from './components/SignInComponent.jsx';
 import Payment from './components/Payment';
 import './App.css';
 import AdminPortal from './components/admin/AdminPortal';
@@ -86,7 +84,6 @@ function App() {
                         <Route path="/contact-us" element={<ContactUs />} />
                         <Route path="/sign-in" element={<SignInComponent />} />
                         <Route path="/sign-up" element={<SignUpComponent />} />
-                        <Route path="/update-customer/:customerID" element={<CustomerComponent />} />
 
                         {/* Customer Routes wrapped in layout */}
                         <Route path="/customer/*" element={<CustomerLayout />}>
@@ -99,7 +96,6 @@ function App() {
                         </Route>
 
                         <Route path="/get-quote/:truckId" element={<GetQuote />} />
-                        <Route path="/confirm-details" element={<ConfirmDetails />} />
                         <Route path="/payment" element={<Payment />} />
                     </Routes>
                 </div>
