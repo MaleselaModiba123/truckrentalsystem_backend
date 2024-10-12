@@ -55,6 +55,21 @@ public class ComplaintController {
         return complaintService.getAll();
     }
 
+    @GetMapping("/getByCustomerId/{customerId}")
+    public ResponseEntity<List<Complaint>> getComplaintsByCustomerId(@PathVariable int customerId) {
+        try {
+            List<Complaint> complaints = complaintService.getComplaintsByCustomerId(customerId);
+            if (complaints.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(complaints, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PutMapping("/respondToComplaint/{complaintId}")
     public ResponseEntity<Complaint> respondToComplaint(@PathVariable int complaintId, @RequestBody Map<String, String> payload) {
         String responseText = payload.get("response");

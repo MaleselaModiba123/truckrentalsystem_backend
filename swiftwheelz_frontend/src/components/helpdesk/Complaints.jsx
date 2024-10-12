@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAllComplaints, sendResponse } from '../../services/ComplaintService.js';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
 const Complaints = () => {
     const [complaints, setComplaints] = useState([]);
@@ -7,6 +8,7 @@ const Complaints = () => {
     const [responseText, setResponseText] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState('');
 
     // Fetch complaints on component mount
     useEffect(() => {
@@ -25,7 +27,7 @@ const Complaints = () => {
         fetchComplaints();
     }, []);
 
-
+    // Handle the submission of the response to a complaint
     const handleResponseSubmit = async (event) => {
         event.preventDefault();
 
@@ -35,7 +37,9 @@ const Complaints = () => {
             const response = await sendResponse(selectedComplaint.complaintId, responseText);
             console.log('Response from server:', response.data);
 
-            alert('Response submitted successfully!');
+            setSuccessMessage('Response submitted successfully!');
+            setTimeout(() => setSuccessMessage(''), 3000);
+
             setSelectedComplaint(null);
             setResponseText('');
         } catch (error) {
@@ -45,45 +49,82 @@ const Complaints = () => {
     };
 
     if (loading) {
-        return <p>Loading complaints...</p>;
+        return <div className="text-center my-5"><div className="spinner-border text-primary"></div> Loading complaints...</div>;
     }
 
     if (error) {
-        return <p>Error: {error}</p>;
+        return <div className="alert alert-danger text-center" role="alert">Error: {error}</div>;
     }
 
     return (
-        <div className="complaints-list">
-            <h2>Customer Complaints</h2>
-            <ul>
+        <div className="container mt-4">
+            <h2 className="text-center">Customer Complaints</h2>
+
+            {successMessage && <div className="alert alert-success text-center">{successMessage}</div>}
+
+            <div className="row">
                 {complaints.length > 0 ? (
                     complaints.map((complaint) => (
-                        <li key={complaint.complaintId}>
-                            <h3>Complaint ID: {complaint.complaintId}</h3>
-                            <p><strong>Description:</strong> {complaint.description}</p>
-                            <p><strong>Status:</strong> {complaint.status}</p>
-                            <button onClick={() => setSelectedComplaint(complaint)}>Respond</button>
-                        </li>
+                        <div className="col-md-6 mb-4" key={complaint.complaintId}>
+                            <div className="card shadow-sm">
+                                <div className="card-body">
+                                    <h5 className="card-title">Complaint ID: {complaint.complaintId}</h5>
+                                    <p className="card-text"><strong>Description:</strong> {complaint.description}</p>
+                                    <p className="card-text"><strong>Status:</strong> {complaint.status}</p>
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={() => setSelectedComplaint(complaint)}
+                                    >
+                                        Respond
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     ))
                 ) : (
-                    <p>No complaints available.</p>
+                    <p className="text-center">No complaints available.</p>
                 )}
-            </ul>
+            </div>
 
-            {/* Display the response form when a complaint is selected */}
+            {/* Modal for responding to a complaint */}
             {selectedComplaint && (
-                <div className="complaint-response">
-                    <h3>Respond to Complaint ID: {selectedComplaint.complaintId}</h3>
-                    <form onSubmit={handleResponseSubmit}>
-                        <textarea
-                            value={responseText}
-                            onChange={(e) => setResponseText(e.target.value)}
-                            placeholder="Your response"
-                            required
-                        ></textarea>
-                        <button type="submit">Send Response</button>
-                        <button type="button" onClick={() => setSelectedComplaint(null)}>Cancel</button>
-                    </form>
+                <div className="modal show d-block" tabIndex="-1">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Respond to Complaint ID: {selectedComplaint.complaintId}</h5>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    onClick={() => setSelectedComplaint(null)}
+                                ></button>
+                            </div>
+                            <div className="modal-body">
+                                <form onSubmit={handleResponseSubmit}>
+                                    <div className="mb-3">
+                                        <textarea
+                                            className="form-control"
+                                            value={responseText}
+                                            onChange={(e) => setResponseText(e.target.value)}
+                                            placeholder="Your response"
+                                            required
+                                            rows="4"
+                                        ></textarea>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="submit" className="btn btn-success">Send Response</button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-secondary"
+                                            onClick={() => setSelectedComplaint(null)}
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

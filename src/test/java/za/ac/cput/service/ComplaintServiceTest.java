@@ -31,7 +31,7 @@ class ComplaintServiceTest {
     private Complaint complaint;
     private Customer customer;
 
-    @BeforeEach
+    //@BeforeEach
     void setUp() {
         // Creating a new customer and saving it
         customer = new Customer.Builder()
