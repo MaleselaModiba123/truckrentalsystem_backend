@@ -33,15 +33,14 @@ class AccidentReportControllerTest {
     @Autowired
     private static TruckRepository truckRepository;
     private static Customer customer1;
-    private static Truck truck1;
 
     @BeforeAll
     public static void setUp() {
         customer1 = customerRepository.findById(3245).orElseThrow();
-        truck1 = truckRepository.findById("1245").orElseThrow();
+
 
         accidentReport = AccidentReportFactory.buildAccidentReport(123, LocalDate.of(2024,3,21),
-                "Truck bumped into the pothole", "Durban ICC", 500.0,truck1 , customer1);
+                "Truck bumped into the pothole", "Durban ICC", customer1);
     }
 
     @Test

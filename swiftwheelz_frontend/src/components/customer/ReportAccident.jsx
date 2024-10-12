@@ -1,29 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { getReportsByCustomerId, createAccidentReport, updateAccidentReport, deleteAccidentReportById } from "../../services/AccidentReportService.js";
+import React, { useContext, useEffect, useState } from 'react';
+import {
+    findReportsByCustomerId,
+    createAccidentReport,
+    updateAccidentReport,
+    deleteAccidentReportById
+} from "../../services/AccidentReportService.js";
+import { AuthContext } from "../AuthContext.jsx";
 
-const ReportAccident = ({ customerId }) => {
+const ReportAccident = () => {
     const [reports, setReports] = useState([]);
     const [editingReport, setEditingReport] = useState(null);
+    const { auth } = useContext(AuthContext);
     const [formData, setFormData] = useState({
         accidentDate: '',
         description: '',
         location: '',
-        damageCost: '',
-        truckVin: '',
-        customerId: customerId // Include customer ID from the logged-in user
+        customer: { customerID: auth.customerID }
     });
 
     // Fetch customer-specific reports on page load
     useEffect(() => {
-        fetchReports();
-    }, []);
+        if (auth.customerID) {
+            fetchReports();
+        } else {
+            console.error("No customer ID found in auth context.");
+        }
+    }, [auth.customerID]);
 
     const fetchReports = async () => {
         try {
-            const response = await getReportsByCustomerId(customerId);
-            setReports(response.data);
+            const response = await findReportsByCustomerId(auth.customerID);
+            console.log("Reports response:", response); // Log the response
+            if (response && response.data) {
+                setReports(response.data);
+            } else {
+                console.error("Unexpected response structure:", response);
+            }
         } catch (error) {
-            console.error("Error fetching reports", error);
+            if (error.response) {
+                console.error("Error fetching reports", error.response.data);
+            } else {
+                console.error("Error fetching reports", error.message);
+            }
         }
     };
 
@@ -37,21 +55,25 @@ const ReportAccident = ({ customerId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const dataToSend = {
+                accidentDate: formData.accidentDate,
+                description: formData.description,
+                location: formData.location,
+                customer: { customerID: auth.customerID }
+            };
+
             if (editingReport) {
-                // Update existing report
-                await updateAccidentReport(editingReport.reportId, formData);
+                await updateAccidentReport(editingReport.reportId, dataToSend);
                 setEditingReport(null); // Reset editing state
             } else {
-                // Create new report
-                await createAccidentReport(formData);
+                await createAccidentReport(dataToSend);
             }
+
             setFormData({
                 accidentDate: '',
                 description: '',
                 location: '',
-                damageCost: '',
-                truckVin: '',
-                customerId: customerId // Reset customerId after form submission
+                customer: { customerID: auth.customerID }
             });
             fetchReports(); // Refresh the list of reports
         } catch (error) {
@@ -66,9 +88,7 @@ const ReportAccident = ({ customerId }) => {
             accidentDate: report.accidentDate,
             description: report.description,
             location: report.location,
-            damageCost: report.damageCost,
-            truckVin: report.truck.vin,
-            customerId: report.customer.customerId
+            customer: { customerID: report.customer.customerID }
         });
     };
 
@@ -192,7 +212,7 @@ const ReportAccident = ({ customerId }) => {
             cursor: 'pointer'
         },
         response: {
-            color: '#28a745', // Green for admin responses
+            color: '#28a745',
             fontStyle: 'italic',
         }
     };
@@ -235,28 +255,7 @@ const ReportAccident = ({ customerId }) => {
                         required
                     />
                 </div>
-                <div style={styles.formGroup}>
-                    <label style={styles.label}>Damage Cost</label>
-                    <input
-                        type="number"
-                        name="damageCost"
-                        style={styles.input}
-                        value={formData.damageCost}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div style={styles.formGroup}>
-                    <label style={styles.label}>Truck VIN</label>
-                    <input
-                        type="text"
-                        name="truckVin"
-                        style={styles.input}
-                        value={formData.truckVin}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
+
                 <button type="submit" style={styles.button}>
                     {editingReport ? 'Update Report' : 'Create Report'}
                 </button>
@@ -271,9 +270,7 @@ const ReportAccident = ({ customerId }) => {
                     <th style={styles.th}>Date</th>
                     <th style={styles.th}>Description</th>
                     <th style={styles.th}>Location</th>
-                    <th style={styles.th}>Damage Cost</th>
-                    <th style={styles.th}>Truck VIN</th>
-                    <th style={styles.th}>Admin Response</th> {/* New column for admin response */}
+                    <th style={styles.th}>Admin Response</th>
                     <th style={styles.th}>Actions</th>
                 </tr>
                 </thead>
@@ -284,8 +281,6 @@ const ReportAccident = ({ customerId }) => {
                         <td style={styles.td}>{report.accidentDate}</td>
                         <td style={styles.td}>{report.description}</td>
                         <td style={styles.td}>{report.location}</td>
-                        <td style={styles.td}>{report.damageCost}</td>
-                        <td style={styles.td}>{report.truck.vin}</td>
                         <td style={styles.td}>
                             <span style={styles.response}>
                                 {report.adminResponse ? report.adminResponse : 'No response yet'}

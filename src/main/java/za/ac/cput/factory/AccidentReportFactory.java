@@ -9,18 +9,16 @@ import java.time.LocalDate;
 
 public class AccidentReportFactory {
     public static AccidentReport buildAccidentReport(int reportId, LocalDate accidentDate, String description,
-                                                     String location, double damageCost, Truck truck, Customer customer) {
+                                                     String location, Customer customer) {
         if (Helper.isIntNotValid(reportId) || accidentDate == null
                 || Helper.isNullOrEmpty(description) || Helper.isNullOrEmpty(location)
-                || Helper.isDoubleNotValid(damageCost) || truck == null || customer == null) {
+                || customer == null) {
             return null;
         }
         return new AccidentReport.Builder().setReportId(reportId)
                 .setAccidentDate(accidentDate)
                 .setDescription(description)
                 .setLocation(location)
-                .setDamageCost(damageCost)
-                .setTruck(truck)
                 .setCustomer(customer)
                 .build();
     }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.AccidentReport;
+import za.ac.cput.domain.RentTruck;
 import za.ac.cput.repository.AccidentReportRepository;
 import za.ac.cput.service.AccidentReportService;
 
@@ -46,6 +47,18 @@ public class AccidentReportController {
         return accidentReportService.getAll();
     }
 
+//    @GetMapping("/getReportsByCustomerId/{customerID}")
+//    public ResponseEntity<List<AccidentReport>> findReportsByCustomerId(@PathVariable int customerID) {
+//        try {
+//            List<AccidentReport> reports = accidentReportService.findReportsByCustomerId(customerID);
+//            return ResponseEntity.ok(reports);
+//        } catch (IllegalArgumentException e) {
+//            return ResponseEntity.badRequest().body(null);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(500).body(null);
+//        }
+//    }
+    
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<List<AccidentReport>> getReportsByCustomerId(@PathVariable int customerId) {
         List<AccidentReport> reports = accidentReportService.getReportsByCustomerId(customerId);
