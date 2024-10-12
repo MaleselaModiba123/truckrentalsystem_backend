@@ -9,7 +9,7 @@ const RentalHistory = () => {
     const [rentals, setRentals] = useState([]);
     const [thisUser, setCustomer] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { auth } = useContext(AuthContext); 
+    const { auth } = useContext(AuthContext);
     const [error, setError] = useState(null);
     const [branches, setBranches] = useState([]);
 
@@ -60,7 +60,7 @@ const RentalHistory = () => {
     const fetchBranches = async () => {
         try {
             const response = await getAllBranches();
-            setBranches(response.data); 
+            setBranches(response.data);
         } catch (err) {
             console.error('Error fetching branches:', err);
             setError(err);
