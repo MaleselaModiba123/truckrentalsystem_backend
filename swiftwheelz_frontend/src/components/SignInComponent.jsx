@@ -4,7 +4,7 @@ import {customerSignIn} from "../services/CustomerService.js";
 import {AuthContext} from "./AuthContext.jsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
-import {employeeSignIn,authenticateEmployee, getAdminDetails} from "../services/EmployeesService.js";
+import {employeeSignIn, getAdminDetails} from "../services/EmployeesService.js";
 
 const SignInComponent = () => {
     const [user, setUser] = useState({email: '', password: ''});
@@ -22,13 +22,18 @@ const SignInComponent = () => {
         e.preventDefault();
         setError('');
 
-        // Try to sign in as employee
         const employeeResponse = await handleEmployeeSignIn();
+
         if (employeeResponse) {
-            return; // Early return if employee sign-in is successful
+            return;
         }
-        // If the employee authentication fails, try customer sign-in
-        await handleCustomerSignIn();
+        // If employee sign-in fails, try customer sign-in
+        const customerResponse = await handleCustomerSignIn();
+
+        // Check if customer sign-in failed
+        if (!customerResponse) {
+            setError('Invalid email or password'); // Set error only if both attempts failed
+        }
     };
 
     const handleEmployeeSignIn = async () => {
@@ -56,13 +61,11 @@ const SignInComponent = () => {
                         return false; // Indicate failure
                 }
             } else {
-                setError('Invalid email or password');
-                return false; // Indicate failure
+                return false;
             }
         } catch (error) {
             console.error("Employee authentication error:", error);
-            setError('Invalid email or password');
-            return false; // Indicate failure
+            return false;
         }
     };
     const handleCustomerSignIn = async () => {
@@ -75,13 +78,12 @@ const SignInComponent = () => {
                 localStorage.setItem('token', token);
                 const paymentInfo = JSON.parse(localStorage.getItem('paymentInfo'));
                 navigate(paymentInfo ? "/customer/pending-payments" : "/customer/profile");
-            } else {
-                setError('Invalid email or password');
+                return true;
             }
         } catch (error) {
             console.error("Customer authentication error:", error);
-            setError('Invalid email or password');
         }
+        return false;
     };
 
     return (
