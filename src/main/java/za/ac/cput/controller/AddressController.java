@@ -8,7 +8,7 @@ import za.ac.cput.service.AddressService;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*",exposedHeaders = "token")
 @RestController
 @RequestMapping("/address")
 public class AddressController {

@@ -21,4 +21,5 @@ public interface RentTruckRepository extends JpaRepository<RentTruck, Integer> {
     List<RentTruck> findByCustomerIDAndIsPaymentMadeTrue(Customer customer);
 
     List<RentTruck> findByIsReturnedFalse();
+    boolean existsByCustomerIDAndIsReturnedFalse(Customer customer);
 }

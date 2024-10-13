@@ -38,15 +38,8 @@ export const deleteCustomerById = async (customerID) => {
 };
 
 
-export const createCustomer = async (customer) => {
-    try {
-        const response = await axios.post(`${REST_API_BASE_URL}/create`, customer, getAuthHeaders());
-        return response.data; // Return created customer data
-    } catch (error) {
-        console.error("Error creating customer:", error);
-        throw error; // Re-throw error for handling in the calling function
-    }
-};
+export const createCustomer = (customer) =>
+    axios.post(`${REST_API_BASE_URL}/create`, customer);
 
 export const getCustomerProfile = async () => {
     try {

@@ -17,7 +17,7 @@ import java.util.List;
  * Date: 25 May 2024
  * */
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*",exposedHeaders = "token")
 @RestController
 @RequestMapping("/truck")
 public class TruckController {

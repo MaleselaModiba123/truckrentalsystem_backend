@@ -18,7 +18,7 @@ import java.util.Optional;
  * @author Thandolwethu Zamasiba Khoza (221797289)
  * Date: 27 May 2024
  */
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", exposedHeaders = "token")
 @RestController
 @RequestMapping("/rentTruck")
 public class RentTruckController {
@@ -110,7 +110,7 @@ public class RentTruckController {
         }
     }
 
-    @GetMapping("/not returned")
+    @GetMapping("/not-returned")
     public ResponseEntity<List<RentTruck>> getAvailableTrucks() {
         List<RentTruck> availableTrucks = rentTruckService.getAvailableRentTrucks();
         return ResponseEntity.ok(availableTrucks);

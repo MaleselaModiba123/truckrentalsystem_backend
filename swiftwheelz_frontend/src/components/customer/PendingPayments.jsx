@@ -1,10 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {createRentTruck} from "../../services/RentTruckService.js";
-
+import React, { useEffect, useState, useContext } from 'react';
+import { createRentTruck} from "../../services/RentTruckService.js";
+import { AuthContext } from '../AuthContext.jsx';
+import {getCustomerByEmail} from "../../services/CustomerService.js";
 
 const PendingPayments = () => {
+    const { auth } = useContext(AuthContext);
     const [pendingPayment, setPendingPayment] = useState(null);
-    // const [customerRentalCount, setCustomerRentalCount] = useState(0);
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         const storedPayment = localStorage.getItem('paymentInfo');
         if (storedPayment) {
@@ -22,61 +26,60 @@ const PendingPayments = () => {
             console.error('No payment information available.');
             return;
         }
+
+        const token = auth?.token;
+        if (!token) {
+            setError('You must be signed in to finalize the payment.');
+            return;
+        }
+
+        setLoading(true); // Set loading state
+
         try {
-            const customerID = localStorage.getItem('customerID'); // Retrieve customerID from localStorage
-            if (!customerID) {
-                console.error('No customer ID found.');
-                return;
-            }
+            if (auth?.email) {
+                const customerResponse = await getCustomerByEmail(auth.email);
+                console.log("Signed in customer email:",auth.email)
+                const customerID = customerResponse.customerID; // Adjust based on your response structure
+                if (!customerID) {
+                    setError('No customer ID found.');
+                    return;
+                }
 
-            const rentTruckData = {
-                rentDate: pendingPayment.rentDate,
-                returnDate: pendingPayment.returnDate,
-                totalCost: pendingPayment.totalCost,
-                isPaymentMade: true, // Mark payment as completed
-                customerID: parseInt(customerID, 10),
-                vin: pendingPayment.vin.vin,
-                pickUpBranchId: pendingPayment.pickUp.branchId,
-                dropOffBranchId: pendingPayment.dropOff.branchId,
-            };
+                const rentTruckData = {
+                    rentDate: pendingPayment.rentDate,
+                    returnDate: pendingPayment.returnDate,
+                    totalCost: pendingPayment.totalCost,
+                    isPaymentMade: true,
+                    customerID: parseInt(customerID, 10),
+                    vin: pendingPayment.vin.vin,
+                    pickUpBranchId: pendingPayment.pickUp.branchId,
+                    dropOffBranchId: pendingPayment.dropOff.branchId,
+                };
 
-            console.log('Sending payload:', rentTruckData); // Log payload for debugging
+                console.log('Sending payload:', rentTruckData);
 
-            // Create the RentTruck
-            const response = await createRentTruck(rentTruckData);
-            if (response.status === 200) {
-                localStorage.removeItem('paymentInfo');
-                localStorage.removeItem('customerID'); // Clear customerID from localStorage
-                setPendingPayment(null);
-                alert('Payment successfully finalized.');
-            } else {
-                alert('Failed to finalize payment.');
+                const response = await createRentTruck(rentTruckData, token);
+                if (response.status === 200) {
+                    localStorage.removeItem('paymentInfo');
+                    setPendingPayment(null);
+                    alert('Payment successfully finalized.');
+                } else {
+                    setError('Failed to finalize payment.');
+                }
             }
         } catch (error) {
             console.error('Error finalizing payment:', error.response ? error.response.data : error.message);
-            alert('Failed to finalize payment.');
+            setError('Failed to finalize payment.');
+        } finally {
+            setLoading(false); // Reset loading state
         }
     };
 
     return (
-
         <div>
-            <style>
-                {`
-                    @keyframes fadeIn {
-                        from { opacity: 0; transform: translateY(-20px); }
-                        to { opacity: 1; transform: translateY(0); }
-                    }
-
-                    h1, h2 {
-                        animation: fadeIn 1s ease-out;
-                        color: #007bff;
-                        font-size: 2.5rem;
-                        font-weight: bold;
-                    }
-                `}
-            </style>
             <h2>Pending Payment</h2>
+            {error && <p className="text-danger">{error}</p>}
+            {loading && <p>Loading...</p>}
             {!pendingPayment ? (
                 <p>No pending payment.</p>
             ) : (
@@ -86,7 +89,7 @@ const PendingPayments = () => {
                     <p><strong>Drop-off Location:</strong> {pendingPayment.dropOff.branchName}</p>
                     <p><strong>Total Cost:</strong> R{pendingPayment.totalCost}</p>
                     <p><strong>Payment Amount:</strong> R{pendingPayment.paymentAmount}</p>
-                    <button onClick={handleFinalizePayment}>
+                    <button onClick={handleFinalizePayment} disabled={loading}>
                         Finalize Payment
                     </button>
                 </div>

@@ -4,7 +4,7 @@ import {customerSignIn} from "../services/CustomerService.js";
 import {AuthContext} from "./AuthContext.jsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
-import {authenticateEmployee, getAdminDetails} from "../services/EmployeesService.js";
+import {employeeSignIn,authenticateEmployee, getAdminDetails} from "../services/EmployeesService.js";
 
 const SignInComponent = () => {
     const [user, setUser] = useState({email: '', password: ''});
@@ -22,43 +22,49 @@ const SignInComponent = () => {
         e.preventDefault();
         setError('');
 
-        try {
-            const employeeResponse = await authenticateEmployee(user.email, user.password);
-
-            // Assuming the token is returned in the response directly
-            if (employeeResponse) {
-                const token = employeeResponse; // Adjust based on your backend response
-                localStorage.setItem('token', token);
-
-                const employeeDetails = await getAdminDetails(user.email); // Get employee details to determine role
-                const { role } = employeeDetails;
-                console.log("Emp role: ",role)
-                setAuth(employeeDetails);
-
-                switch (role) {
-                    case "ADMIN":
-                        navigate("/admin-portal/dashboard");
-                        return;
-                    case "HELP_DESK":
-                        navigate("/help-desk/dashboard");
-                        return;
-                    case "CUSTOMER":
-                        // If the user is a customer, handle customer sign-in
-                        await handleCustomerSignIn();
-                        return;
-                    default:
-                        setError('Unknown role');
-                        return;
-                }
-            }
-        } catch (error) {
-            console.error("Employee authentication error:", error);
-            // setError('Invalid email or password');
+        // Try to sign in as employee
+        const employeeResponse = await handleEmployeeSignIn();
+        if (employeeResponse) {
+            return; // Early return if employee sign-in is successful
         }
         // If the employee authentication fails, try customer sign-in
         await handleCustomerSignIn();
     };
 
+    const handleEmployeeSignIn = async () => {
+        try {
+            const employeeResponse = await employeeSignIn(user);
+
+            if (employeeResponse.status === 200) {
+                const token = employeeResponse.data;
+                setAuth({ email: user.email, token });
+                localStorage.setItem('token', token);
+
+                const employeeDetails = await getAdminDetails(user.email);
+                const { role } = employeeDetails;
+                setAuth(employeeDetails);
+
+                switch (role) {
+                    case "ADMIN":
+                        navigate("/admin-portal/dashboard");
+                        return true; // Successful sign-in
+                    case "HELP_DESK":
+                        navigate("/help-desk/dashboard");
+                        return true; // Successful sign-in
+                    default:
+                        setError('Unknown role');
+                        return false; // Indicate failure
+                }
+            } else {
+                setError('Invalid email or password');
+                return false; // Indicate failure
+            }
+        } catch (error) {
+            console.error("Employee authentication error:", error);
+            setError('Invalid email or password');
+            return false; // Indicate failure
+        }
+    };
     const handleCustomerSignIn = async () => {
         try {
             const customerResponse = await customerSignIn(user);

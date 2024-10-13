@@ -6,7 +6,7 @@ import za.ac.cput.domain.Insurance;
 import za.ac.cput.service.InsuranceService;
 
 import java.util.List;
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*",exposedHeaders = "token")
 @RestController
 @RequestMapping("/insurance")
 public class InsuranceController {

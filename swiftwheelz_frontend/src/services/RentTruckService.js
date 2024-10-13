@@ -59,7 +59,7 @@ export const markTruckAsReturned = async (rentId, token) => {
 
 export const getAvailableTrucks = async (token) => {
     const axiosInstance = createAxiosInstance(token);
-    return axiosInstance.get(`/not returned`);
+    return axiosInstance.get(`/not-returned`);
 };
 
 export const cancelRental = async (cancellation, token) => {

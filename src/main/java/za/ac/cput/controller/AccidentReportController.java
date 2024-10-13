@@ -11,7 +11,7 @@ import za.ac.cput.service.AccidentReportService;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*",exposedHeaders = "token")
 @RestController
 @RequestMapping("/accidentReport")
 public class AccidentReportController {

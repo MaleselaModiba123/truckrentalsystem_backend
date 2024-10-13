@@ -104,5 +104,14 @@ export const getEmployeeProfile = async () => {
     }
 };
 
+export const employeeSignIn = async (user) => {
+    const employee = {
+        contact: {
+        email: user.email,
+        },
+        password: user.password,
+    };
+    return await axios.post(`${REST_API_BASE_URL}/authenticate`, employee);
+};
 
 

@@ -51,6 +51,10 @@ public class RentTruckService implements IRentTruckService{ //implement the inte
                                      int customerId, String truckVin, int pickUpBranchId, int dropOffBranchId, RentalStatus status) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID"));
+        // Check if the customer has any unreturned rentals
+        if (rentTruckRepository.existsByCustomerIDAndIsReturnedFalse(customer)) {
+            throw new IllegalStateException("Customer has an unreturned rental. Please return it before renting another truck.");
+        }
         Truck truck = truckRepository.findById(truckVin)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid truck VIN"));
         Branch pickUpBranch = branchRepository.findById(pickUpBranchId)
