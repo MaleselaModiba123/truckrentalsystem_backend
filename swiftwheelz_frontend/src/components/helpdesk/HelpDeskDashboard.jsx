@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { getAdminDetails } from "../../services/EmployeesService.js";
+import {AuthContext} from "../AuthContext.jsx";
 
 const HelpDeskDashboard = () => {
     const location = useLocation();
@@ -8,14 +9,14 @@ const HelpDeskDashboard = () => {
     const path = location.pathname;
     const [helpDeskUser, setHelpDeskUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { auth, setAuth } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchHelpDeskUser = async () => {
-            const email = localStorage.getItem('adminEmail');
-            if (email) {
+            if (auth) {
                 try {
-                    const response = await getAdminDetails(email);
-                    setHelpDeskUser(response.data);
+                    const response = await getAdminDetails(auth.contact.email);
+                    setHelpDeskUser(response);
                 } catch (error) {
                     console.error('Error fetching help desk user details:', error);
                 } finally {
@@ -30,8 +31,8 @@ const HelpDeskDashboard = () => {
     }, []);
 
     const handleSignOut = () => {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('helpDeskEmail');
+        localStorage.removeItem('token');
+        setAuth(null);
         navigate('/home');
     };
 
