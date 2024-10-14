@@ -99,7 +99,7 @@ function App() {
                         <Route path="/payment" element={<Payment />} />
                     </Routes>
                 </div>
-                {/*<FooterComponent />*/}
+
             </div>
         </Router>
     );

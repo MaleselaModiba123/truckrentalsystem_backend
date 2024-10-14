@@ -34,14 +34,15 @@ const InsuranceList = () => {
     const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
     const [isSaveConfirmDialogOpen, setIsSaveConfirmDialogOpen] = useState(false);
     const [insuranceToDelete, setInsuranceToDelete] = useState(null);
-
+    const token = localStorage.getItem('token');
     useEffect(() => {
         fetchInsurances();
     }, []);
 
     const fetchInsurances = async () => {
+
         try {
-            const response = await getAllInsurance();
+            const response = await getAllInsurance(token);
             setInsurances(response.data);
         } catch (error) {
             console.error('Error fetching insurances:', error);
@@ -72,7 +73,7 @@ const InsuranceList = () => {
     const confirmDelete = async () => {
         if (insuranceToDelete) {
             try {
-                await deleteInsuranceById(insuranceToDelete.insuranceID);
+                await deleteInsuranceById(insuranceToDelete.insuranceID, token);
                 fetchInsurances();
                 setInsuranceToDelete(null);
             } catch (error) {
@@ -101,9 +102,9 @@ const InsuranceList = () => {
     const confirmSave = async () => {
         try {
             if (editing) {
-                await updateInsurance(formData.insuranceID, formData);
+                await updateInsurance(formData.insuranceID, formData, token);
             } else {
-                await createInsurance(formData);
+                await createInsurance(formData, token);
             }
             setIsModalOpen(false);
             fetchInsurances();

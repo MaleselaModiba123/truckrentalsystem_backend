@@ -39,7 +39,7 @@ const Trucks = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const trucksPerPage = 6;
-
+    const token = localStorage.getItem('token');
     useEffect(() => {
         fetchTrucks();
         fetchTruckTypes();
@@ -65,7 +65,7 @@ const Trucks = () => {
 
     const fetchTrucks = async () => {
         try {
-            const response = await getAllTrucks();
+            const response = await getAllTrucks(token);
             setTrucks(response.data);
         } catch (error) {
             console.error("Error fetching trucks:", error);
@@ -74,7 +74,7 @@ const Trucks = () => {
 
     const fetchTruckTypes = async () => {
         try {
-            const response = await getAllTruckTypes();
+            const response = await getAllTruckTypes(token);
             setTruckTypes(response.data);
         } catch (error) {
             console.error("Error fetching truck types:", error);
@@ -83,7 +83,7 @@ const Trucks = () => {
 
     const fetchInsurances = async () => {
         try {
-            const response = await getAllInsurance();
+            const response = await getAllInsurance(token);
             setInsurances(response.data);
         } catch (error) {
             console.error("Error fetching insurances:", error);
@@ -145,7 +145,7 @@ const Trucks = () => {
             if (selectedTruck) {
                 setShowUpdateConfirm(true);
             } else {
-                await createTruck(formState);
+                await createTruck(formState, token);
                 setConfirmationMessage('Truck created successfully!');
                 setMessageType('success');
                 fetchTrucks();
@@ -161,7 +161,8 @@ const Trucks = () => {
 
     const confirmUpdate = async () => {
         try {
-            await updateTruck({...formState, vin: selectedTruck.vin});
+            await updateTruck({...formState, vin: selectedTruck.vin, token});
+            console.log("Token in update:", token)
             setConfirmationMessage('Truck updated successfully!');
             setMessageType('success');
             setShowUpdateConfirm(false);
@@ -197,7 +198,7 @@ const Trucks = () => {
 
     const confirmDelete = async () => {
         try {
-            await deleteTruck(truckToDelete);
+            await deleteTruck(truckToDelete, token);
             setConfirmationMessage('Truck deleted successfully!');
             setMessageType('success');
             fetchTrucks();

@@ -44,7 +44,7 @@ function Employees() {
     const [editing, setEditing] = useState(false);
     const [currentEmployeeNumber, setCurrentEmployeeNumber] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
-
+    const token = localStorage.getItem('token');
     useEffect(() => {
         fetchEmployees();
     }, []);
@@ -54,7 +54,7 @@ function Employees() {
     }, [employees, searchQuery]);
 
     const fetchEmployees = async () => {
-        const response = await getEmployees();
+        const response = await getEmployees(token);
         setEmployees(response.data);
     };
 
@@ -96,9 +96,9 @@ function Employees() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (editing) {
-            await updateEmployee(currentEmployeeNumber, newEmployee);
+            await updateEmployee(currentEmployeeNumber, newEmployee,token);
         } else {
-            await createEmployee(newEmployee);
+            await createEmployee(newEmployee,token);
         }
         setEditing(false);
         fetchEmployees();
@@ -144,7 +144,7 @@ function Employees() {
     };
 
     const handleDelete = async (employeeNumber) => {
-        await deleteEmployeeById(employeeNumber);
+        await deleteEmployeeById(employeeNumber,token);
         fetchEmployees();
     };
 

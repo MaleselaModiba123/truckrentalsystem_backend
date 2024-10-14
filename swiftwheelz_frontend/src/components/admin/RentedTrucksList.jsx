@@ -10,7 +10,7 @@ const RentedTrucksList = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [selectedRental, setSelectedRental] = useState(null);
-
+    const token = localStorage.getItem('token');
     useEffect(() => {
         fetchRentals();
     }, []);
@@ -18,7 +18,7 @@ const RentedTrucksList = () => {
     const fetchRentals = async () => {
         setLoading(true);
         try {
-            const response = await getAvailableTrucks();
+            const response = await getAvailableTrucks(token);
             setRentals(response.data);
         } catch (err) {
             setError(err);
@@ -35,7 +35,7 @@ const RentedTrucksList = () => {
     const confirmMarkAsReturned = async () => {
         if (selectedRental) {
             try {
-                await markTruckAsReturned(selectedRental.rentId);
+                await markTruckAsReturned(selectedRental.rentId,token);
                 fetchRentals();
                 setSelectedRental(null);
                 setShowModal(false);

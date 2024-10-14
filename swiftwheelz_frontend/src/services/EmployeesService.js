@@ -8,16 +8,21 @@ const getAuthHeaders = () => ({
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
     },
 });
+// Function to set up axios with an authorization token
+const createAxiosInstance = (token) => {
+    return axios.create({
+        baseURL: REST_API_BASE_URL,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+};
 
 // Fetch all employees
-export const getEmployees = async () => {
-    try {
-        const response = await axios.get(`${REST_API_BASE_URL}/getAllEmployees`, getAuthHeaders());
-        return response.data; // Return the list of employees
-    } catch (error) {
-        console.error("Error fetching employees:", error);
-        throw error; // Re-throw error for handling in the calling function
-    }
+export const getEmployees = async (token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.get(`${REST_API_BASE_URL}/getAllEmployees`);
+
 };
 
 // Fetch employee by ID
@@ -32,35 +37,24 @@ export const getEmployeeById = async (employeeNumber) => {
 };
 
 // Create a new employee
-export const createEmployee = async (employee) => {
-    try {
-        const response = await axios.post(`${REST_API_BASE_URL}/create`, employee, getAuthHeaders());
-        return response.data; // Return created employee data
-    } catch (error) {
-        console.error("Error creating employee:", error);
-        throw error; // Re-throw error for handling in the calling function
-    }
+export const createEmployee = async (employee, token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.post(`${REST_API_BASE_URL}/create`, employee);
+
 };
 
 // Delete an employee by ID
-export const deleteEmployeeById = async (employeeNumber) => {
-    try {
-        await axios.delete(`${REST_API_BASE_URL}/delete/${employeeNumber}`, getAuthHeaders());
-    } catch (error) {
-        console.error("Error deleting employee by ID:", error);
-        throw error; // Re-throw error for handling in the calling function
-    }
+export const deleteEmployeeById = async (employeeNumber, token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.delete(`${REST_API_BASE_URL}/delete/${employeeNumber}`);
+
 };
 
 // Update an employee
-export const updateEmployee = async (employeeNumber, employee) => {
-    try {
-        const response = await axios.put(`${REST_API_BASE_URL}/update/${employeeNumber}`, employee, getAuthHeaders());
-        return response.data; // Return updated employee data
-    } catch (error) {
-        console.error("Error updating employee:", error);
-        throw error; // Re-throw error for handling in the calling function
-    }
+export const updateEmployee = async (employeeNumber, employee, token) => {
+    const axiosInstance = createAxiosInstance(token);
+    return axiosInstance.put(`${REST_API_BASE_URL}/update/${employeeNumber}`, employee);
+
 };
 
 // Get admin details by email

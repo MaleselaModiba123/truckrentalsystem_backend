@@ -51,14 +51,14 @@ function TruckTypes() {
     const [truckTypeToDelete, setTruckTypeToDelete] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
-
+    const token = localStorage.getItem('token');
     useEffect(() => {
         fetchTruckTypes();
     }, []);
 
     const fetchTruckTypes = async () => {
         try {
-            const response = await getAllTruckTypes();
+            const response = await getAllTruckTypes(token);
             setTruckTypes(response.data);
             setFilteredTruckTypes(response.data);
         } catch (error) {
@@ -87,10 +87,10 @@ function TruckTypes() {
         try {
             let updatedTruckTypes = [...truckTypes];
             if (actionType === 'add') {
-                const response = await createTruckType(formState);
+                const response = await createTruckType(formState,token);
                 updatedTruckTypes.push(response.data);
             } else if (actionType === 'update') {
-                const response = await updateTruckType(selectedTruckType.truckTypeId, formState);
+                const response = await updateTruckType(selectedTruckType.truckTypeId, formState,token);
                 updatedTruckTypes = updatedTruckTypes.map(tt =>
                     tt.truckTypeId === response.data.truckTypeId ? response.data : tt
                 );
@@ -127,7 +127,7 @@ function TruckTypes() {
     const confirmDelete = async () => {
         try {
             if (truckTypeToDelete) {
-                await deleteTruckTypeById(truckTypeToDelete.truckTypeId);
+                await deleteTruckTypeById(truckTypeToDelete.truckTypeId,token);
                 const updatedTruckTypes = truckTypes.filter(tt => tt.truckTypeId !== truckTypeToDelete.truckTypeId);
                 setTruckTypes(updatedTruckTypes);
                 setFilteredTruckTypes(updatedTruckTypes);
