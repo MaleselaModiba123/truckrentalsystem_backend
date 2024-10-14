@@ -73,26 +73,6 @@ export const getAdminDetails = async (email) => {
         throw error; // Re-throw error for handling in the calling function
     }
 };
-// Authenticate employee
-export const authenticateEmployee = async (email, password) => {
-    try {
-        const response = await axios.post(`${REST_API_BASE_URL}/authenticate`, {
-            contact: {
-                email: email // Directly use the email variable
-            },
-            password: password // Directly use the password variable
-        });
-
-        if (response.data === "Failed to log in") {
-            throw new Error("Invalid email or password");
-        }
-
-        return response.data; // Return the JWT token if authentication is successful
-    } catch (error) {
-        console.error("Error authenticating employee:", error);
-        throw error; // Re-throw error for handling in the calling function
-    }
-};
 
 export const getEmployeeProfile = async () => {
     try {
@@ -103,7 +83,7 @@ export const getEmployeeProfile = async () => {
         throw error; // Re-throw error for handling in the calling function
     }
 };
-
+// Authenticate employee
 export const employeeSignIn = async (user) => {
     const employee = {
         contact: {

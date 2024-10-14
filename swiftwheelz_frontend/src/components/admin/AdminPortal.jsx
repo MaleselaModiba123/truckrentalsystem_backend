@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom';
-import {getAdminDetails} from "../../services/EmployeesService.js";
+import {getAdminDetails, getEmployeeProfile} from "../../services/EmployeesService.js";
 import {AuthContext} from "../AuthContext.jsx";
 
 const AdminPortal = () => {
@@ -14,7 +14,7 @@ const AdminPortal = () => {
         const fetchAdmin = async () => {
             if (auth) {
                 try {
-                    const response = await getAdminDetails(auth.contact.email);
+                    const response = await getEmployeeProfile();
                     console.log("Admin details response:", response.data);
                     setAdmin(response);
                 } catch (error) {
@@ -36,7 +36,6 @@ const AdminPortal = () => {
 
     const handleSignOut = () => {
         localStorage.removeItem('token');
-        localStorage.removeItem('adminEmail');
         setAuth(null);
         navigate('/home');
     };

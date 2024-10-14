@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { getAdminDetails } from "../../services/EmployeesService.js";
+import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom';
+import {getEmployeeProfile} from "../../services/EmployeesService.js";
 import {AuthContext} from "../AuthContext.jsx";
 
 const HelpDeskDashboard = () => {
@@ -15,7 +15,7 @@ const HelpDeskDashboard = () => {
         const fetchHelpDeskUser = async () => {
             if (auth) {
                 try {
-                    const response = await getAdminDetails(auth.contact.email);
+                    const response = await getEmployeeProfile();
                     setHelpDeskUser(response);
                 } catch (error) {
                     console.error('Error fetching help desk user details:', error);
