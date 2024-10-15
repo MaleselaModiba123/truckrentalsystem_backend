@@ -9,12 +9,12 @@ const Complaints = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
-
+    const token = localStorage.getItem('token');
     // Fetch complaints on component mount
     useEffect(() => {
         const fetchComplaints = async () => {
             try {
-                const response = await getAllComplaints();
+                const response = await getAllComplaints(token);
                 setComplaints(response.data);
             } catch (error) {
                 setError(error.message);

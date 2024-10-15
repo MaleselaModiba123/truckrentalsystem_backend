@@ -161,8 +161,7 @@ const Trucks = () => {
 
     const confirmUpdate = async () => {
         try {
-            await updateTruck({...formState, vin: selectedTruck.vin, token});
-            console.log("Token in update:", token)
+            await updateTruck({...formState, vin: selectedTruck.vin}, token);
             setConfirmationMessage('Truck updated successfully!');
             setMessageType('success');
             setShowUpdateConfirm(false);

@@ -18,13 +18,18 @@ const HelpDeskDashboard = () => {
                     const response = await getEmployeeProfile();
                     setHelpDeskUser(response);
                 } catch (error) {
-                    console.error('Error fetching help desk user details:', error);
+                    console.error('Error fetching help-desk details:', error);
+                    if (error.response && error.response.status === 401) {
+                        navigate('/sign-in'); // Redirect to sign-in if unauthorized
+                    }
                 } finally {
                     setLoading(false);
                 }
             } else {
                 console.error('No help desk email found');
                 setLoading(false);
+                navigate('/sign-in');
+
             }
         };
         fetchHelpDeskUser();

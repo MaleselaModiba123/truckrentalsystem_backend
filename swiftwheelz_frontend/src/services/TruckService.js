@@ -26,13 +26,18 @@ export const createTruck = async (truckData, token) => {
     Object.keys(truckData).forEach(key => {
         formData.append(key, truckData[key]);
     });
-       return  axiosInstance.post(`/truck/create`, formData, {
+    try {
+        const response = await axiosInstance.post(`/truck/create`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
 
             },
         });
-
+        return response.data; // Return the response data
+    } catch (error) {
+        console.error("Error creating truck:", error);
+        throw error; // Rethrow the error for further handling
+    }
 
 };
 
@@ -43,13 +48,17 @@ export const updateTruck = async (truckData, token) => {
     Object.keys(truckData).forEach(key => {
         formData.append(key, truckData[key]);
     });
-
-    return axiosInstance.put(`/truck/update`, formData, {
+    try {
+        const response = await axiosInstance.put(`/truck/update`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
-
+        return response.data; // Return the response data
+    } catch (error) {
+        console.error("Error updating truck:", error);
+        throw error; // Rethrow the error for further handling
+    }
 };
 
 // Delete a truck by VIN
