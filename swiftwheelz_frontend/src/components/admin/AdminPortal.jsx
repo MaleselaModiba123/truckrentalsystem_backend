@@ -259,37 +259,6 @@ const AdminPortal = () => {
                                 </Link>
                             </li>
 
-                            {/* Reports Button */}
-                            <li className="nav-item">
-                                <Link
-                                    className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/admin-reports') ? 'active' : ''}`}
-                                    to="/admin-portal/dashboard/admin-reports"
-                                    style={{fontSize: '20px', transition: 'all 0.3s ease'}}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.fontSize = '21px';
-                                        e.currentTarget.style.fontWeight = 'bold';
-                                        e.currentTarget.style.backgroundColor = '#f8f9fa';
-                                        e.currentTarget.style.color = '#0056b3';
-                                        e.currentTarget.style.borderRadius = '4px';
-                                        e.currentTarget.style.textDecoration = 'none';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.fontSize = '20px';
-                                        e.currentTarget.style.fontWeight = 'normal';
-                                        e.currentTarget.style.backgroundColor = 'transparent';
-                                        e.currentTarget.style.color = '#0056b3';
-                                    }}
-                                >
-                                    <i className="bi bi-exclamation-triangle me-2"></i>
-                                    Reports
-                                </Link>
-                            </li>
-
-                            {/* Divider */}
-                            <li className="nav-item">
-                                <hr className="my-3" style={{borderTop: '3px solid #dc3545'}}/>
-                            </li>
-
                             {/* Sign Out Button */}
                             <li className="nav-item mt-auto">
                                 <button

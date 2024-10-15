@@ -87,11 +87,12 @@ const HelpDeskDashboard = () => {
                                 </span>
                             </li>
 
+                            {/* Reports Button */}
                             <li className="nav-item">
                                 <Link
-                                    className={`nav-link d-flex align-items-center ${path.startsWith('/help-desk/dashboard/accident-reports') ? 'active' : ''}`}
-                                    to="/help-desk/dashboard/accident-reports"
-                                    style={{ fontSize: '20px', transition: 'all 0.3s ease' }}
+                                    className={`nav-link d-flex align-items-center ${path.startsWith('/help-desk/dashboard/customerAccidentReports') ? 'active' : ''}`}
+                                    to="/help-desk/dashboard/customerAccidentReports"
+                                    style={{fontSize: '20px', transition: 'all 0.3s ease'}}
                                     onMouseEnter={(e) => {
                                         e.currentTarget.style.fontSize = '21px';
                                         e.currentTarget.style.fontWeight = 'bold';
@@ -107,9 +108,14 @@ const HelpDeskDashboard = () => {
                                         e.currentTarget.style.color = '#0056b3';
                                     }}
                                 >
-                                    <i className="bi bi-file-earmark-text me-2"></i>
-                                    Customer Accident Reports
+                                    <i className="bi bi-exclamation-triangle me-2"></i>
+                                    Reports
                                 </Link>
+                            </li>
+
+                            {/* Divider */}
+                            <li className="nav-item">
+                                <hr className="my-3" style={{borderTop: '3px solid #dc3545'}}/>
                             </li>
                             <li className="nav-item">
                                 <Link

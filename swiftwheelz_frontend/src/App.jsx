@@ -26,7 +26,7 @@ import RentedTrucksList from "./components/admin/RentedTrucksList.jsx";
 import HelpDeskDashboard from "./components/helpdesk/HelpDeskDashboard.jsx";
 import Complaints from "./components/helpdesk/Complaints.jsx";
 import ReportAccident from "./components/customer/ReportAccident.jsx";
-import AdminAccidentReports from "./components/admin/AdminAccidentReports.jsx";
+import CustomerAccidentReports from "./components/helpdesk/CustomerAccidentReports.jsx";
 import RentalHistory from './components/customer/RentalHistory.jsx';
 import CustomerComplaint from './components/customer/CustomerComplaint.jsx';
 
@@ -68,7 +68,6 @@ function App() {
                             <Route path="insurances" element={<InsuranceList />} />
                             <Route path="manage-contact-us" element={<AdminContactUs />} />
                             <Route path="rented-trucks" element={<RentedTrucksList />} />
-                            <Route path="admin-reports" element={<AdminAccidentReports />} />
                         </Route>
                         {/*---------ADMIN FUNCTIONALITY ENDS-----------*/}
 
@@ -76,7 +75,7 @@ function App() {
                             < Route path="/help-desk/dashboard/*" element={< HelpDeskDashboard />}>
                              <Route index element={<Navigate to="complaints" />} />
                              <Route path="complaints" element={<Complaints />} />
-                             {/*<Route path="customerAccidentReports" element={<CustomerAccidentReports />} />*/}
+                             <Route path="customerAccidentReports" element={<CustomerAccidentReports />} />
                              {/*<Route path="discounts" element={<Discounts />} />*/}
                              </Route>
                          {/*---------HELPDESK FUNCTIONALITY ENDS-----------*/}
