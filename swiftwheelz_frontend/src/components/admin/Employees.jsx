@@ -1,7 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {createEmployee, deleteEmployeeById, getEmployees, updateEmployee} from "../../services/EmployeesService.js";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
+import {
+    createEmployee,
+    deleteEmployeeById,
+    getEmployees,
+    updateEmployee
+} from "../../services/EmployeesService.js";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import {
     Box,
     Button,
@@ -11,40 +16,34 @@ import {
     MenuItem,
     Modal,
     Select,
+    Snackbar,
     TextField,
     Typography
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import {Table} from "react-bootstrap";
+import { Table } from "react-bootstrap";
 
 function Employees() {
     const [employees, setEmployees] = useState([]);
     const [filteredEmployees, setFilteredEmployees] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [newEmployee, setNewEmployee] = useState({
-        name: {
-            firstName: '',
-            middleName: '',
-            lastName: ''
-        },
-        contact: {
-            email: '',
-            cellNumber: ''
-        },
-        address: {
-            street: '',
-            city: '',
-            province: '',
-            postalCode: '',
-            country: ''
-        },
+        name: { firstName: '', middleName: '', lastName: '' },
+        contact: { email: '', cellNumber: '' },
+        address: { street: '', city: '', province: '', postalCode: '', country: '' },
         password: '',
         role: 'ADMIN'
     });
     const [editing, setEditing] = useState(false);
     const [currentEmployeeNumber, setCurrentEmployeeNumber] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
+    const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+    const [confirmUpdateOpen, setConfirmUpdateOpen] = useState(false);
+    const [employeeToDelete, setEmployeeToDelete] = useState(null);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
     const token = localStorage.getItem('token');
+
     useEffect(() => {
         fetchEmployees();
     }, []);
@@ -83,7 +82,7 @@ function Employees() {
     };
 
     const handleNestedChange = (e, nestedField) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setNewEmployee(prevState => ({
             ...prevState,
             [nestedField]: {
@@ -93,37 +92,39 @@ function Employees() {
         }));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         if (editing) {
-            await updateEmployee(currentEmployeeNumber, newEmployee,token);
+            setConfirmUpdateOpen(true);
         } else {
-            await createEmployee(newEmployee,token);
+            handleCreateEmployee();
         }
-        setEditing(false);
+    };
+
+    const handleCreateEmployee = async () => {
+        await createEmployee(newEmployee, token);
+        setSnackbarMessage('Employee added successfully!');
         fetchEmployees();
         clearForm();
         setModalOpen(false);
+        setSnackbarOpen(true);
+    };
+
+    const handleConfirmUpdate = async () => {
+        await updateEmployee(currentEmployeeNumber, newEmployee, token);
+        setSnackbarMessage('Employee updated successfully!');
+        fetchEmployees();
+        clearForm();
+        setModalOpen(false);
+        setSnackbarOpen(true);
+        setConfirmUpdateOpen(false);
+        setEditing(false);
     };
 
     const clearForm = () => {
         setNewEmployee({
-            name: {
-                firstName: '',
-                middleName: '',
-                lastName: ''
-            },
-            contact: {
-                email: '',
-                cellNumber: ''
-            },
-            address: {
-                street: '',
-                city: '',
-                province: '',
-                postalCode: '',
-                country: ''
-            },
+            name: { firstName: '', middleName: '', lastName: '' },
+            contact: { email: '', cellNumber: '' },
+            address: { street: '', city: '', province: '', postalCode: '', country: '' },
             password: '',
             role: 'ADMIN'
         });
@@ -143,13 +144,25 @@ function Employees() {
         setModalOpen(true);
     };
 
-    const handleDelete = async (employeeNumber) => {
-        await deleteEmployeeById(employeeNumber,token);
+    const handleDeleteConfirmation = (employeeNumber) => {
+        setEmployeeToDelete(employeeNumber);
+        setConfirmDeleteOpen(true);
+    };
+
+    const handleDelete = async () => {
+        await deleteEmployeeById(employeeToDelete, token);
         fetchEmployees();
+        setConfirmDeleteOpen(false);
+        setEmployeeToDelete(null);
+        setSnackbarMessage('Employee deleted successfully!');
+        setSnackbarOpen(true);
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
     };
 
     return (
-
         <div>
             <style>
                 {`
@@ -179,7 +192,7 @@ function Employees() {
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
-                                <SearchIcon/>
+                                <SearchIcon />
                             </InputAdornment>
                         ),
                     }}
@@ -199,13 +212,12 @@ function Employees() {
                     maxWidth={500}
                     borderRadius={2}
                     height="90vh"
-                    // maxHeight="90vh" // Optional: limits the maximum height of the modal
                     overflow="auto"
                 >
                     <Typography variant="h5" component="h1" gutterBottom>
                         {editing ? 'Edit' : 'Add'} Employee
                     </Typography>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                         {!editing && (
                             <>
                                 <TextField
@@ -321,17 +333,107 @@ function Employees() {
                                 <MenuItem value="HELP_DESK">HELP DESK</MenuItem>
                             </Select>
                         </FormControl>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                        >
-                            {editing ? 'Update' : 'Add'} Employee
-                        </Button>
+                        <Box display="flex" justifyContent="space-between" marginTop={2}>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                            >
+                                {editing ? 'Update' : 'Add'} Employee
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => {
+                                    clearForm();
+                                    setEditing(false);
+                                    setModalOpen(false);
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                        </Box>
                     </form>
                 </Box>
             </Modal>
+
+            <Modal open={confirmUpdateOpen} onClose={() => setConfirmUpdateOpen(false)}>
+                <Box
+                    bgcolor="background.paper"
+                    p={2}
+                    mx="auto"
+                    my={4}
+                    maxWidth={400}
+                    borderRadius={2}
+                >
+                    <Typography variant="h6" gutterBottom>
+                        Are you sure you want to update this employee?
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleConfirmUpdate}
+                        style={{ marginRight: '8px' }}
+                    >
+                        Yes
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => setConfirmUpdateOpen(false)}
+                    >
+                        No
+                    </Button>
+                </Box>
+            </Modal>
+
+            <Modal open={confirmDeleteOpen} onClose={() => setConfirmDeleteOpen(false)}>
+                <Box
+                    bgcolor="background.paper"
+                    p={2}
+                    mx="auto"
+                    my={4}
+                    maxWidth={400}
+                    borderRadius={2}
+                >
+                    <Typography variant="h6" gutterBottom>
+                        Are you sure you want to delete this employee?
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={handleDelete}
+                        style={{ marginRight: '8px' }}
+                    >
+                        Yes
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => setConfirmDeleteOpen(false)}
+                    >
+                        No
+                    </Button>
+                </Box>
+            </Modal>
+
+            <Box
+                sx={{
+                    position: 'fixed',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 1300, // Ensure it appears above other components
+                }}
+            >
+                <Snackbar
+                    open={snackbarOpen}
+                    onClose={handleSnackbarClose}
+                    message={snackbarMessage}
+                    autoHideDuration={3000}
+                />
+            </Box>
+
             <Table striped bordered hover className="table-sm">
                 <thead>
                 <tr>
@@ -341,7 +443,6 @@ function Employees() {
                     <th scope="col">Email</th>
                     <th scope="col">Role</th>
                     <th scope="col">Actions</th>
-                    {/*<th scope="col"></th>*/}
                 </tr>
                 </thead>
                 <tbody>
@@ -359,15 +460,14 @@ function Employees() {
                                     color="warning"
                                     onClick={() => handleEdit(employee)} className="me-2"
                                 >
-                                    <FontAwesomeIcon icon={faEdit}/>
+                                    <FontAwesomeIcon icon={faEdit} />
                                 </Button>
-
                                 <Button
                                     variant="contained"
                                     color="error"
-                                    onClick={() => handleDelete(employee.employeeNumber)}
+                                    onClick={() => handleDeleteConfirmation(employee.employeeNumber)}
                                 >
-                                    <FontAwesomeIcon icon={faTrashAlt}/>
+                                    <FontAwesomeIcon icon={faTrashAlt} />
                                 </Button>
                             </td>
                         </tr>
@@ -378,7 +478,6 @@ function Employees() {
                     </tr>
                 )}
                 </tbody>
-
             </Table>
         </div>
     );
