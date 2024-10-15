@@ -12,41 +12,58 @@ const createAxiosInstance = (token) => {
     });
 };
 
-
 // Fetch all truck types
 export const getAllTruckTypes = async (token) => {
     const axiosInstance = createAxiosInstance(token);
-    return axiosInstance.get(`${REST_API_BASE_URL}/getAll`);
-
+    try {
+        return await axiosInstance.get('/getAll');
+    } catch (error) {
+        console.error("Error fetching truck types:", error.response ? error.response.data : error.message);
+        throw error;
+    }
 };
 
 // Fetch a specific truck type by its ID
-export const getTruckTypeById = async (truckTypeId) => {
+export const getTruckTypeById = async (truckTypeId, token) => {
+    const axiosInstance = createAxiosInstance(token);
     try {
-        const response = await axios.get(`${REST_API_BASE_URL}/read/${truckTypeId}`);
-        return response.data; // Return truck type data
+        const response = await axiosInstance.get(`/read/${truckTypeId}`);
+        return response.data;
     } catch (error) {
-        console.error("Error fetching truck type by ID:", error);
-        throw error; // Re-throw error for handling in the calling function
+        console.error("Error fetching truck type by ID:", error.response ? error.response.data : error.message);
+        throw error;
     }
 };
 
 // Create a new truck type
 export const createTruckType = async (truckType, token) => {
     const axiosInstance = createAxiosInstance(token);
-    return axiosInstance.post(`${REST_API_BASE_URL}/create`, truckType);
-
+    try {
+        return await axiosInstance.post('/create', truckType);
+    } catch (error) {
+        console.error("Error creating truck type:", error.response ? error.response.data : error.message);
+        throw error;
+    }
 };
 
 // Update an existing truck type
 export const updateTruckType = async (truckTypeId, truckType, token) => {
     const axiosInstance = createAxiosInstance(token);
-    return axiosInstance.put(`${REST_API_BASE_URL}/update/${truckTypeId}`, truckType);
+    try {
+        return await axiosInstance.put(`/update/${truckTypeId}`, truckType);
+    } catch (error) {
+        console.error("Error updating truck type:", error.response ? error.response.data : error.message);
+        throw error;
+    }
 };
 
 // Delete a truck type by its ID
 export const deleteTruckTypeById = async (truckTypeId, token) => {
     const axiosInstance = createAxiosInstance(token);
-    return axiosInstance.delete(`${REST_API_BASE_URL}/delete/${truckTypeId}`);
-
+    try {
+        return await axiosInstance.delete(`/delete/${truckTypeId}`);
+    } catch (error) {
+        console.error("Error deleting truck type:", error.response ? error.response.data : error.message);
+        throw error; // Rethrow the error for further handling
+    }
 };

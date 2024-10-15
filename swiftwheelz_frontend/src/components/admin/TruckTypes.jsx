@@ -127,10 +127,15 @@ function TruckTypes() {
     const confirmDelete = async () => {
         try {
             if (truckTypeToDelete) {
-                await deleteTruckTypeById(truckTypeToDelete.truckTypeId,token);
+                console.log("Deleting truck type ID:", truckTypeToDelete.truckTypeId);
+                console.log("Token in confirm delete:", token);
+                await deleteTruckTypeById(truckTypeToDelete.truckTypeId, token);
                 const updatedTruckTypes = truckTypes.filter(tt => tt.truckTypeId !== truckTypeToDelete.truckTypeId);
                 setTruckTypes(updatedTruckTypes);
                 setFilteredTruckTypes(updatedTruckTypes);
+                console.log("Truck type deleted successfully.");
+            } else {
+                console.error("No truck type to delete.");
             }
         } catch (error) {
             console.error('Error deleting truck type:', error);
@@ -138,6 +143,9 @@ function TruckTypes() {
         setIsDeleteDialogOpen(false);
         setTruckTypeToDelete(null);
     };
+
+
+
 
     const cancelDelete = () => {
         setIsDeleteDialogOpen(false);

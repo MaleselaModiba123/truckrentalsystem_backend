@@ -42,16 +42,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-//                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/", "/customer/create", "/customer/authenticate", "/employees/authenticate",
                                 "/branch/getAll", "/contactUs/getAll", "/truck/getAll",
                                 "/truck/{vin}", "/truck/image/{vin}",
                                 "truck/available", "/rentTruck/create").permitAll()
-//                        .requestMatchers("/employees/**").hasAuthority("ADMIN")
                         .requestMatchers("/employees/**").hasAnyAuthority("ADMIN", "HELP_DESK")
-//                        .requestMatchers("/employees/**").hasAuthority("HELP_DESK")
-//                        .requestMatchers("/helpDesk/**").hasAnyAuthority("HELP_DESK")
                         .requestMatchers("/customer/**").hasAuthority("CUSTOMER")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
