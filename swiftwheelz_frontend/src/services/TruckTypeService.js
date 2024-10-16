@@ -58,12 +58,9 @@ export const updateTruckType = async (truckTypeId, truckType, token) => {
 };
 
 // Delete a truck type by its ID
+// export const deleteTruckTypeById = (truckTypeId) => axios.delete(`${REST_API_BASE_URL}/delete/${truckTypeId}`);
 export const deleteTruckTypeById = async (truckTypeId, token) => {
     const axiosInstance = createAxiosInstance(token);
-    try {
-        return await axiosInstance.delete(`/delete/${truckTypeId}`);
-    } catch (error) {
-        console.error("Error deleting truck type:", error.response ? error.response.data : error.message);
-        throw error; // Rethrow the error for further handling
-    }
+    return axiosInstance.delete(`/delete/${truckTypeId}`);
+
 };

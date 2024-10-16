@@ -25,7 +25,7 @@ public class TruckType {
     private double fuelConsumption; // km per liter
     private String fuelType;
 
-    @OneToMany(mappedBy = "vin", cascade = CascadeType.ALL) //one truckType to many trucks
+    @OneToMany(mappedBy = "truckType", cascade = CascadeType.ALL) //one truckType to many trucks
     private List<Truck> trucks;
 
     protected TruckType() {

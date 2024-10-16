@@ -20,7 +20,7 @@ public class Truck {
 
 
     @ManyToOne
-    @JoinColumn(name = "truckTypeId")
+    @JoinColumn(name = "truckTypeId", referencedColumnName = "truckTypeId")
     private TruckType truckType;
     @ManyToOne
     @JoinColumn(name = "insuranceID")

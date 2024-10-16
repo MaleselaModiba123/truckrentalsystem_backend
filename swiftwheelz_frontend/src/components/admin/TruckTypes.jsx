@@ -1,6 +1,5 @@
 // components/TruckTypes.jsx
 import React, {useEffect, useState} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
 import {
     Button,
     Container,
@@ -49,8 +48,6 @@ function TruckTypes() {
     const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
     const [actionType, setActionType] = useState('add'); // 'add' or 'update'
     const [truckTypeToDelete, setTruckTypeToDelete] = useState(null);
-    const navigate = useNavigate();
-    const location = useLocation();
     const token = localStorage.getItem('token');
     useEffect(() => {
         fetchTruckTypes();
@@ -125,26 +122,18 @@ function TruckTypes() {
     };
 
     const confirmDelete = async () => {
-        try {
-            if (truckTypeToDelete) {
-                console.log("Deleting truck type ID:", truckTypeToDelete.truckTypeId);
-                console.log("Token in confirm delete:", token);
+        console.log("Token in confirm delete:",token)
+        if (truckTypeToDelete) {
+            try {
                 await deleteTruckTypeById(truckTypeToDelete.truckTypeId, token);
-                const updatedTruckTypes = truckTypes.filter(tt => tt.truckTypeId !== truckTypeToDelete.truckTypeId);
-                setTruckTypes(updatedTruckTypes);
-                setFilteredTruckTypes(updatedTruckTypes);
-                console.log("Truck type deleted successfully.");
-            } else {
-                console.error("No truck type to delete.");
+                fetchTruckTypes(); // Refresh the truck types list
+                setTruckTypeToDelete(null); // Clear the selected truck type to delete
+            } catch (error) {
+                console.error('Error deleting truck type:', error);
             }
-        } catch (error) {
-            console.error('Error deleting truck type:', error);
         }
-        setIsDeleteDialogOpen(false);
-        setTruckTypeToDelete(null);
+        setIsDeleteDialogOpen(false); // Close the delete confirmation dialog
     };
-
-
 
 
     const cancelDelete = () => {
