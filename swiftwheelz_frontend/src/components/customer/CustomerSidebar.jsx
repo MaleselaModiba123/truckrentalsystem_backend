@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
     faCommentDots,
@@ -12,7 +12,6 @@ import {
     faUser
 } from '@fortawesome/free-solid-svg-icons';
 import {AuthContext} from "../AuthContext.jsx";
-import {getCustomerProfile} from "../../services/CustomerService.js";
 
 const CustomerSidebar = () => {
     const location = useLocation();
