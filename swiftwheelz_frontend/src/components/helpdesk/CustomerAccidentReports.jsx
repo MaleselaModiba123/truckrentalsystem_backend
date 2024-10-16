@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllAccidentReport, updateAccidentReport } from "../../services/AccidentReportService.js";
 
-const AdminAccidentReports = () => {
+const CustomerAccidentReports = () => {
     const [accidentReports, setAccidentReports] = useState([]);
     const [responseText, setResponseText] = useState({});
     const [loading, setLoading] = useState(true);
@@ -31,7 +31,7 @@ const AdminAccidentReports = () => {
         });
     };
 
-    // Handle admin response submission
+    // Handle helpdesk response submission
     const handleResponseSubmit = async (reportId) => {
         try {
             const updatedReport = {
@@ -39,7 +39,7 @@ const AdminAccidentReports = () => {
                 adminResponse: responseText[reportId]
             };
 
-            await updateAccidentReport(reportId, updatedReport); // Update the report with admin response
+            await updateAccidentReport(reportId, updatedReport); // Update the report with helpdesk response
             alert('Response submitted successfully.');
         } catch (error) {
             alert('Error submitting response.');
@@ -151,4 +151,4 @@ const AdminAccidentReports = () => {
     );
 };
 
-export default AdminAccidentReports;
+export default CustomerAccidentReports;
