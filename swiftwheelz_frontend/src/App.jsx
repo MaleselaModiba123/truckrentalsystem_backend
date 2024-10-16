@@ -13,7 +13,7 @@ import Payment from './components/Payment';
 import './App.css';
 import AdminPortal from './components/admin/AdminPortal';
 import Trucks from './components/admin/Trucks';
-import Branchez from './components/admin/Branchez';
+import AdminBranches from './components/admin/AdminBranches.jsx';
 import Employees from './components/admin/Employees';
 import TruckTypes from './components/admin/TruckTypes';
 import ImagesComponent from './components/admin/ImagesComponent';
@@ -61,7 +61,7 @@ function App() {
                         <Route path="/admin-portal/dashboard/*" element={<AdminPortal />}>
                             <Route index element={<Navigate to="trucks" />} />
                             <Route path="trucks" element={<Trucks />} />
-                            <Route path="branchez" element={<Branchez />} />
+                            <Route path="admin-branches" element={<AdminBranches />} />
                             <Route path="employees" element={<Employees />} />
                             <Route path="truck-types" element={<TruckTypes />} />
                             <Route path="images" element={<ImagesComponent />} />

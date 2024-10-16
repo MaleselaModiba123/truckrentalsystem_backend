@@ -164,8 +164,8 @@ const AdminPortal = () => {
                             </li>
                             <li className="nav-item">
                                 <Link
-                                    className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/branchez') ? 'active' : ''}`}
-                                    to="/admin-portal/dashboard/branchez"
+                                    className={`nav-link d-flex align-items-center ${path.startsWith('/admin-portal/dashboard/admin-branches') ? 'active' : ''}`}
+                                    to="/admin-portal/dashboard/admin-branches"
                                     style={{fontSize: '20px', transition: 'all 0.3s ease'}}
                                     onMouseEnter={(e) => {
                                         e.currentTarget.style.fontSize = '21px';

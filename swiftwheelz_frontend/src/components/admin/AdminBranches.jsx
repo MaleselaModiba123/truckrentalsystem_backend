@@ -4,7 +4,7 @@ import { createBranch, deleteBranchById, getAllBranches, updateBranch } from "..
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faEdit, faSearch, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 
-function Branchez() {
+function AdminBranches() {
     const [branches, setBranches] = useState([]);
     const [filteredBranches, setFilteredBranches] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -183,4 +183,4 @@ function Branchez() {
     );
 }
 
-export default Branchez;
+export default AdminBranches;
