@@ -1,20 +1,49 @@
-import React from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import React, {useContext, useEffect, useState} from 'react';
+import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
+    faCommentDots,
     faExclamationTriangle,
     faGear,
     faHistory,
     faHome,
     faMoneyBillWave,
     faSignOutAlt,
-    faUser,
-    faCommentDots // New icon for the complaint section
+    faUser
 } from '@fortawesome/free-solid-svg-icons';
+import {AuthContext} from "../AuthContext.jsx";
+import {getCustomerProfile} from "../../services/CustomerService.js";
 
 const CustomerSidebar = () => {
+    const location = useLocation();
     const navigate = useNavigate();
-
+    const path = location.pathname;
+    const [customer, setCustomer] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const {auth, setAuth} = useContext(AuthContext);
+    useEffect(() => {
+        const fetchCustomer = async () => {
+            if (auth) {
+                try {
+                    // // const response = await getCustomerProfile(); // Fetch customer profile
+                    // console.log("Customer details response:", response.data);
+                    // setCustomer(response.data);
+                } catch (error) {
+                    console.error('Error fetching customer details:', error);
+                    if (error.response && error.response.status === 401) {
+                        navigate('/sign-in'); // Redirect to sign-in if unauthorized
+                    }
+                } finally {
+                    setLoading(false);
+                }
+            } else {
+                console.error('No customer authentication found');
+                setLoading(false);
+                navigate('/sign-in');
+            }
+        };
+        fetchCustomer();
+    }, [auth, navigate]);
     // Handle sign-out and navigation
     const handleSignOutAndNavigate = () => {
         navigate('/home'); // Redirect to the home page
