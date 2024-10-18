@@ -23,11 +23,11 @@ class EmployeeServiceTest {
     @Test
     void a_shouldCreateEmployeeSuccessfully() {
         // Define unique values for this test
-        Name name = new Name("EFG", "", "ABC");
-        Contact contact = new Contact("efg@gmail.com", "0712010000");
-        Address address = AddressFactory.createAddress("123 Hanover Road", "Cape Town", "Western Cape", "8001", "South Africa");
+        Name name = new Name("Sedi", "", "Modi");
+        Contact contact = new Contact("SediM@gmail.com", "056799931");
+        Address address = AddressFactory.createAddress("123 Adderly Street", "Cape Town", "Western Cape", "8001", "South Africa");
         String password = "Password@123";
-        Role role = Role.ADMIN;
+        Role role = Role.HELP_DESK;
 
         try {
             Employee createdEmployee = employeeService.createEmployee(name, contact, address, password, role);
