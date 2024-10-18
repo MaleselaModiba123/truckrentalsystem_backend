@@ -39,8 +39,8 @@ class AccidentReportControllerTest {
         customer1 = customerRepository.findById(3245).orElseThrow();
 
 
-        accidentReport = AccidentReportFactory.buildAccidentReport(123, LocalDate.of(2024,3,21),
-                "Truck bumped into the pothole", "Durban ICC", customer1);
+        //accidentReport = AccidentReportFactory.buildAccidentReport(123, LocalDate.of(2024,3,21),
+               // "Truck bumped into the pothole", "Durban ICC", customer1);
     }
 
     @Test

@@ -31,13 +31,13 @@ class ComplaintServiceTest {
     private Complaint complaint;
     private Customer customer;
 
-    //@BeforeEach
+    @BeforeEach
     void setUp() {
         // Creating a new customer and saving it
         customer = new Customer.Builder()
-                .setFirstName("Thato")
+                .setFirstName("Lethabo")
                 .setLastName("Modiba")
-                .setEmail("Thato@email.com")
+                .setEmail("Lethabo@email.com")
                 .setCellNo("0730735678")
                 .setLicense("1287jhgy")
                 .setPassword("Password?123")
@@ -56,7 +56,7 @@ class ComplaintServiceTest {
 
         // Pass the entire Complaint object
         String description = "Truck wheel not aligned properly";
-        complaint = complaintService.create(description, customer.getCustomerID());
+        complaint = complaintService.create(description, customer.getEmail());
         assertNotNull(complaint, "Complaint should be created and not null");
     }
 

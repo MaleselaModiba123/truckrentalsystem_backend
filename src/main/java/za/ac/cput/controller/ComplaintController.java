@@ -14,7 +14,7 @@ import java.util.Map;
  * ComplaintController.java
  * This is the Controller class for handling complaints.
  */
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", exposedHeaders = "token")
 @RestController
 @RequestMapping("/complaints")
 public class ComplaintController {
@@ -26,8 +26,8 @@ public class ComplaintController {
     @PostMapping("/create")
     public ResponseEntity<Complaint> createComplaint(@RequestBody Map<String, Object> payload) {
         String description = (String) payload.get("description");
-        Integer customerId = (Integer) payload.get("customerId");
-        Complaint createdComplaint = complaintService.create(description, customerId);
+        String email = (String) payload.get("email");
+        Complaint createdComplaint = complaintService.create(description, email);
         return new ResponseEntity<>(createdComplaint, HttpStatus.CREATED);
     }
 
@@ -68,6 +68,17 @@ public class ComplaintController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @GetMapping("/getComplaintByCustomerEmail")
+    public ResponseEntity<List<Complaint>> getCompliantByCustomerEmail(@RequestParam String email){
+        try {
+            List<Complaint> complaints = complaintService.getComplaintsByCustomerEmail(email);
+            return ResponseEntity.ok(complaints);
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(null);
+    }
     }
 
     @PutMapping("/respondToComplaint/{complaintId}")

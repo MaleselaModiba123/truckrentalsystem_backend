@@ -2,6 +2,7 @@ package za.ac.cput.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.domain.Complaint;
 import za.ac.cput.domain.Customer;
 import za.ac.cput.repository.ComplaintRepository;
@@ -22,9 +23,11 @@ public class ComplaintService {
         this.customerRepository = customerRepository;
     }
 
-    public Complaint create(String description, Integer customerId) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+    public Complaint create(String description, String email) {
+        Customer customer = customerRepository.findByEmail(email);
+
+
+        //orElseThrow(() -> new IllegalArgumentException("Customer not found"));
 
         Complaint complaint = new Complaint.Builder()
                 .setDescription(description)
@@ -71,6 +74,15 @@ public class ComplaintService {
     public List<Complaint> getComplaintsByCustomerId(int customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+        return complaintRepository.findByCustomer(customer);
+    }
+    @Transactional
+    public List<Complaint>getComplaintsByCustomerEmail(String email){
+        Customer customer = customerRepository.findByEmail(email);
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer not found with email: " + email);
+        }
+
         return complaintRepository.findByCustomer(customer);
     }
 

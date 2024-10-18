@@ -34,7 +34,7 @@ const Complaints = () => {
         if (!selectedComplaint) return;
 
         try {
-            const response = await sendResponse(selectedComplaint.complaintId, responseText);
+            const response = await sendResponse(selectedComplaint.complaintId, responseText, token);
             console.log('Response from server:', response.data);
 
             setSuccessMessage('Response submitted successfully!');

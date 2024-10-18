@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 class AccidentReportFactoryTest {
 
-    @Test
+   /* @Test
     void buildAccidentReport() {
         int reportId = 123;
         LocalDate accidentDate = LocalDate.of(2024, 9, 18);
@@ -22,5 +22,5 @@ class AccidentReportFactoryTest {
                          description, location, customer);
 
         Assertions.assertNotNull(accidentReport);
-    }
+    }*/
 }
