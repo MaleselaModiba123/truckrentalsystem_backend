@@ -1,7 +1,7 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
-
+import za.ac.cput.domain.AccidentReportStatus;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -13,9 +13,9 @@ public class AccidentReport {
     private LocalDate accidentDate;
     private String description;
     private String location;
-    private String response;
-    private String status;
-
+    private String response= "Waiting for Help Desk response";
+    @Enumerated(EnumType.STRING)
+    private AccidentReportStatus status = AccidentReportStatus.RECEIVED;
     @ManyToOne
     @JoinColumn(name = "customerID", nullable = false)
     private Customer customer;
@@ -29,7 +29,7 @@ public class AccidentReport {
         this.description = builder.description;
         this.location = builder.location;
         this.customer = builder.customer;
-        this.response = builder.response;
+        this.response = builder.response!= null ? builder.response : "Waiting for Help Desk response";
         this.status = builder.status;
     }
 
@@ -51,7 +51,9 @@ public class AccidentReport {
 
     public String getResponse(){return response;}
 
-    public String getStatus(){return status;}
+    public AccidentReportStatus getStatus() {
+        return status; // Return the status as an enum
+    }
 
     public Customer getCustomer() {
         return customer;
@@ -62,7 +64,7 @@ public class AccidentReport {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AccidentReport that = (AccidentReport) o;
-        return reportId == that.reportId && Objects.equals(accidentDate, that.accidentDate) && Objects.equals(description, that.description) && Objects.equals(location, that.location) && Objects.equals(response, that.response) && Objects.equals(status, that.status) && Objects.equals(customer, that.customer);
+        return reportId == that.reportId && Objects.equals(accidentDate, that.accidentDate) && Objects.equals(description, that.description) && Objects.equals(location, that.location) && Objects.equals(response, that.response) && status == that.status && Objects.equals(customer, that.customer);
     }
 
     @Override
@@ -89,7 +91,7 @@ public class AccidentReport {
         private String description;
         private String location;
         private String response;
-        private String status;
+        private AccidentReportStatus status = AccidentReportStatus.RECEIVED;
         private Customer customer;
 
         public Builder setReportId(int reportId) {
@@ -117,7 +119,7 @@ public class AccidentReport {
             return this;
         }
 
-        public Builder setStatus(String status) {
+        public Builder setStatus(AccidentReportStatus status) { // Updated to accept the enum
             this.status = status;
             return this;
         }
