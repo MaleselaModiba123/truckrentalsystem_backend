@@ -15,11 +15,13 @@ class AccidentReportFactoryTest {
         LocalDate accidentDate = LocalDate.of(2024, 9, 18);
         String description = ("A truck bumped into a pothole");
         String location = ("Umlazi, Durban");
+        String response=("Help Desk response");
+        AccidentReportStatus status = AccidentReportStatus.RECEIVED;
         Customer customer = CustomerFactory.buildCustomer( "John", "Doe", "john.doe@example.com", "12345","Code10", "123456789");
 
 
         AccidentReport accidentReport = AccidentReportFactory.buildAccidentReport(reportId, accidentDate,
-                         description, location, customer);
+                description, location,response,status, customer);
 
         Assertions.assertNotNull(accidentReport);
     }*/

@@ -2,11 +2,9 @@ package za.ac.cput.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.domain.AccidentReport;
-import za.ac.cput.domain.Complaint;
+import za.ac.cput.domain.AccidentReportStatus;
 import za.ac.cput.domain.Customer;
-import za.ac.cput.domain.RentTruck;
 import za.ac.cput.repository.AccidentReportRepository;
 import za.ac.cput.repository.CustomerRepository;
 
@@ -26,8 +24,25 @@ public class AccidentReportService implements IAccidentReportService {
 
     @Override
     public AccidentReport create(AccidentReport accidentReport) {
-        return accidentReportRepository.save(accidentReport);
+        // Ensure the customer is saved before creating the report
+        Customer customer = accidentReport.getCustomer();
+        if (customer != null) {
+            // Fetch existing customer
+            customer = customerRepository.findById(customer.getCustomerID())
+                    .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+        }
+
+        // Create a new AccidentReport with status set to RECEIVED
+        AccidentReport newReport = new AccidentReport.Builder()
+                .copy(accidentReport) // Copy fields from the provided report
+                .setCustomer(customer) // Set the customer
+                .build();
+
+        return accidentReportRepository.save(newReport); // Save the new report
     }
+
+
+
 
     @Override
     public AccidentReport read(Integer reportId) {
@@ -61,10 +76,6 @@ public class AccidentReportService implements IAccidentReportService {
         return accidentReportRepository.findAll();
     }
 
-//    public List<AccidentReport> getReportsByCustomerId(int customerID) {
-//        return accidentReportRepository.findByCustomer_CustomerID(customerID);
-//    }
-
     public AccidentReport respondToAccident(int reportId, String response) {
         AccidentReport existingReport = read(reportId);
 
@@ -73,7 +84,7 @@ public class AccidentReportService implements IAccidentReportService {
             AccidentReport updatedReport = new AccidentReport.Builder()
                     .copy(existingReport)
                     .setResponse(response)
-                    .setStatus("Resolved")
+                    .setStatus(AccidentReportStatus.COMPLETED)
                     .build();
 
 
@@ -84,13 +95,21 @@ public class AccidentReportService implements IAccidentReportService {
     }
 
 
-//    public List<AccidentReport> findReportsByCustomerId(int customerId) {
-//        Customer customer = customerRepository.findById(customerId)
-//                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
-//
-//        // Fetching reports associated with the customer
-//        return accidentReportRepository.findReportsByCustomerID(customer);
-//    }
+    public List<AccidentReport> findReportsByCustomerId(int customerId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+
+        // Fetching reports associated with the customer
+        return accidentReportRepository.findByCustomer_CustomerID(customer);
+    }
+
+    public Integer getCustomerIdByEmail(String email) {
+        Customer customer = customerRepository.findByEmail(email);
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer not found with email: " + email);
+        }
+        return customer.getCustomerID();
+    }
 
 
     public List<AccidentReport> getReportByCustomerEmail(String email) {
@@ -101,6 +120,6 @@ public class AccidentReportService implements IAccidentReportService {
         }
 
         // Fetching rentals associated with the customer
-        return accidentReportRepository.findByCustomer_CustomerID(customer);
+        return accidentReportRepository.findByCustomer(customer);
     }
 }

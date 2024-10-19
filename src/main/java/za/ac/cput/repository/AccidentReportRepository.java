@@ -10,12 +10,6 @@ import java.util.List;
 
 @Repository
 public interface AccidentReportRepository extends JpaRepository<AccidentReport, Integer> {
-//    List<AccidentReport> findByCustomerId(@Param("customerId") int customerId);
-//    List<AccidentReport> findReportsByCustomerID(Customer customerId);
-
     List<AccidentReport> findByCustomer_CustomerID(@Param("customerID") Customer customerId);
-
-//    @Query("SELECT a FROM AccidentReport a WHERE a.customer.email = :email")
-//    List<AccidentReport> findReportsByCustomerEmail(@Param("email") String email);
-
+    List<AccidentReport> findByCustomer(Customer customer);
 }

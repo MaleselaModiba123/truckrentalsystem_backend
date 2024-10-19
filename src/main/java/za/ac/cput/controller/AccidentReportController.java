@@ -5,11 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.AccidentReport;
-import za.ac.cput.domain.Complaint;
-import za.ac.cput.domain.RentTruck;
-import za.ac.cput.repository.AccidentReportRepository;
 import za.ac.cput.service.AccidentReportService;
-
 
 import java.util.List;
 import java.util.Map;
@@ -20,9 +16,6 @@ import java.util.Map;
 public class AccidentReportController {
     @Autowired
     private AccidentReportService accidentReportService;
-
-//    @Autowired
-//    private AccidentReportRepository accidentReportRepository;
 
     @PostMapping("/create")
     public AccidentReport create(@RequestBody AccidentReport accidentReport) {
@@ -50,17 +43,17 @@ public class AccidentReportController {
         return accidentReportService.getAll();
     }
 
-//    @GetMapping("/getReportsByCustomerId/{customerID}")
-//    public ResponseEntity<List<AccidentReport>> findReportsByCustomerId(@PathVariable int customerID) {
-//        try {
-//            List<AccidentReport> reports = accidentReportService.findReportsByCustomerId(customerID);
-//            return ResponseEntity.ok(reports);
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.badRequest().body(null);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(500).body(null);
-//        }
-//    }
+    @GetMapping("/getReportsByCustomerId/{customerID}")
+    public ResponseEntity<List<AccidentReport>> findReportsByCustomerId(@PathVariable int customerID) {
+        try {
+            List<AccidentReport> reports = accidentReportService.findReportsByCustomerId(customerID);
+            return ResponseEntity.ok(reports);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
 
     @GetMapping("/getReportByCustomerEmail")
     public ResponseEntity<List<AccidentReport>> getReportByCustomerEmail(@RequestParam String email) {
@@ -91,4 +84,19 @@ public class AccidentReportController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/getCustomerIdByEmail")
+    public ResponseEntity<Integer> getCustomerIdByEmail(@RequestParam String email) {
+        try {
+            Integer customerId = accidentReportService.getCustomerIdByEmail(email);
+            return ResponseEntity.ok(customerId);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error fetching customer ID: " + e.getMessage());
+            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            e.printStackTrace(); // Log full stack trace for debugging
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
 }

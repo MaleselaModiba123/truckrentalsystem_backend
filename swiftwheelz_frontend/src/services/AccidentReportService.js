@@ -18,9 +18,6 @@ export const getAllAccidentReport = async (token) => {
     return axiosInstance.get(`/getAll`);
 };
 
-// Fetch a specific Report by its reportId
-export const getReportById = (reportId) => axios.get(`${REST_API_BASE_URL}/read/${reportId}`);
-
 // Create a new Report
 export const createAccidentReport = async (accidentReport, token) => {
     const axiosInstance = createAxiosInstance(token);
@@ -40,9 +37,9 @@ export const deleteAccidentReportById = async (reportId, token) => {
 };
 
 // Fetch reports by customer ID
-export const findReportsByCustomerId = async (customerId, token) => {
+export const findReportsByCustomerId = async (customerID, token) => {
     const axiosInstance = createAxiosInstance(token);
-    return axiosInstance.get(`/customer/${customerId}`);
+    return axiosInstance.get(`/customer/${customerID}`);
 };
 export const getReportsByCustomerEmail = async (customerEmail, token) => {
     try {
@@ -50,13 +47,22 @@ export const getReportsByCustomerEmail = async (customerEmail, token) => {
         const response = await axiosInstance.get(`/getReportByCustomerEmail`, { params: { email: customerEmail } });
         return response.data;
     } catch (error) {
-        console.error("Error fetching reports by customer email:", error);
-        throw error;
+        console.error("Error fetching reports by customer email:", error.response ? error.response.data : error.message);
+        throw error; // Re-throw the error after logging
     }
 };
+
 // Respond to Customer Reports
-export const sendResponse = (reportId, responseText, token) => {
+export const sendResponse = async (reportId, responseText, token) => {
     const axiosInstance = createAxiosInstance(token);
-    return axiosInstance.put(`/respondToAccident/${reportId}`, { response: responseText });
+    try {
+        const response = await axiosInstance.put(`/respondToReport/${reportId}`, { response: responseText });
+        return response.data; // Return the response data
+    } catch (error) {
+        console.error("Error sending response:", error.response ? error.response.data : error.message);
+        throw error; // Re-throw the error to handle it in the calling function
+    }
 };
+
+
 
