@@ -24,6 +24,19 @@ export const getContactUsId = async () => {
         console.error('Error fetching contact info:', error);
         throw error;  // Rethrow the error for potential handling upstream
     }
+};//
+// Function to fetch contact us data
+export const getContactUs = async () => {
+    try {
+        // Make the API call
+        const response = await axios.get(`${REST_API_BASE_URL}/getAll`);
+        // Log and return the data
+        console.info("Contact results from the API:", response.data);
+        return response.data;  // Return the actual data
+    } catch (error) {
+        console.error('Error fetching contact info:', error);
+        throw error;  // Rethrow the error for potential handling upstream
+    }
 };
 
 

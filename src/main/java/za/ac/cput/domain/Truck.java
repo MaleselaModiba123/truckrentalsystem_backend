@@ -1,10 +1,10 @@
 package za.ac.cput.domain;
+
 import jakarta.persistence.*;
 import za.ac.cput.util.Helper;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 public class Truck {
@@ -19,10 +19,10 @@ public class Truck {
     private double currentMileage;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "truckTypeId", referencedColumnName = "truckTypeId")
     private TruckType truckType;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "insuranceID")
     private Insurance insurance;
 

@@ -5,13 +5,6 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * TruckType.java
- * This is the Domain program
- *
- * @aurthor Asimbonge Mbende (221090754)
- * Date: 22 May 2024
- */
 @Entity
 public class TruckType {
     @Id

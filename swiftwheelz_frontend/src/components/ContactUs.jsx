@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {getContactUsId} from '../services/ContactUsService';
+import {getContactUs, getContactUsId} from '../services/ContactUsService';
 import {createComplaint} from '../services/ComplaintService.js';
 
 const ContactUs = () => {
@@ -20,7 +20,7 @@ const ContactUs = () => {
     useEffect(() => {
         const fetchContactUsByIdData = async () => {
             try {
-                const data = await getContactUsId();
+                const data = await getContactUs();
                 setContactUs(data[0]);
             } catch (error) {
                 console.error('Error fetching contact info:', error);
