@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { getContactUsId } from '../services/ContactUsService';
+import React, {useEffect, useState} from 'react';
+import {getContactUsId} from '../services/ContactUsService';
 import {createComplaint} from '../services/ComplaintService.js';
 
 const ContactUs = () => {

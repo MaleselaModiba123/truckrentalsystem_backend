@@ -1,6 +1,6 @@
-import React, {useContext, useState, useEffect } from 'react';
-import { createComplaint, getComplaintsByCustomerEmail } from '../../services/ComplaintService.js';
-import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
+import React, {useContext, useEffect, useState} from 'react';
+import {createComplaint, getComplaintsByCustomerEmail} from '../../services/ComplaintService.js';
+import {Alert, Card, Col, Container, Row, Spinner} from 'react-bootstrap';
 import {AuthContext} from "../AuthContext.jsx";
 import {getCustomerByEmail} from '../../services/CustomerService.js';
 
@@ -13,8 +13,12 @@ const CustomerComplaint = () => {
     const [loadingComplaints, setLoadingComplaints] = useState(true);
     const [success, setSuccess] = useState(null);
     const [customer, setCustomer] = useState(null);
-    const token = localStorage.getItem('token');
 
+
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const [complaintsPerPage] = useState(3);
+    const [searchStatus, setSearchStatus] = useState('');
     // Fetch customer data
     useEffect(() => {
         const fetchCustomerData = async () => {
@@ -97,24 +101,20 @@ const CustomerComplaint = () => {
         return response;
     };
 
-    /*const handleError = (error) => {
-        if (error.response && error.response.status === 401) {
-            setError('Session expired. Please log in again.');
-            localStorage.removeItem('token');
-            window.location.href = '/login';
-        } else {
-            setError('There was an error submitting your complaint. Please try again.');
-        }
-        setLoading(false);
-    };*/
-
     const handleSuccess = async () => {
         setSuccess('Your complaint has been submitted successfully!');
         setFormData({ description: '' });
 
         const updatedComplaints = await getComplaintsByCustomerEmail(customer.email, auth.token);
+        updatedComplaints.sort((a, b) => new Date(b.complaintDate) - new Date(a.complaintDate));
         setComplaints(updatedComplaints);
         setLoading(false);
+
+        const timeoutId = setTimeout(() => {
+            setSuccess(null);
+        }, 3000);
+
+        return () => clearTimeout(timeoutId);
     };
 
     const handleSubmit = async (e) => {
@@ -132,11 +132,67 @@ const CustomerComplaint = () => {
             await handleSuccess();
         } catch (error) {
             handleError(error);
+        } finally {
+            setLoading(false);
         }
     };
+    const indexOfLastComplaint = currentPage * complaintsPerPage;
+    const indexOfFirstComplaint = indexOfLastComplaint - complaintsPerPage;
+    const currentComplaints = complaints?.slice(indexOfFirstComplaint, indexOfLastComplaint) || [];
+    const totalPages = Math.ceil((complaints?.length || 0) / complaintsPerPage);
+
+    const filteredComplaints = currentComplaints.filter(complaint =>
+        complaint.status.toLowerCase().includes(searchStatus.toLowerCase())
+    );
 
     return (
         <Container className="my-5">
+            <style>
+                {`
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(-20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+
+                    h1, h2 {
+                        animation: fadeIn 1s ease-out;
+                        color: #007bff; /* Blue color */
+                        font-size: 2.5rem; /* Font size */
+                        font-weight: bold; /* Font weight */
+                    }
+
+                    .search-container {
+                        display: flex;
+                        align-items: center;
+                        max-width: 600px;
+                        margin-bottom: 2rem;
+                        border: 1px solid #ced4da;
+                        border-radius: 4px;
+                    }
+
+                    .search-container input {
+                        flex: 1;
+                        padding: 0.5rem 1rem;
+                        border: none;
+                        border-radius: 4px;
+                        font-size: 1rem;
+                        outline: none;
+                    }
+
+                    .search-container .search-icon {
+                        margin-left: 10px;
+                        color: #007bff; /* Icon color */
+                        font-size: 1.2rem;
+                    }
+
+                    .card-title {
+                        color: #007bff; /* Text color */
+                    }
+                    .card-text strong {
+                        color: #004080; /* Text color */
+                    }
+                `}
+            </style>
             <h2>Submit a Complaint</h2>
             <p>We value your feedback and will address your complaints promptly.</p>
 
@@ -159,33 +215,63 @@ const CustomerComplaint = () => {
                 </button>
             </form>
 
-            <h3 className="mt-5">Your Previous Complaints</h3>
+            <h2 className="mt-5">Your Previous Complaints</h2>
+            <div className="mb-3">
+                <input
+                    type="text"
+                    placeholder="Filter by status"
+                    className="form-control"
+                    value={searchStatus}
+                    onChange={(e) => setSearchStatus(e.target.value)}
+                />
+            </div>
             {loadingComplaints ? (
                 <div className="text-center my-5">
-                    <Spinner animation="border" variant="primary" />
+                    <Spinner animation="border" variant="primary"/>
                     <p className="mt-3">Loading complaints...</p>
                 </div>
-            ) : complaints.length > 0 ? (
-                <Row className="mt-4">
-                    {complaints.map((complaint) => (
-                        <Col md={6} lg={4} className="mb-4" key={complaint.id}>
-                            <Card className="shadow-sm">
-                                <Card.Body>
-                                    <Card.Title>Complaint ID: {complaint.id}</Card.Title>
-                                    <Card.Text>
-                                        <strong>Description:</strong> {complaint.description} <br />
-                                        <strong>Status: </strong>
-                                        <span className={`status ${complaint.status.toLowerCase()}`}>
+            ) : filteredComplaints.length > 0 ? (
+                <>
+                    <Row className="mt-4">
+                        {filteredComplaints.map((complaint) => (
+                            <Col md={6} lg={4} className="mb-4" key={complaint.id}>
+                                <Card className="shadow-sm">
+                                    <Card.Body>
+                                        <Card.Title>Complaint ID: {complaint.id}</Card.Title>
+                                        <Card.Text>
+                                            <strong>Description:</strong> {complaint.description} <br/>
+                                            <strong>Status: </strong>
+                                            <span className={`status ${complaint.status.toLowerCase()}`}>
                                             {complaint.status}
-                                        </span> <br />
-                                        <strong>Response:</strong> {complaint.response} <br />
-                                        <strong>Date:</strong> {complaint.complaintDate ? new Date(complaint.complaintDate).toLocaleDateString() : 'N/A'} <br />
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    ))}
-                </Row>
+                                        </span> <br/>
+                                            <strong>Response:</strong> {complaint.response} <br/>
+                                            <strong>Date:</strong> {complaint.complaintDate ? new Date(complaint.complaintDate).toLocaleDateString() : 'N/A'}
+                                            <br/>
+                                        </Card.Text>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+                    <div className="d-flex justify-content-between align-items-center mt-4">
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                            disabled={currentPage === 1}
+                            className="btn btn-danger"
+                        >
+                            Prev
+                        </button>
+                        <span>{currentPage} of {totalPages}</span>
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                            disabled={currentPage === totalPages}
+                            className="btn btn-primary"
+                        >
+                            Next
+                        </button>
+                    </div>
+                </>
+
             ) : (
                 <Alert variant="info">You have not submitted any complaints yet.</Alert>
             )}

@@ -30,10 +30,6 @@ export const getAllComplaints = async (token) => {
     return axiosInstance.get(`/getAll`);
 
 };
-export const getComplaintsByCustomerID = async (customerId, token) =>{
-        const axiosInstance = createAxiosInstance(token);
-        return axiosInstance.get(`${REST_API_BASE_URL}/getByCustomerId/${customerId}`);
-};
 export const sendResponse = async (complaintId, responseText, token) => {
     const axiosInstance = createAxiosInstance(token);
     return axiosInstance.put(`${REST_API_BASE_URL}/respondToComplaint/${complaintId}`, {

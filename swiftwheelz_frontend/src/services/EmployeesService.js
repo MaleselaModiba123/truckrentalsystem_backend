@@ -25,16 +25,6 @@ export const getEmployees = async (token) => {
 
 };
 
-// Fetch employee by ID
-export const getEmployeeById = async (employeeNumber) => {
-    try {
-        const response = await axios.get(`${REST_API_BASE_URL}/read/${employeeNumber}`, getAuthHeaders());
-        return response.data; // Return employee data
-    } catch (error) {
-        console.error("Error fetching employee by ID:", error);
-        throw error; // Re-throw error for handling in the calling function
-    }
-};
 
 // Create a new employee
 export const createEmployee = async (employee, token) => {

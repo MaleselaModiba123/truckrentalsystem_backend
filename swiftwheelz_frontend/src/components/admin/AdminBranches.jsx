@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Form, Table, Modal, InputGroup, FormControl } from 'react-bootstrap';
-import { createBranch, deleteBranchById, getAllBranches, updateBranch } from "../../services/BranchService.js";
+import React, {useEffect, useState} from 'react';
+import {Button, Form, FormControl, InputGroup, Modal, Table} from 'react-bootstrap';
+import {createBranch, deleteBranchById, getAllBranches, updateBranch} from "../../services/BranchService.js";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faEdit, faSearch, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 

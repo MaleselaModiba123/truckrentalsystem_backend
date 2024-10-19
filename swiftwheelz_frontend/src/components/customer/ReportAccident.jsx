@@ -23,7 +23,9 @@ const ReportAccident = () => {
     const [loadingReports, setLoadingReports] = useState(true);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
-
+    const [searchStatus, setSearchStatus] = useState(''); // State for search input
+    const [currentPage, setCurrentPage] = useState(1); // Current page
+    const rowsPerPage = 3;
     // Fetch customer data
     useEffect(() => {
         const fetchCustomerData = async () => {
@@ -49,6 +51,7 @@ const ReportAccident = () => {
             setLoadingReports(true);
             try {
                 const data = await getReportsByCustomerEmail(auth.email, auth.token);
+                data.sort((a, b) => new Date(b.accidentDate) - new Date(a.accidentDate));
                 setReports(data);
             } catch (error) {
                 setError('Error fetching reports. Please try again.');
@@ -146,6 +149,16 @@ const ReportAccident = () => {
             setSuccess(null);
         }, 3000);
     };
+    // Filter reports by status
+    const filteredReports = reports.filter(report =>
+        report.status.toLowerCase().includes(searchStatus.toLowerCase())
+    );
+
+    // Pagination logic
+    const totalPages = Math.ceil(filteredReports.length / rowsPerPage);
+    const indexOfLastReport = currentPage * rowsPerPage;
+    const indexOfFirstReport = indexOfLastReport - rowsPerPage;
+    const currentReports = filteredReports.slice(indexOfFirstReport, indexOfLastReport);
 
     return (
         <Container className="my-5">
@@ -187,7 +200,7 @@ const ReportAccident = () => {
                         font-size: 1.2rem;
                     }
                     .card {
-                        height: 300px; 
+                        height: 250px; 
                         display: flex;
                         flex-direction: column;
                         justify-content: space-between; 
@@ -198,6 +211,14 @@ const ReportAccident = () => {
                     .card-text strong {
                         color: #004080; /* Text color */
                     }
+                    .form-container {
+                        max-width: 800px; 
+                        
+                    }
+
+                    .form-control {
+                        width: 100%; 
+                    }
                 `}
             </style>
             <h2>Report an Accident</h2>
@@ -205,7 +226,8 @@ const ReportAccident = () => {
 
             {error && <Alert variant="danger">{error}</Alert>}
             {success && <Alert variant="success">{success}</Alert>}
-
+            <Row className="form-container mb-4">
+                <Col md={6}>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <input
@@ -242,18 +264,27 @@ const ReportAccident = () => {
                     {editingReport ? 'Update Report' : 'Create Report'}
                 </button>
             </form>
-
+                </Col>
+            </Row>
             <h1 className="mt-5">Your Accident Reports</h1>
+            <div className="search-container mb-4">
+                <input
+                    type="text"
+                    placeholder="Search by status..."
+                    value={searchStatus}
+                    onChange={(e) => setSearchStatus(e.target.value)}
+                />
+            </div>
             {loadingReports ? (
                 <div className="text-center my-5">
                     <Spinner animation="border" variant="primary"/>
                     <p className="mt-3">Loading reports...</p>
                 </div>
-            ) : reports.length === 0 ? (
+            ) : currentReports.length === 0 ? (
                 <Alert variant="info">You have not reported any accidents yet.</Alert>
             ) : (
                 <Row className="mt-4">
-                    {reports.map(report => (
+                    {currentReports.map(report => (
                         <Col md={6} lg={4} className="mb-4" key={report.reportId}>
                             <Card className="shadow-sm">
                                 <Card.Body>
@@ -276,6 +307,24 @@ const ReportAccident = () => {
                     ))}
                 </Row>
             )}
+            {/* Pagination Controls */}
+            <div className="d-flex justify-content-between mt-4 mb-4">
+                <button
+                    className="btn btn-secondary"
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                >
+                    Previous
+                </button>
+                <span>Page {currentPage} of {totalPages}</span>
+                <button
+                    className="btn btn-success"
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                >
+                    Next
+                </button>
+            </div>
         </Container>
     );
 };

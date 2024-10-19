@@ -1,17 +1,8 @@
 package za.ac.cput.util;
 
-import java.io.ByteArrayOutputStream;
 import java.security.SecureRandom;
 import java.util.UUID;
-import java.util.zip.Deflater;
-import java.util.zip.Inflater;
 
-/**
- * Helper.java
- * This is the util class
- * @aurthor Asimbonge Mbende (221090754)
- * Date: 20 March 2024
- */
 
 public class Helper {
     private static final SecureRandom random = new SecureRandom();
@@ -42,9 +33,6 @@ public class Helper {
         return email.matches(emailRegex);
     }
 
-    public static String generateId() {
-        return UUID.randomUUID().toString();
-    }
 
     public static String generateVin() {
         // Generate a VIN with 18 characters (alphanumeric)
@@ -76,41 +64,4 @@ public class Helper {
                 addressComponents[4].trim().matches(countryPattern);
     }
 
-
-    public static byte[] compressImage(byte[] data) {
-        Deflater deflater = new Deflater();
-        deflater.setLevel(Deflater.BEST_COMPRESSION);
-        deflater.setInput(data);
-        deflater.finish();
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-        byte[] tmp = new byte[4*1024];
-        while (!deflater.finished()) {
-            int size = deflater.deflate(tmp);
-            outputStream.write(tmp, 0, size);
-        }
-        try {
-            outputStream.close();
-        } catch (Exception ignored) {
-        }
-        return outputStream.toByteArray();
-    }
-
-
-
-    public static byte[] decompressImage(byte[] data) {
-        Inflater inflater = new Inflater();
-        inflater.setInput(data);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-        byte[] tmp = new byte[4*1024];
-        try {
-            while (!inflater.finished()) {
-                int count = inflater.inflate(tmp);
-                outputStream.write(tmp, 0, count);
-            }
-            outputStream.close();
-        } catch (Exception ignored) {
-        }
-        return outputStream.toByteArray();
-    }
 }

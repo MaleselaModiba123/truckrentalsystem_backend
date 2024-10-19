@@ -24,6 +24,8 @@ const RentedTrucksList = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [cancellation, setCancellation] = useState({ reason: '' });
     const [selectedCancelRental, setSelectedCancelRental] = useState(null);
+
+    const [searchTerm, setSearchTerm] = useState('');
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
     const rowsPerPage = 6; // 2 rows with 3 columns
@@ -61,11 +63,12 @@ const RentedTrucksList = () => {
             if (thisUser?.email) {
                 const token = auth?.token;
                 const response = await getRentalsByCustomerEmail(thisUser.email, token);
-                const rentalData = Array.isArray(response) ? response : [];
-                console.log("rental: ",rentalData);
-                const activeRentals = rentalData.filter(rentalData => rentalData.status === 'ACTIVE');
-                setRentals(rentalData);
-                setActiveRentals(activeRentals);
+                setRentals(Array.isArray(response) ? response : []);
+                // const rentalData = Array.isArray(response) ? response : [];
+                // console.log("rental: ",rentalData);
+                // const activeRentals = rentalData.filter(rentalData => rentalData.status === 'ACTIVE');
+                // setRentals(rentalData);
+                // setActiveRentals(activeRentals);
             }
         } catch (err) {
             console.error('Error fetching rentals:', err);
@@ -172,7 +175,14 @@ const RentedTrucksList = () => {
             </Container>
         );
     }
-    const sortedRentals = activeRentals.sort((a, b) => new Date(b.rentDate) - new Date(a.rentDate));
+
+    const filteredActiveRentals = rentals.filter(rental =>
+        rental.status === 'ACTIVE' &&
+        (rental.vin?.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            rental.pickUp.branchName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            rental.dropOff.branchName.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+    const sortedRentals = filteredActiveRentals.sort((a, b) => new Date(b.rentDate) - new Date(a.rentDate));
     const totalPages = Math.ceil(sortedRentals.length / rowsPerPage);
 
     // Get current rentals based on pagination
@@ -228,6 +238,14 @@ const RentedTrucksList = () => {
                 `}
             </style>
             <h1 className="mb-4">Rented Trucks</h1>
+            <div className="search-container mb-4">
+                <input
+                    type="text"
+                    placeholder="Search by vehicle model or location..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
             {currentRentals.length === 0 ? (
                 <Alert variant="danger">No rentals found.</Alert>
             ) : (
@@ -373,12 +391,13 @@ const RentedTrucksList = () => {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowCancelModal(false)}>
-                        Close
-                    </Button>
-                    <Button variant="danger" onClick={confirmCancelRental}>
+                    <Button variant="success" onClick={confirmCancelRental}>
                         Confirm Cancellation
                     </Button>
+                    <Button variant="danger" onClick={() => setShowCancelModal(false)}>
+                        Close
+                    </Button>
+
                 </Modal.Footer>
             </Modal>
         </Container>

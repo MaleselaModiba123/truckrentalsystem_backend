@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { getAllBranches } from '../services/BranchService';
+import {useEffect} from 'react';
+import {getAllBranches} from '../services/BranchService';
 
 const Branches = ({ setBranchesData }) => {
 
@@ -16,7 +16,7 @@ const Branches = ({ setBranchesData }) => {
         fetchBranches();
     }, [setBranchesData]);
 
-    return null;  // No need to render anything here
+    return null;
 };
 
 export default Branches;

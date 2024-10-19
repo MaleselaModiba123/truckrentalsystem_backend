@@ -7,13 +7,6 @@ import za.ac.cput.repository.TruckTypeRepository;
 
 import java.util.List;
 
-/**
- * TruckTypeService.java
- * This is the service class
- *
- * @aurthor Asimbonge Mbende (221090754)
- * Date: 22 May 2024
- */
 @Service
 public class TruckTypeService implements ITruckTypeService {
 
@@ -33,9 +26,7 @@ public class TruckTypeService implements ITruckTypeService {
         return this.truckTypeRepository.findById(truckTypeId).orElse(null);
     }
     @Override
-//    public Insurance update(Insurance insurance) {
-//        return insuranceRepository.save(insurance);
-//    }
+
     public TruckType update(Integer truckTypeId, TruckType truckType) {
         TruckType existingTruckType= read(truckTypeId);
         if (existingTruckType != null) {

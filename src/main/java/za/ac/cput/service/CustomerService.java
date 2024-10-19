@@ -11,14 +11,6 @@ import za.ac.cput.repository.CustomerRepository;
 import za.ac.cput.service.jwt.JwtService;
 
 import java.util.List;
-import java.util.Optional;
-
-/**
- * CustomerService.java
- * This is the service class
- * @aurthor Zukhanye Anele Mene (219404275)
- * Date: 18 May 2024
- */
 
 @Service
 public class CustomerService implements ICustomerService {

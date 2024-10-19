@@ -36,11 +36,6 @@ export const deleteAccidentReportById = async (reportId, token) => {
     return axiosInstance.delete(`/delete/${reportId}`);
 };
 
-// Fetch reports by customer ID
-export const findReportsByCustomerId = async (customerID, token) => {
-    const axiosInstance = createAxiosInstance(token);
-    return axiosInstance.get(`/customer/${customerID}`);
-};
 export const getReportsByCustomerEmail = async (customerEmail, token) => {
     try {
         const axiosInstance = createAxiosInstance(token);

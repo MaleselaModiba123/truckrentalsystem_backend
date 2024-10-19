@@ -16,7 +16,6 @@ import Trucks from './components/admin/Trucks';
 import AdminBranches from './components/admin/AdminBranches.jsx';
 import Employees from './components/admin/Employees';
 import TruckTypes from './components/admin/TruckTypes';
-import ImagesComponent from './components/admin/ImagesComponent';
 import InsuranceList from './components/admin/InsuranceList';
 import PendingPayments from './components/customer/PendingPayments';
 import CustomerLayout from './components/customer/CustomerLayout';
@@ -64,7 +63,6 @@ function App() {
                             <Route path="admin-branches" element={<AdminBranches />} />
                             <Route path="employees" element={<Employees />} />
                             <Route path="truck-types" element={<TruckTypes />} />
-                            <Route path="images" element={<ImagesComponent />} />
                             <Route path="insurances" element={<InsuranceList />} />
                             <Route path="manage-contact-us" element={<AdminContactUs />} />
                             <Route path="rented-trucks" element={<RentedTrucksList />} />

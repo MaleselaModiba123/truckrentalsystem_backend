@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 const REST_API_BASE_URL = "http://localhost:8080/swiftwheelzdb/rentTruck";
 
 // Function to set up axios with an authorization token
@@ -11,24 +12,9 @@ const createAxiosInstance = (token) => {
     });
 };
 
-export const getRentTrucks = async (token) => {
-    const axiosInstance = createAxiosInstance(token);
-    return axiosInstance.get(`/getAll`);
-};
-
-export const getRentTruckById = async (rentTruckNumber, token) => {
-    const axiosInstance = createAxiosInstance(token);
-    return axiosInstance.get(`/read/${rentTruckNumber}`);
-};
-
 export const createRentTruck = async (rentTruck, token) => {
     const axiosInstance = createAxiosInstance(token);
     return axiosInstance.post(`/create`, rentTruck);
-};
-
-export const deleteRentTruckById = async (rentTruckNumber, token) => {
-    const axiosInstance = createAxiosInstance(token);
-    return axiosInstance.delete(`/delete/${rentTruckNumber}`);
 };
 
 export const updateRentTruck = async (rentId, rentTruck, token) => {
@@ -67,13 +53,3 @@ export const cancelRental = async (cancellation, token) => {
     return axiosInstance.post(`/cancel/cancel`, cancellation);
 };
 
-export const getRentalsList = async (customerID, token) => {
-    try {
-        const axiosInstance = createAxiosInstance(token);
-        const response = await axiosInstance.get(`/history/${customerID}`);
-        return response.data; // Return the data from the response
-    } catch (error) {
-        console.error("Error fetching rental history:", error);
-        throw error;
-    }
-};

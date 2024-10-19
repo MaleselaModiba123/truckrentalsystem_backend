@@ -7,13 +7,6 @@ import za.ac.cput.repository.ContactUsRepository;
 
 import java.util.List;
 
-/**
- * ContactUsService.java
- * This is the service class
- * @aurthor Zukhanye Anele Mene (219404275)
- * Date: 18 May 2024
- */
-
 @Service
 public class ContactUsService implements IContactUsService {
     private ContactUsRepository  contactUsRepository;

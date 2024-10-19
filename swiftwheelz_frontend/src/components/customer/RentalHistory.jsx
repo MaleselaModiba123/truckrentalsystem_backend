@@ -12,9 +12,10 @@ const RentalHistory = () => {
     const { auth } = useContext(AuthContext);
     const [error, setError] = useState(null);
     const [branches, setBranches] = useState([]);
+    const [searchStatus, setSearchStatus] = useState('');
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
-    const rowsPerPage = 6;
+    const rowsPerPage = 3;
     useEffect(() => {
         const fetchCustomerData = async () => {
             if (auth?.email) {
@@ -89,12 +90,15 @@ const RentalHistory = () => {
         );
     }
     const sortedRentals = rentals.sort((a, b) => new Date(b.rentDate) - new Date(a.rentDate));
-    const totalPages = Math.ceil(sortedRentals.length / rowsPerPage);
+    const filteredRentals = sortedRentals.filter(rental =>
+        rental.status.toLowerCase().includes(searchStatus.toLowerCase())
+    );
+    const totalPages = Math.ceil(filteredRentals.length / rowsPerPage);
 
     // Get current rentals based on pagination
     const indexOfLastRental = currentPage * rowsPerPage;
     const indexOfFirstRental = indexOfLastRental - rowsPerPage;
-    const currentRentals = sortedRentals.slice(indexOfFirstRental, indexOfLastRental);
+    const currentRentals = filteredRentals.slice(indexOfFirstRental, indexOfLastRental);
 
     return (
         <Container className="my-5">
@@ -145,6 +149,15 @@ const RentalHistory = () => {
                 `}
             </style>
             <h1 className="mb-4">Rental History</h1>
+            <div className="mb-3">
+                <input
+                    type="text"
+                    placeholder="Filter by status"
+                    className="form-control"
+                    value={searchStatus}
+                    onChange={(e) => setSearchStatus(e.target.value)}
+                />
+            </div>
             {currentRentals.length === 0 ? (
                 <Alert variant="danger">No rentals found.</Alert>
             ) : (

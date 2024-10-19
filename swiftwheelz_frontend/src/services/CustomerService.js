@@ -59,19 +59,6 @@ export const customerSignIn = async (user) => {
     return await axios.post(`${REST_API_BASE_URL}/authenticate`, customer);
 };
 
-export const finalizePayment = async (customerID, paymentDetails) => {
-    try {
-        const response = await axios.post(`${REST_API_BASE_URL}/finalize`, {
-            ...paymentDetails,
-            customerID,
-        }, getAuthHeaders());
-        return response.data;
-    } catch (error) {
-        console.error("There was an error finalizing the payment!", error);
-        throw error;
-    }
-
-};
 export const updateCustomerProfile = async (customer) => {
     try {
         const response = await axios.put(`${REST_API_BASE_URL}/update/${customer.customerID}`, customer, getAuthHeaders());

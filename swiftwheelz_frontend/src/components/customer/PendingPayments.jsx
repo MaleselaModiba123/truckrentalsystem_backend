@@ -50,9 +50,9 @@ const PendingPayments = () => {
                 // Check for unreturned rentals
                 const rentalsResponse = await getRentalsByCustomerId(customerID, token);
                 const unreturnedRentals = rentalsResponse.data.filter(rental => !rental.isReturned);
-
-                if (unreturnedRentals.length > 0) {
-                    setError('You have unreturned rentals. Please return them before finalizing payment.');
+                const activeRentals = unreturnedRentals.filter(rental => rental.status === 'ACTIVE');
+                if (activeRentals.length > 0) {
+                    setError('You have unreturned rental with ACTIVE status. Please return the truck before renting again.');
                     return;
                 }
                 const rentTruckData = {
@@ -98,6 +98,21 @@ const PendingPayments = () => {
     };
     return (
         <div>
+            <style>
+                {`
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(-20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+
+                    h1, h2 {
+                        animation: fadeIn 1s ease-out;
+                        color: #007bff; /* Blue color */
+                        font-size: 2.5rem; /* Font size */
+                        font-weight: bold; /* Font weight */
+                    }
+                `}
+            </style>
             <h2>Pending Payment</h2>
             {error && <p className="text-danger">{error}</p>}
             {successMessage && <p className="text-success">{successMessage}</p>}

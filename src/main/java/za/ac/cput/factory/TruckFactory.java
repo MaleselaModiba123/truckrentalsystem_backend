@@ -5,12 +5,6 @@ import za.ac.cput.domain.Truck;
 import za.ac.cput.domain.TruckType;
 import za.ac.cput.util.Helper;
 
-/**
- * Factory class for creating Truck instances.
- *
- * @author Ayanda Phumzile Khoza (218057172)
- * Date: 07 May 2024
- */
 public class TruckFactory {
 
     public static Truck buildTruck(String vin, String model, byte[] photo, boolean availability, String licensePlate,

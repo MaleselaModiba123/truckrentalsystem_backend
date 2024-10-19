@@ -14,11 +14,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-/**
- *Truck.java
- * Ayanda Phumzile Khoza (218057172)
- * Date: 18 May 2024
- * */
 
 @Service
 public class TruckService {

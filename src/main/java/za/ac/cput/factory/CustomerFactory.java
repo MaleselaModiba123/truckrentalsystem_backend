@@ -4,12 +4,7 @@ import za.ac.cput.domain.Customer;
 import za.ac.cput.domain.Role;
 import za.ac.cput.util.Helper;
 
-/**
- * CustomerFactory.java
- * This is the customer class
- * @aurthor Zukhanye Anele Mene  (219404275)
- * Date: 03 May 2024
- */
+
 public class CustomerFactory {
     public static Customer buildCustomer(String firstName, String lastName, String email, String password, String license, String cellNo) {
         if (

@@ -25,10 +25,6 @@ public class ComplaintService {
 
     public Complaint create(String description, String email) {
         Customer customer = customerRepository.findByEmail(email);
-
-
-        //orElseThrow(() -> new IllegalArgumentException("Customer not found"));
-
         Complaint complaint = new Complaint.Builder()
                 .setDescription(description)
                 .setStatus("Pending") // Set an initial status
@@ -39,11 +35,9 @@ public class ComplaintService {
         return complaintRepository.save(complaint);
     }
 
-
     public Complaint read(Integer complaintId) {
         return complaintRepository.findById(complaintId).orElse(null);
     }
-
 
     public Complaint update(int complaintId, Complaint complaint) {
         Complaint existingComplaint = read(complaintId);
@@ -61,11 +55,9 @@ public class ComplaintService {
         return null;
     }
 
-
     public void delete(Integer complaintId) {
         complaintRepository.deleteById(complaintId);
     }
-
 
     public List<Complaint> getAll() {
         return complaintRepository.findAll();

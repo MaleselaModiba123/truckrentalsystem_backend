@@ -19,10 +19,10 @@ public class Truck {
     private double currentMileage;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "truckTypeId", referencedColumnName = "truckTypeId")
     private TruckType truckType;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "insuranceID")
     private Insurance insurance;
 

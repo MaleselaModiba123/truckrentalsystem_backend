@@ -20,19 +20,6 @@ export const getAllInsurance = async (token) => {
 
 };
 
-// Fetch a specific insurance by its insuranceID
-export const getInsuranceById = async (insuranceID) => {
-    const token = localStorage.getItem('token');
-    const axiosInstance = createAxiosInstance(token);
-    try {
-        const response = await axiosInstance.get(`/read/${insuranceID}`);
-        return response.data; // Return insurance data
-    } catch (error) {
-        console.error("Error fetching insurance by ID:", error);
-        throw error; // Re-throw error for handling in the calling function
-    }
-};
-
 // Create a new insurance
 export const createInsurance = async (insurance, token) => {
     const axiosInstance = createAxiosInstance(token);

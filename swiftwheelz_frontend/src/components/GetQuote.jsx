@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import {getTruckByVin, getTruckImageUrl} from '../services/TruckService';
 import {getAllBranches} from '../services/BranchService';
-//import {createRentTruck} from '../services/RentTructService';
 import {
     FaCalendarAlt,
     FaClock,

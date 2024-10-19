@@ -7,13 +7,6 @@ import za.ac.cput.repository.BranchRepository;
 
 import java.util.List;
 
-/**
- * BranchService.java
- * This is the Service class
- * @author Thandolwethu Zamasiba Khoza (221797289)
- * Date: 18 May 2024
- */
-
 @Service
 public class BranchService implements IBranchService{
     private BranchRepository branchRepository;

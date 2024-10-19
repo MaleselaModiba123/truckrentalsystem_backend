@@ -23,17 +23,6 @@ export const getAllTruckTypes = async (token) => {
     }
 };
 
-// Fetch a specific truck type by its ID
-export const getTruckTypeById = async (truckTypeId, token) => {
-    const axiosInstance = createAxiosInstance(token);
-    try {
-        const response = await axiosInstance.get(`/read/${truckTypeId}`);
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching truck type by ID:", error.response ? error.response.data : error.message);
-        throw error;
-    }
-};
 
 // Create a new truck type
 export const createTruckType = async (truckType, token) => {
@@ -58,7 +47,6 @@ export const updateTruckType = async (truckTypeId, truckType, token) => {
 };
 
 // Delete a truck type by its ID
-// export const deleteTruckTypeById = (truckTypeId) => axios.delete(`${REST_API_BASE_URL}/delete/${truckTypeId}`);
 export const deleteTruckTypeById = async (truckTypeId, token) => {
     const axiosInstance = createAxiosInstance(token);
     return axiosInstance.delete(`/delete/${truckTypeId}`);

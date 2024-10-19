@@ -6,5 +6,4 @@ import za.ac.cput.domain.Address;
 
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
-    // Custom query methods (if needed) can be defined here
 }

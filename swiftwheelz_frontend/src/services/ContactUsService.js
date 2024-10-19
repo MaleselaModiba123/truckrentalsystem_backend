@@ -26,16 +26,6 @@ export const getContactUsId = async () => {
     }
 };
 
-// Fetch specific contact us entry by ID
-export const getContactUs = async (contactUsId) => {
-    try {
-        const response = await axios.get(`${REST_API_BASE_URL}/read/${contactUsId}`, getAuthHeaders());
-        return response.data; // Return contact us data
-    } catch (error) {
-        console.error("Error fetching contact us by ID:", error);
-        throw error; // Re-throw error for handling in the calling function
-    }
-};
 
 // Create a new contact us entry
 export const createContactUs = async (contactUs) => {

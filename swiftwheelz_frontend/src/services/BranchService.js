@@ -16,11 +16,6 @@ export const getAllBranches=() =>{
     console.log(results);
     return results;
 }
-export const getBranchById = (branchId) => axios.get(`${REST_API_BASE_URL}/read/${branchId}`, getAuthHeaders());
-// export const createBranch = (branch) => axios.post(`${REST_API_BASE_URL}/create`, branch);
-// export const deleteBranchById = (branchId) => axios.delete(`${REST_API_BASE_URL}/delete/${branchId}`);
-// export const updateBranch = (branchId, branch) => axios.put(`${REST_API_BASE_URL}/update/${branchId}`, branch);
-
 // Create a new branch
 export const createBranch = async (branch) => {
     try {

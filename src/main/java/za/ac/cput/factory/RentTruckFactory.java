@@ -5,13 +5,6 @@ import za.ac.cput.util.Helper;
 
 import java.time.LocalDate;
 
-/**
- * RentTruckFactory.java
- * This is the Factory class
- * @author Thandolwethu Zamasiba Khoza (221797289)
- * Date: 03 May 2024
- */
-
 public class RentTruckFactory {
     public static RentTruck buildRentTruck(int rentId, LocalDate rentDate, LocalDate returnDate,
                                            double totalCost, boolean isPaymentMade,boolean isReturned,

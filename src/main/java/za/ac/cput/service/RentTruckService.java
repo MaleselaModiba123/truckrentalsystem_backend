@@ -5,14 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.domain.*;
-import za.ac.cput.repository.*;
+import za.ac.cput.repository.BranchRepository;
+import za.ac.cput.repository.CustomerRepository;
+import za.ac.cput.repository.RentTruckRepository;
+import za.ac.cput.repository.TruckRepository;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RentTruckService implements IRentTruckService{ //implement the interface to be able to use the JPA auto update/creation handling capabilities
+public class RentTruckService implements IRentTruckService {
 
     @Override
     public RentTruck create(RentTruck rentTruck) {
@@ -33,7 +36,7 @@ public class RentTruckService implements IRentTruckService{ //implement the inte
     private final CustomerRepository customerRepository;
     private final TruckRepository truckRepository;
     private final BranchRepository branchRepository;
-    private final CancelRepository cancelRepository = null;
+
 
     @Autowired
     public RentTruckService(RentTruckRepository rentTruckRepository,
@@ -52,8 +55,8 @@ public class RentTruckService implements IRentTruckService{ //implement the inte
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID"));
         // Check if the customer has any unreturned rentals
-        if (rentTruckRepository.existsByCustomerIDAndIsReturnedFalse(customer)) {
-            throw new IllegalStateException("Customer has an unreturned rental. Please return it before renting another truck.");
+        if (rentTruckRepository.existsByCustomerIDAndIsReturnedFalseAndStatus(customer, RentalStatus.ACTIVE)) {
+            throw new IllegalStateException("Customer has an unreturned rental with ACTIVE status. Please return it before renting another truck.");
         }
         Truck truck = truckRepository.findById(truckVin)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid truck VIN"));
@@ -104,42 +107,6 @@ public class RentTruckService implements IRentTruckService{ //implement the inte
     public List<RentTruck> getAllRentTrucks() {
         return rentTruckRepository.findAll();
     }
-    @Transactional
-    public RentTruck updateRentTruck(int id, LocalDate rentDate, LocalDate returnDate, double totalCost, boolean isPaymentMade, boolean isReturned,
-                                     int customerId, String truckVin, int pickUpBranchId, int dropOffBranchId, RentalStatus status) {
-        RentTruck existingRentTruck = rentTruckRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("RentTruck not found"));
-
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID"));
-        Truck truck = truckRepository.findById(truckVin)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid truck VIN"));
-        Branch pickUpBranch = branchRepository.findById(pickUpBranchId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid pickup branch ID"));
-        Branch dropOffBranch = branchRepository.findById(dropOffBranchId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid dropoff branch ID"));
-
-        if (existingRentTruck.isReturned()) {
-            throw new IllegalStateException("Cannot update a returned rental");
-        }
-
-        // Update RentTruck instance
-        RentTruck updatedRentTruck = new RentTruck.Builder()
-                .copy(existingRentTruck)
-                .setRentDate(rentDate)
-                .setReturnDate(returnDate)
-                .setTotalCost(totalCost)
-                .setPaymentMade(isPaymentMade)
-                .setReturned(isReturned)
-                .setCustomerID(customer)
-                .setVin(truck)
-                .setPickUp(pickUpBranch)
-                .setDropOff(dropOffBranch)
-                .setStatus(status)
-                .build();
-
-        return rentTruckRepository.save(updatedRentTruck);
-    }
 
     @Transactional
     public void deleteRentTruck(int id) {
@@ -184,7 +151,7 @@ public class RentTruckService implements IRentTruckService{ //implement the inte
     public RentTruck markAsReturned(int rentId) {
         RentTruck rentTruck = rentTruckRepository.findById(rentId)
                 .orElseThrow(() -> new EntityNotFoundException("Rent truck not found"));
-
+        System.out.println("Marking rentTruck as returned: " + rentTruck);
         if (rentTruck.isReturned()) {
             throw new IllegalStateException("Truck is already marked as returned");
         }
@@ -205,15 +172,9 @@ public class RentTruckService implements IRentTruckService{ //implement the inte
                 .build();
         truckRepository.save(updatedTruck);
 
+
         return savedRentTruck;
     }
-    /*public List<RentTruck> getPaidRentalsByCustomerId(int customerId) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
-
-        return rentTruckRepository.findByCustomerIDAndIsPaymentMadeTrue(customer);
-    }*/
-
 
     public List<RentTruck> getAvailableRentTrucks() {
         return rentTruckRepository.findByIsReturnedFalse();

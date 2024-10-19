@@ -6,12 +6,6 @@ import za.ac.cput.util.Helper;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/**
- * InsuranceFactory.java
- * This is the factory class
- * @aurthor Asimbonge Mbende (221090754)
- * Date: 17 May 2024
- */
 public class InsuranceFactory {
     public static Insurance buildInsurance(String insuranceType, String provider, String policyNumber,
                                            LocalDate effectiveDate, String coverage, double premium) {

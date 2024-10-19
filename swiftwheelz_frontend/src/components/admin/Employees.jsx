@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import {
-    createEmployee,
-    deleteEmployeeById,
-    getEmployees,
-    updateEmployee
-} from "../../services/EmployeesService.js";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import React, {useEffect, useState} from 'react';
+import {createEmployee, deleteEmployeeById, getEmployees, updateEmployee} from "../../services/EmployeesService.js";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {
     Box,
     Button,
@@ -21,7 +16,7 @@ import {
     Typography
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { Table } from "react-bootstrap";
+import {Table} from "react-bootstrap";
 
 function Employees() {
     const [employees, setEmployees] = useState([]);

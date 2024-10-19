@@ -8,13 +8,6 @@ import za.ac.cput.repository.InsuranceRepository;
 
 import java.util.List;
 
-/**
- * InsuranceService.java
- * This is the service class
- *
- * @aurthor Asimbonge Mbende (221090754)
- * Date: 22 May 2024
- */
 @Service
 public class InsuranceService implements IInsuranceService {
     private final InsuranceRepository insuranceRepository;
@@ -35,9 +28,6 @@ public class InsuranceService implements IInsuranceService {
     }
 
     @Override
-//    public Insurance update(Insurance insurance) {
-//        return insuranceRepository.save(insurance);
-//    }
     public Insurance update(Integer insuranceID, Insurance insurance) {
         Insurance existingInsurance = read(insuranceID);
         if (existingInsurance != null) {

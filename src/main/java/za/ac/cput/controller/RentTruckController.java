@@ -12,12 +12,6 @@ import za.ac.cput.service.RentTruckService;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * RentTruckController.java
- * This is the Controller class
- * @author Thandolwethu Zamasiba Khoza (221797289)
- * Date: 27 May 2024
- */
 @CrossOrigin(origins = "*", exposedHeaders = "token")
 @RestController
 @RequestMapping("/rentTruck")

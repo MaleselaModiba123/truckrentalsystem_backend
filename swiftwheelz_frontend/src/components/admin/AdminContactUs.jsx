@@ -188,17 +188,6 @@ function AdminContactUs() {
                 ))}
                 </tbody>
             </Table>
-
-            {/*<div style={{textAlign: 'center'}}>*/}
-            {/*    <Button*/}
-            {/*        variant="primary"*/}
-            {/*        onClick={handleAdd}*/}
-            {/*        style={{fontSize: '1.1rem', padding: '0.4rem 0.8rem'}}*/}
-            {/*    >*/}
-            {/*        Add Contact Us*/}
-            {/*    </Button>*/}
-            {/*</div>*/}
-
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
                     <div className="d-flex justify-content-center w-100">

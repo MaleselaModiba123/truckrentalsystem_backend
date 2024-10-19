@@ -1,10 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {
-    deleteCustomerById,
-    finalizePayment,
-    getCustomerProfile,
-    updateCustomerProfile
-} from "../../services/CustomerService.js";
+import {deleteCustomerById, getCustomerProfile, updateCustomerProfile} from "../../services/CustomerService.js";
 import {useNavigate} from "react-router-dom";
 import {AuthContext} from "../AuthContext.jsx";
 
@@ -101,21 +96,6 @@ const CustomerProfile = () => {
         }
     };
 
-    // const handleFinalizePayment = async () => {
-    //     if (pendingPayment) {
-    //         try {
-    //             await finalizePayment(pendingPayment);
-    //             localStorage.removeItem('paymentInfo');
-    //             setPendingPayment(null);
-    //             setSuccessMessage('Payment successfully finalized.');
-    //             setTimeout(() => setSuccessMessage(''), 2000);
-    //         } catch (error) {
-    //             console.error('Error finalizing payment:', error);
-    //             setErrorMessage('Failed to finalize payment.');
-    //             setTimeout(() => setErrorMessage(''), 2000);
-    //         }
-    //     }
-    // };
 
     if (loading) {
         return <div style={styles.loading}>Loading...</div>;
@@ -195,33 +175,6 @@ const CustomerProfile = () => {
                             </div>
                         </div>
                     </section>
-
-                    {/*{pendingPayment && (*/}
-                    {/*    <section style={styles.pendingPaymentSection}>*/}
-                    {/*        <div style={styles.card}>*/}
-                    {/*            <div style={styles.cardBody}>*/}
-                    {/*                <h4>Pending Payment</h4>*/}
-                    {/*                <div style={styles.details}>*/}
-                    {/*                    {[{ label: "Model", value: pendingPayment.vin.model },*/}
-                    {/*                        { label: "Pickup Location", value: pendingPayment.pickUp.branchName },*/}
-                    {/*                        { label: "Drop-off Location", value: pendingPayment.dropOff.branchName },*/}
-                    {/*                        { label: "Rental Date", value: pendingPayment.rentDate },*/}
-                    {/*                        { label: "Return Date", value: pendingPayment.returnDate },*/}
-                    {/*                        { label: "Total Cost", value: `R${pendingPayment.totalCost}` },*/}
-                    {/*                        { label: "Payment Amount", value: `R${pendingPayment.paymentAmount}` }].map(({ label, value }) => (*/}
-                    {/*                        <div style={styles.detailItem} key={label}>*/}
-                    {/*                            <span style={styles.detailLabel}>{label}:</span>*/}
-                    {/*                            <span style={styles.detailValue}>{value}</span>*/}
-                    {/*                        </div>*/}
-                    {/*                    ))}*/}
-                    {/*                </div>*/}
-                    {/*                <div style={styles.actionButtons}>*/}
-                    {/*                    <button style={styles.btnPrimary} onClick={handleFinalizePayment}>Finalize Payment</button>*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </section>*/}
-                    {/*)}*/}
                 </div>
             </main>
 

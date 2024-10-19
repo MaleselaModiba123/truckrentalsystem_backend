@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { getAllComplaints, sendResponse } from '../../services/ComplaintService.js';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import React, {useEffect, useState} from 'react';
+import {getAllComplaints, sendResponse} from '../../services/ComplaintService.js';
 
 const Complaints = () => {
     const [complaints, setComplaints] = useState([]);

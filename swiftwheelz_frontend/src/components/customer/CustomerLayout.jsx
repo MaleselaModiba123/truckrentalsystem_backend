@@ -24,13 +24,3 @@ const CustomerLayout = () => {
 };
 
 export default CustomerLayout;
-/*
-*         <div style={{ display: 'flex' }}>
-            <CustomerSidebar />
-            <div style={{
-                marginLeft: '250px', // Adjust this value based on the sidebar width
-                width: 'calc(100% - 250px)',
-                padding: '20px'
-            }}>
-*
-* */

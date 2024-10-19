@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom';
-import {getAdminDetails, getEmployeeProfile} from "../../services/EmployeesService.js";
+import {getEmployeeProfile} from "../../services/EmployeesService.js";
 import {AuthContext} from "../AuthContext.jsx";
 
 const AdminPortal = () => {
@@ -57,9 +57,6 @@ const AdminPortal = () => {
                                         style={{fontSize: '16px', fontWeight: 'bold', color: '#007bff'}}>
                                         Welcome, {admin.name.firstName} {admin.name.lastName}
                                     </h4>
-                                    {/*<p className="text-muted mb-1" style={{fontSize: '13px'}}>*/}
-                                    {/*    <strong>Employee Number:</strong> {admin.employeeNumber}*/}
-                                    {/*</p>*/}
                                     <p className="text-muted mb-1" style={{fontSize: '13px'}}>
                                         <strong>Role:</strong> {admin.role}
                                     </p>
