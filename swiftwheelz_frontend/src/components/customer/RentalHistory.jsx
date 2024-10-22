@@ -169,7 +169,9 @@ const RentalHistory = () => {
                                     <Card.Title>Rent ID: {rental.rentId || 'N/A'}</Card.Title>
                                     <Card.Text>
                                         <strong>Vehicle Model:</strong> {rental.vin?.model || 'N/A'} <br/>
-                                        <strong>Payment Made:</strong> {rental.isPaymentMade ? 'Yes' : 'No'} <br/>
+                                        <strong>Payment Made:</strong> <span
+                                        style={{color: rental.paymentMade ? 'green' : 'red'}}>{rental.paymentMade ? 'Yes' : 'No'}</span>
+                                        <br/>
                                         <p><strong>Pickup Location:</strong> {rental.pickUp.branchName}</p>
                                         <p><strong>Drop-off Location:</strong> {rental.dropOff.branchName}</p>
                                         <strong>Rent

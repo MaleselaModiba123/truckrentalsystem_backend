@@ -153,8 +153,32 @@ const Trucks = () => {
             }
         } catch (error) {
             console.error("Error saving truck:", error);
-            setConfirmationMessage('Error saving truck.');
+            if (error.response) {
+                if (error.response.status === 401) {
+                    // inspect the error message returned by the server
+                    if (error.response.data && error.response.data.message) {
+                        setErrorMessage(error.response.data.message);
+                    } else {
+                        setErrorMessage('A truck with this license plate already exists.');
+                    }
+                } else {
+                    setErrorMessage('Error saving truck. Please try again.');
+                }
+            } else {
+                setErrorMessage('Network error. Please try again later.');
+            }
+
+
+            setConfirmationMessage('');
             setMessageType('error');
+            // Clear the error message after 3 seconds
+            if (errorTimeoutRef.current) {
+                clearTimeout(errorTimeoutRef.current);
+            }
+            errorTimeoutRef.current = setTimeout(() => {
+                setErrorMessage('');
+            }, 3000);
+
         }
         setTimeout(() => setConfirmationMessage(''), 3000);
     };

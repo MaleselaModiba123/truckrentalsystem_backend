@@ -64,7 +64,10 @@ public class TruckService {
         if (truckType.isEmpty() || insurance.isEmpty()) {
             return null;
         }
-
+        // Check if the license plate already exists
+        if (truckRepository.findByLicensePlate(licensePlate).isPresent()) {
+            throw new IllegalArgumentException("A truck with this license plate already exists.");
+        }
         Truck truck = new Truck.Builder()
                 .setModel(model)
                 .setTruckImage(truckImage.getBytes())
@@ -90,7 +93,10 @@ public class TruckService {
         if (truck == null) {
             return null;
         }
-
+        // If the license plate is changed, check if the new license plate already exists
+        if (!truck.getLicensePlate().equals(licensePlate) && truckRepository.findByLicensePlate(licensePlate).isPresent()) {
+            throw new IllegalArgumentException("A truck with this license plate already exists.");
+        }
         truck = new Truck.Builder()
                 .setVin(vin)
                 .setModel(model)

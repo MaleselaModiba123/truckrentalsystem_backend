@@ -15,6 +15,7 @@ public class Truck {
     @Column(length = 10485760)
     private byte[] truckImage;
     private boolean availability;
+    @Column(unique = true)
     private String licensePlate;
     private double currentMileage;
 

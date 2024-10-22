@@ -59,7 +59,7 @@ const PendingPayments = () => {
                     rentDate: pendingPayment.rentDate,
                     returnDate: pendingPayment.returnDate,
                     totalCost: pendingPayment.totalCost,
-                    isPaymentMade: true,
+                    // isPaymentMade: true,
                     customerID: parseInt(customerID, 10),
                     vin: pendingPayment.vin.vin,
                     pickUpBranchId: pendingPayment.pickUp.branchId,

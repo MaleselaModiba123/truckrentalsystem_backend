@@ -32,7 +32,7 @@ public class RentTruckController {
                     request.getRentDate(),
                     request.getReturnDate(),
                     request.getTotalCost(),
-                    request.isPaymentMade(),
+//                    request.isPaymentMade(),
                     request.isReturned(),
                     request.getCustomerID(),
                     request.getVin(),

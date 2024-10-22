@@ -50,7 +50,7 @@ public class RentTruckService implements IRentTruckService {
     }
 
     @Transactional
-    public RentTruck createRentTruck(LocalDate rentDate, LocalDate returnDate, double totalCost, boolean isPaymentMade, boolean isReturned,
+    public RentTruck createRentTruck(LocalDate rentDate, LocalDate returnDate, double totalCost, boolean isReturned,
                                      int customerId, String truckVin, int pickUpBranchId, int dropOffBranchId, RentalStatus status) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID"));
@@ -78,7 +78,7 @@ public class RentTruckService implements IRentTruckService {
                 .setRentDate(rentDate)
                 .setReturnDate(returnDate)
                 .setTotalCost(totalCost)
-                .setPaymentMade(isPaymentMade)
+                .setPaymentMade(true)
                 .setReturned(isReturned)
                 .setCustomerID(customer)
                 .setVin(truck)

@@ -19,6 +19,7 @@ const RentedTrucksList = () => {
         setLoading(true);
         try {
             const response = await getAvailableTrucks(token);
+            console.log('Fetched Rentals:', response.data);
             setRentals(response.data);
         } catch (err) {
             setError(err);
@@ -146,7 +147,9 @@ const RentedTrucksList = () => {
                                     }}>Rent ID: {rental.rentId || 'N/A'}</Card.Title>
                                     <Card.Text>
                                         <strong>Vehicle Model:</strong> {rental.vin.model || 'N/A'} <br/>
-                                        <strong>Payment Made:</strong> {rental.isPaymentMade ? 'Yes' : 'No'} <br/>
+                                        <strong>Payment Made:</strong> <span
+                                        style={{color: rental.paymentMade ? 'green' : 'red'}}>{rental.paymentMade ? 'Yes' : 'No'} </span>
+                                        <br/>
                                         <strong>Rent
                                             Date:</strong> {rental.rentDate ? new Date(rental.rentDate).toLocaleDateString() : 'N/A'}
                                         <br/>
