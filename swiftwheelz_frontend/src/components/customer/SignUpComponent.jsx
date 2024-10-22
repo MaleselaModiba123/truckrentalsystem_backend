@@ -18,6 +18,7 @@ const SignUpComponent = () => {
 
     const handleSignUp = (e) => {
         e.preventDefault();
+        setErrors({});
         if (validateForm()) {
             const customer = {firstName, lastName, email, password, license, cellNo, role: 'CUSTOMER'};
             createCustomer(customer)
@@ -28,7 +29,17 @@ const SignUpComponent = () => {
                 .catch((error) => {
                     console.error(error);
                     if (error.response && error.response.data) {
-                        setErrors(error.response.data.errors || {});
+                        const errorMessages = error.response.data.errors || {};
+                        const newErrors = {};
+                        if (errorMessages.email) {
+                            newErrors.email = "Email is already registered.";
+                        }
+                        if (errorMessages.cellNo) {
+                            newErrors.cellNo = "Cell Number is already registered.";
+                        }
+                        setErrors((prev) => ({...prev, ...newErrors}));
+                    } else {
+                        setErrors({general: 'Email or Cell Number is already registered. Please try to sign in.'});
                     }
                 });
         }
@@ -94,6 +105,14 @@ const SignUpComponent = () => {
                 }}>
                     <h2 style={{textAlign: 'center', marginBottom: '20px', color: '#343a40'}}>Sign Up</h2>
                     <form onSubmit={handleSignUp}>
+                        {errors.general && (
+                            <div style={{
+                                color: '#dc3545',
+                                fontSize: '0.75em',
+                                marginBottom: '10px',
+                                textAlign: 'center'
+                            }}>{errors.general}</div>
+                        )}
                         <div style={{marginBottom: '10px'}}>
                             <label
                                 style={{display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#495057'}}>First

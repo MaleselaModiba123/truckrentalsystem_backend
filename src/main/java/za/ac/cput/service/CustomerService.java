@@ -26,9 +26,20 @@ public class CustomerService implements ICustomerService {
 
     }
 
+    private boolean emailExists(String email) {
+        return customerRepository.findByEmail(email) != null;
+    }
+
+    private boolean cellNoExists(String cellNo) {
+        return customerRepository.findByCellNo(cellNo) != null;
+    }
 
     @Override
     public Customer create(Customer customer) {
+        // Check if the email or cell number already exists
+        if (emailExists(customer.getEmail()) || cellNoExists(customer.getCellNo())) {
+            throw new RuntimeException("Email or Cell Number already registered");
+        }
         // Ensure role is set to "CUSTOMER" by default
         if (customer.getRole() == null) {
             customer = new Customer.Builder().copy(customer).setRole("CUSTOMER").build();
